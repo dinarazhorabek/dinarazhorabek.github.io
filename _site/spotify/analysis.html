@@ -1,0 +1,1117 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>K-Nearest Neighbors: You Like This Song…But Will George Like It? – quarto-portfolio</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">quarto-portfolio</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../about.html"> 
+<span class="menu-text">Personal Projects</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link active" data-scroll-target="#data-exploration">Data Exploration</a></li>
+  <li><a href="#data-partition" id="toc-data-partition" class="nav-link" data-scroll-target="#data-partition">Data Partition</a></li>
+  <li><a href="#normalization" id="toc-normalization" class="nav-link" data-scroll-target="#normalization">Normalization</a></li>
+  <li><a href="#clustering" id="toc-clustering" class="nav-link" data-scroll-target="#clustering">Clustering</a></li>
+  <li><a href="#limitations-of-model" id="toc-limitations-of-model" class="nav-link" data-scroll-target="#limitations-of-model">Limitations of model</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">K-Nearest Neighbors: You Like This Song…But Will George Like It?</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this project, I’ll use k-NN clustering analysis to find out whether George—a fictional character—would vibe with my song or not.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>spotify_2023 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'spotify-2023.csv'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(spotify_2023)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   953 obs. of  24 variables:
+ $ track_name          : chr  "Seven (feat. Latto) (Explicit Ver.)" "LALA" "vampire" "Cruel Summer" ...
+ $ artist.s._name      : chr  "Latto, Jung Kook" "Myke Towers" "Olivia Rodrigo" "Taylor Swift" ...
+ $ artist_count        : int  2 1 1 1 1 2 2 1 1 2 ...
+ $ released_year       : int  2023 2023 2023 2019 2023 2023 2023 2023 2023 2023 ...
+ $ released_month      : int  7 3 6 8 5 6 3 7 5 3 ...
+ $ released_day        : int  14 23 30 23 18 1 16 7 15 17 ...
+ $ in_spotify_playlists: int  553 1474 1397 7858 3133 2186 3090 714 1096 2953 ...
+ $ in_spotify_charts   : int  147 48 113 100 50 91 50 43 83 44 ...
+ $ streams             : chr  "141381703" "133716286" "140003974" "800840817" ...
+ $ in_apple_playlists  : int  43 48 94 116 84 67 34 25 60 49 ...
+ $ in_apple_charts     : int  263 126 207 207 133 213 222 89 210 110 ...
+ $ in_deezer_playlists : chr  "45" "58" "91" "125" ...
+ $ in_deezer_charts    : int  10 14 14 12 15 17 13 13 11 13 ...
+ $ in_shazam_charts    : chr  "826" "382" "949" "548" ...
+ $ bpm                 : int  125 92 138 170 144 141 148 100 130 170 ...
+ $ key                 : chr  "B" "C#" "F" "A" ...
+ $ mode                : chr  "Major" "Major" "Major" "Major" ...
+ $ danceability_.      : int  80 71 51 55 65 92 67 67 85 81 ...
+ $ valence_.           : int  89 61 32 58 23 66 83 26 22 56 ...
+ $ energy_.            : int  83 74 53 72 80 58 76 71 62 48 ...
+ $ acousticness_.      : int  31 7 17 11 14 19 48 37 12 21 ...
+ $ instrumentalness_.  : int  0 0 0 0 63 0 0 0 0 0 ...
+ $ liveness_.          : int  8 10 31 11 11 8 8 11 28 8 ...
+ $ speechiness_.       : int  4 4 6 15 6 24 3 4 9 33 ...</code></pre>
+</div>
+</div>
+<p>My song is Money Trees - Kendrick Lamar, Jay Rock. I’m a big fan of Kendrick’s music, and especially songs from this album is one of the favorites of mine.</p>
+<p>Here is the values of this song from dataset:<br>
+danceability: 74<br>
+energy: 53<br>
+speechiness: 10<br>
+acousticness: 7<br>
+liveness: 21<br>
+valence: 37<br>
+BPM: 144</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>my_song <span class="ot">&lt;-</span> spotify_2023 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(track_name <span class="sc">==</span> <span class="st">'Money Trees'</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>my_song</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   track_name           artist.s._name artist_count released_year
+1 Money Trees Kendrick Lamar, Jay Rock            2          2012
+  released_month released_day in_spotify_playlists in_spotify_charts    streams
+1              1            1                26792                32 1093605526
+  in_apple_playlists in_apple_charts in_deezer_playlists in_deezer_charts
+1                 69             113                 695                0
+  in_shazam_charts bpm key  mode danceability_. valence_. energy_.
+1              458 144   E Minor             74        37       53
+  acousticness_. instrumentalness_. liveness_. speechiness_.
+1              7                  0         21            10</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>spotify <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'spotify.csv'</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(spotify)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2017 obs. of  17 variables:
+ $ X               : int  0 1 2 3 4 5 6 7 8 9 ...
+ $ acousticness    : num  0.0102 0.199 0.0344 0.604 0.18 0.00479 0.0145 0.0202 0.0481 0.00208 ...
+ $ danceability    : num  0.833 0.743 0.838 0.494 0.678 0.804 0.739 0.266 0.603 0.836 ...
+ $ duration_ms     : int  204600 326933 185707 199413 392893 251333 241400 349667 202853 226840 ...
+ $ energy          : num  0.434 0.359 0.412 0.338 0.561 0.56 0.472 0.348 0.944 0.603 ...
+ $ instrumentalness: num  2.19e-02 6.11e-03 2.34e-04 5.10e-01 5.12e-01 0.00 7.27e-06 6.64e-01 0.00 0.00 ...
+ $ key             : int  2 1 2 5 5 8 1 10 11 7 ...
+ $ liveness        : num  0.165 0.137 0.159 0.0922 0.439 0.164 0.207 0.16 0.342 0.571 ...
+ $ loudness        : num  -8.79 -10.4 -7.15 -15.24 -11.65 ...
+ $ mode            : int  1 1 1 1 0 1 1 0 0 1 ...
+ $ speechiness     : num  0.431 0.0794 0.289 0.0261 0.0694 0.185 0.156 0.0371 0.347 0.237 ...
+ $ tempo           : num  150.1 160.1 75 86.5 174 ...
+ $ time_signature  : num  4 4 4 4 4 4 4 4 4 4 ...
+ $ valence         : num  0.286 0.588 0.173 0.23 0.904 0.264 0.308 0.393 0.398 0.386 ...
+ $ target          : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ song_title      : chr  "Mask Off" "Redbone" "Xanny Family" "Master Of None" ...
+ $ artist          : chr  "Future" "Childish Gambino" "Future" "Beach House" ...</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>spotify<span class="sc">$</span>target <span class="ot">&lt;-</span> <span class="fu">factor</span>(spotify<span class="sc">$</span>target)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(spotify<span class="sc">$</span>target)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "0" "1"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(spotify<span class="sc">$</span>target)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   0    1 
+ 997 1020 </code></pre>
+</div>
+</div>
+<section id="data-exploration" class="level3">
+<h3 class="anchored" data-anchor-id="data-exploration">Data Exploration</h3>
+<p>Target variable is of type int, then I converted it to categorical variable (factor).</p>
+<p>The target factor variable has 2 categories: 0 or 1. By counting total number of rows for each category, we get that George has 1020 favorite, and 997 disliked songs. Which is interesting, that number of disliked ones pretty close to liked. The music taste of George can be diverse, and Spotify’s recommendation system might be actively adjusting to his preferences. Actually, when you dislike one song in Spotify, the system tries to not suggest you similar songs, and try other different options. To state this opinion constantly we need to explore more about song preferences of George. Furthermore, there are could be temporal patterns in George’s preferences, for instance he prefer certain types of songs at different times of day, month or year.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(spotify))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>               X     acousticness     danceability      duration_ms 
+               0                0                0                0 
+          energy instrumentalness              key         liveness 
+               0                0                0                0 
+        loudness             mode      speechiness            tempo 
+               0                0                0                0 
+  time_signature          valence           target       song_title 
+               0                0                0                0 
+          artist 
+               0 </code></pre>
+</div>
+</div>
+<p>There is no NA values in this dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(spotify_2023)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  track_name        artist.s._name      artist_count   released_year 
+ Length:953         Length:953         Min.   :1.000   Min.   :1930  
+ Class :character   Class :character   1st Qu.:1.000   1st Qu.:2020  
+ Mode  :character   Mode  :character   Median :1.000   Median :2022  
+                                       Mean   :1.556   Mean   :2018  
+                                       3rd Qu.:2.000   3rd Qu.:2022  
+                                       Max.   :8.000   Max.   :2023  
+ released_month    released_day   in_spotify_playlists in_spotify_charts
+ Min.   : 1.000   Min.   : 1.00   Min.   :   31        Min.   :  0.00   
+ 1st Qu.: 3.000   1st Qu.: 6.00   1st Qu.:  875        1st Qu.:  0.00   
+ Median : 6.000   Median :13.00   Median : 2224        Median :  3.00   
+ Mean   : 6.034   Mean   :13.93   Mean   : 5200        Mean   : 12.01   
+ 3rd Qu.: 9.000   3rd Qu.:22.00   3rd Qu.: 5542        3rd Qu.: 16.00   
+ Max.   :12.000   Max.   :31.00   Max.   :52898        Max.   :147.00   
+   streams          in_apple_playlists in_apple_charts  in_deezer_playlists
+ Length:953         Min.   :  0.00     Min.   :  0.00   Length:953         
+ Class :character   1st Qu.: 13.00     1st Qu.:  7.00   Class :character   
+ Mode  :character   Median : 34.00     Median : 38.00   Mode  :character   
+                    Mean   : 67.81     Mean   : 51.91                      
+                    3rd Qu.: 88.00     3rd Qu.: 87.00                      
+                    Max.   :672.00     Max.   :275.00                      
+ in_deezer_charts in_shazam_charts        bpm            key           
+ Min.   : 0.000   Length:953         Min.   : 65.0   Length:953        
+ 1st Qu.: 0.000   Class :character   1st Qu.:100.0   Class :character  
+ Median : 0.000   Mode  :character   Median :121.0   Mode  :character  
+ Mean   : 2.666                      Mean   :122.5                     
+ 3rd Qu.: 2.000                      3rd Qu.:140.0                     
+ Max.   :58.000                      Max.   :206.0                     
+     mode           danceability_.    valence_.        energy_.    
+ Length:953         Min.   :23.00   Min.   : 4.00   Min.   : 9.00  
+ Class :character   1st Qu.:57.00   1st Qu.:32.00   1st Qu.:53.00  
+ Mode  :character   Median :69.00   Median :51.00   Median :66.00  
+                    Mean   :66.97   Mean   :51.43   Mean   :64.28  
+                    3rd Qu.:78.00   3rd Qu.:70.00   3rd Qu.:77.00  
+                    Max.   :96.00   Max.   :97.00   Max.   :97.00  
+ acousticness_.  instrumentalness_.   liveness_.    speechiness_.  
+ Min.   : 0.00   Min.   : 0.000     Min.   : 3.00   Min.   : 2.00  
+ 1st Qu.: 6.00   1st Qu.: 0.000     1st Qu.:10.00   1st Qu.: 4.00  
+ Median :18.00   Median : 0.000     Median :12.00   Median : 6.00  
+ Mean   :27.06   Mean   : 1.581     Mean   :18.21   Mean   :10.13  
+ 3rd Qu.:43.00   3rd Qu.: 0.000     3rd Qu.:24.00   3rd Qu.:11.00  
+ Max.   :97.00   Max.   :91.000     Max.   :97.00   Max.   :64.00  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>danceability_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>danceability_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>energy_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>energy_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>speechiness_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>speechiness_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>valence_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>valence_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>acousticness_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>acousticness_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>liveness_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>liveness_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>spotify_2023 <span class="ot">&lt;-</span> spotify_2023 <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">danceability=</span>danceability_., <span class="at">energy=</span>energy_., <span class="at">speechiness=</span>speechiness_., <span class="at">valence=</span>valence_., <span class="at">acousticness=</span>acousticness_., <span class="at">liveness=</span>liveness_., <span class="at">tempo=</span>bpm)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>my_song <span class="ot">&lt;-</span> spotify_2023 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(track_name <span class="sc">==</span> <span class="st">'Money Trees'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>I converted the values in spotify_23 to decimal format. Also, applied the same changes to my_song by recreating it.</p>
+</section>
+<section id="data-partition" class="level3">
+<h3 class="anchored" data-anchor-id="data-partition">Data Partition</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">79</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>spotify.index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(spotify)), <span class="fu">nrow</span>(spotify)<span class="sc">*</span><span class="fl">0.6</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>spotify_train.df <span class="ot">&lt;-</span> spotify[spotify.index, ]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>spotify_valid.df <span class="ot">&lt;-</span> spotify[<span class="sc">-</span>spotify.index, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>liked <span class="ot">&lt;-</span> spotify_train.df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(target<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>disliked <span class="ot">&lt;-</span> spotify_train.df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(target<span class="sc">==</span><span class="dv">0</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>danceability, disliked<span class="sc">$</span>danceability)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$danceability and disliked$danceability
+t = 5.9297, df = 1198.7, p-value = 3.965e-09
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.03618685 0.07197390
+sample estimates:
+mean of x mean of y 
+0.6451020 0.5910216 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>tempo, disliked<span class="sc">$</span>tempo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$tempo and disliked$tempo
+t = 0.32976, df = 1188, p-value = 0.7416
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -2.495354  3.503627
+sample estimates:
+mean of x mean of y 
+ 121.3866  120.8825 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>energy, disliked<span class="sc">$</span>energy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$energy and disliked$energy
+t = 0.90709, df = 1116.6, p-value = 0.3646
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.01228227  0.03340286
+sample estimates:
+mean of x mean of y 
+0.6986168 0.6880565 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>speechiness, disliked<span class="sc">$</span>speechiness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$speechiness and disliked$speechiness
+t = 5.9565, df = 1102.5, p-value = 3.461e-09
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.01988822 0.03942699
+sample estimates:
+ mean of x  mean of y 
+0.10598684 0.07632924 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>valence, disliked<span class="sc">$</span>valence)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$valence and disliked$valence
+t = 3.4455, df = 1207.9, p-value = 0.0005895
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.02065933 0.07529932
+sample estimates:
+mean of x mean of y 
+0.5254077 0.4774284 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>acousticness, disliked<span class="sc">$</span>acousticness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$acousticness and disliked$acousticness
+t = -4.0701, df = 1122.3, p-value = 5.028e-05
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.08721203 -0.03047773
+sample estimates:
+mean of x mean of y 
+0.1508101 0.2096550 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>liveness, disliked<span class="sc">$</span>liveness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$liveness and disliked$liveness
+t = 1.5056, df = 1192.1, p-value = 0.1324
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.004181182  0.031773731
+sample estimates:
+mean of x mean of y 
+0.1991905 0.1853942 </code></pre>
+</div>
+</div>
+<p>Based on the results above, here is the list of variables that show significant difference: Danceability(p_value = 3.965e-09), speechiness(p-value = 3.461e-09), valence(p-value = 0.0005895), acousticness(p-value = 5.028e-05). Very low p-value suggests that, there is significant difference on this values between liked and disliked songs, making them main parameters to identify George’s preferences in music. Other remaining variables have p-value more than typical threshold 0.05: tempo(p-value = 0.7416), energy(p-value = 0.3646), liveness(p-value = 0.1324).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>spotify_train.df <span class="ot">&lt;-</span> spotify_train.df <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>tempo, <span class="sc">-</span>energy, <span class="sc">-</span>liveness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>k-NN method draws information from similarities between the variables by measuring distance between records. Variables with similar values across different outcome classes cannot provide useful information for distinguishing between groups. Including such variables can lead to overfitting, where the model performs well on training data but fails to generalize to new data. These insignificant variables affect the distance calculation, making it harder to distinguish between groups.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(spotify_train.df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        X acousticness danceability duration_ms instrumentalness key loudness
+1454 1453      0.02140        0.587      198426            0.698   4   -4.439
+703   702      0.32000        0.723      210880            0.000   5   -7.110
+1155 1154      0.00464        0.565      225526            0.000   1   -5.220
+1048 1047      0.09150        0.533      230722            0.000   0   -8.266
+311   310      0.04980        0.403      274480            0.000  11   -5.889
+1522 1521      0.97300        0.478      388040            0.939   5  -20.847
+     mode speechiness time_signature valence target
+1454    0      0.0375              4   0.201      0
+703     1      0.0833              4   0.261      1
+1155    1      0.2120              4   0.551      0
+1048    1      0.0324              4   0.506      0
+311     0      0.3380              4   0.734      1
+1522    1      0.0505              4   0.235      0
+                            song_title                   artist
+1454                            Legacy Dimitri Vangelis &amp; Wyman
+703       25 Bucks [feat. Purity Ring]              Danny Brown
+1155 Good Life (with G-Eazy &amp; Kehlani)                   G-Eazy
+1048                        Real Thing           Zac Brown Band
+311                         Auditorium                  Mos Def
+1522                     For Wee Folks           Joey Alexander</code></pre>
+</div>
+</div>
+</section>
+<section id="normalization" class="level3">
+<h3 class="anchored" data-anchor-id="normalization">Normalization</h3>
+<p>In this step we are normalizing only those columns that will be used in k-NN model building.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: lattice</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'caret'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:purrr':
+
+    lift</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>spotify_train_norm.df <span class="ot">&lt;-</span> spotify_train.df</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>spotify_valid_norm.df <span class="ot">&lt;-</span> spotify_valid.df</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>spotify_norm.df <span class="ot">&lt;-</span> spotify</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>my_song_norm <span class="ot">&lt;-</span> my_song</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>norm_values <span class="ot">&lt;-</span> <span class="fu">preProcess</span>(</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>  spotify_train.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)], </span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="fu">c</span>(<span class="st">"center"</span>, <span class="st">"scale"</span>))</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>spotify_train_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(norm_values, spotify_train.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)])</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="co"># View(spotify_train_norm.df)</span></span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>spotify_valid_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(norm_values, spotify_valid.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)])</span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="co"># View(spotify_valid_norm.df)</span></span>
+<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>spotify_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(norm_values, spotify[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)])</span>
+<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="co"># View(spotify_norm.df)</span></span>
+<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-23"><a href="#cb40-23" aria-hidden="true" tabindex="-1"></a>my_song_norm[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb40-24"><a href="#cb40-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(norm_values, my_song[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)])</span>
+<span id="cb40-25"><a href="#cb40-25" aria-hidden="true" tabindex="-1"></a>my_song_norm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   track_name           artist.s._name artist_count released_year
+1 Money Trees Kendrick Lamar, Jay Rock            2          2012
+  released_month released_day in_spotify_playlists in_spotify_charts    streams
+1              1            1                26792                32 1093605526
+  in_apple_playlists in_apple_charts in_deezer_playlists in_deezer_charts
+1                 69             113                 695                0
+  in_shazam_charts tempo key  mode danceability    valence energy acousticness
+1              458   144   E Minor    0.7569021 -0.5406409   0.53   -0.4355796
+  instrumentalness_. liveness speechiness
+1                  0     0.21  0.09968928</code></pre>
+</div>
+</div>
+</section>
+<section id="clustering" class="level3">
+<h3 class="anchored" data-anchor-id="clustering">Clustering</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+attr(,"nn.index")
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7]
+[1,]  823  966  277  929  653  984  436
+attr(,"nn.dist")
+          [,1]      [,2]      [,3]      [,4]      [,5]     [,6]      [,7]
+[1,] 0.0233238 0.3074891 0.3136877 0.3537573 0.4308537 0.471654 0.4811864
+Levels: 1</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           song_title         artist target acousticness danceability
+527       Money Trees Kendrick Lamar      1       0.0726        0.739
+1429        My Friend            EDX      0       0.0330        0.707
+633              Kids         Iamsu!      1       0.1210        0.719
+348          Pacifier     Young Thug      1       0.0469        0.766
+728           Falling           HAIM      1       0.0760        0.741
+800  18 With A Bullet Pete Wingfield      1       0.0625        0.758
+189       N.O. Bounce    Big Freedia      1       0.0190        0.695
+     speechiness valence
+527       0.1010   0.374
+1429      0.0901   0.403
+633       0.0829   0.357
+348       0.1240   0.401
+728       0.0690   0.310
+800       0.1060   0.260
+189       0.1270   0.337</code></pre>
+</div>
+</div>
+<p>By running k-NN model as a result get “1”, which indicates that George will like my song. And by listing 7 nearest neighbors, I see that my song is also in this list and George already marked it as favorite. Within this songs, George marked only one song as disliked, which highlights not all similar songs are guaranteed to be liked. This disliked song has high valence value compared to others, but there is no difference in other variables. By running knn classification we get 7 nearest records with low distance value from our selected song. So if we just use numbers these songs look very similar to each other. But they are not. And the diversity of artists suggests George’s musical preferences are varied.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>accuracy.df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">k =</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">14</span>,<span class="dv">1</span>), <span class="at">accuracy =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">14</span>))</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>) {</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  knn.pred <span class="ot">&lt;-</span> <span class="fu">knn</span>( <span class="at">train =</span> spotify_train_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)],</span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">test =</span> spotify_valid_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)],</span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">cl =</span> spotify_train_norm.df[,<span class="fu">c</span>(<span class="st">"target"</span>)],</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">k=</span>i)</span>
+<span id="cb44-8"><a href="#cb44-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb44-9"><a href="#cb44-9" aria-hidden="true" tabindex="-1"></a>  accuracy.df[i, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(knn.pred, spotify_valid_norm.df[ ,<span class="fu">c</span>(<span class="st">"target"</span>)])<span class="sc">$</span>overall[<span class="st">'Accuracy'</span>]</span>
+<span id="cb44-10"><a href="#cb44-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-12"><a href="#cb44-12" aria-hidden="true" tabindex="-1"></a>accuracy.df[<span class="fu">order</span>(<span class="sc">-</span>accuracy.df<span class="sc">$</span>accuracy), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    k  accuracy
+14 14 0.6183395
+12 12 0.6096654
+13 13 0.6096654
+10 10 0.6084263
+11 11 0.6034696
+5   5 0.6022305
+9   9 0.5997522
+4   4 0.5972739
+6   6 0.5960347
+8   8 0.5947955
+3   3 0.5885998
+7   7 0.5861214
+1   1 0.5774473
+2   2 0.5662949</code></pre>
+</div>
+</div>
+<p>From the list above we can see accuracy for different k values between 1 and 14. We can see that the difference in accuracy between values is very small. k=14 has highest accuracy value 0.6183395, also k=5 provides very similar number 0.6022305.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analysis_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The graph clearly illustrates the differences in accuracy across various k-values. k = 10 has about 61% accuracy, similar to k = 12 and k = 13. Since they give the same result, k = 10 is a better choice to reduce noise. Additionally, the previously used k = 7 had one of the lowest accuracy scores at 59%. While k = 14 had the highest accuracy at 62%, k = 10 appears to be a more balanced choice. Selecting 10 nearest neighbors should provide a more reliable classification of my song.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>nn_10 <span class="ot">&lt;-</span> <span class="fu">knn</span>( <span class="at">train =</span> spotify_train_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)],</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">test =</span> my_song_norm[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)],</span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">cl =</span> spotify_train_norm.df[,<span class="fu">c</span>(<span class="st">"target"</span>)],<span class="do">##what we are classifying: like or dislike</span></span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">k=</span><span class="dv">10</span>)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>nn_10</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+attr(,"nn.index")
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+[1,]  823  966  277  929  653  984  436  476  136   127
+attr(,"nn.dist")
+          [,1]      [,2]      [,3]      [,4]      [,5]     [,6]      [,7]
+[1,] 0.0233238 0.3074891 0.3136877 0.3537573 0.4308537 0.471654 0.4811864
+         [,8]      [,9]     [,10]
+[1,] 0.501667 0.5050047 0.5092467
+Levels: 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>nn_indexes_10 <span class="ot">&lt;-</span> <span class="fu">row.names</span>(spotify_train.df)[<span class="fu">attr</span>(nn_10, <span class="st">"nn.index"</span>)]</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a>spotify_train.df[nn_indexes_10, ] <span class="sc">%&gt;%</span> <span class="fu">select</span>(song_title, artist, target, acousticness, danceability, speechiness, valence)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           song_title         artist target acousticness danceability
+527       Money Trees Kendrick Lamar      1       0.0726        0.739
+1429        My Friend            EDX      0       0.0330        0.707
+633              Kids         Iamsu!      1       0.1210        0.719
+348          Pacifier     Young Thug      1       0.0469        0.766
+728           Falling           HAIM      1       0.0760        0.741
+800  18 With A Bullet Pete Wingfield      1       0.0625        0.758
+189       N.O. Bounce    Big Freedia      1       0.0190        0.695
+661        Next Order      Dog Blood      1       0.0155        0.760
+1191    Glad You Came     The Wanted      0       0.0643        0.755
+1094           Hey DJ           CNCO      0       0.0309        0.792
+     speechiness valence
+527       0.1010   0.374
+1429      0.0901   0.403
+633       0.0829   0.357
+348       0.1240   0.401
+728       0.0690   0.310
+800       0.1060   0.260
+189       0.1270   0.337
+661       0.0733   0.294
+1191      0.0687   0.454
+1094      0.0867   0.450</code></pre>
+</div>
+</div>
+<p>I chose k=10 as optimal with moderate accuracy value. The output of model didn’t change, it indicates George will like my song. But for now I got 10 nearest neighbors, and from this new list George disliked 3 songs. All these songs have high value of danceability around 70%, low speechiness and acousticness. All 3 disliked songs as for k=7, have higher value of valence compared to others. Higher valence indicates more positive, cheerful, or euphoric songs. It seems that George might prefer songs with lower valence, which are less positive, more neutral in mood or moodier over cheerful ones. Disliked songs have relatively low acousticness, this suggest that George prefer songs with slightly more acoustic elements. The danceability is quite similar for both groups, which implies this factor is not strong in determining preferences. The disliked songs have relatively low speechiness, and some liked songs have higher speechiness (‘Pacifier’ has 0.1240) indicating George prefer songs with more spoken lyrics or rap.</p>
+</section>
+<section id="limitations-of-model" class="level3">
+<h3 class="anchored" data-anchor-id="limitations-of-model">Limitations of model</h3>
+<p>I think main limitation here is that we are relying on numerical variables to predict whether someone will like this song or not. There are can be other factors such as good memories or associations with a song which can make them favorite. Also lyrics play main role in connecting with listeners on an emotional level. For instance, I tend to prefer songs with meaningful lyrics, while rap elements often give me an energy boost. Additionally, music preferences can vary based on context—what I listen to at the gym or while walking differs from what I play in the evening when I can’t sleep.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

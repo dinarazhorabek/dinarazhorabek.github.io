@@ -1,0 +1,15 @@
+---
+title: "Personal Projects"
+---
+::: {.image-hover-container}
+
+<a href="./spotify/analysis.qmd">
+  ![](./spotify/Rplot.png){.hover-image}
+  
+  <div class="hover-text">
+    You Like This Song…But Will George Like It? 
+    <p>K-Nearest Neighbors clustering analysis.</p>
+  </div>
+</a>
+
+:::
