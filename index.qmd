@@ -1,19 +1,91 @@
 ---
 title: "Dinara Zhorabek"
 ---
+<style>
+    .title{
+        display: none;
+    }
+    body .page-columns {
+        display: flex!important;
+        justify-content: center;
+        /* width: 70%; */
+        /* margin: 0 auto; */
+    }
+    .htitle, .home-intro {
+        width: 70%;
+        margin: 0 auto;
+    }
+    .htitle{
+        text-align: center;
+        padding: 2em 3em;
+    }
+    ul.social-buttons li a {
+        font-size: 20px;
+        line-height: 40px;
+        display: block;
+        width: 40px;
+        height: 40px;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+        color: white;
+        border-radius: 100%;
+        outline: none;
+        background-color: #212529;
+    }
+    ul.social-buttons li a i{
+        color: white;
+    }
 
-Hey, I'm Dinara!
+    .home-intro{
+        display: flex;
+        justify-content: space-between;
+    }
+    .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -15px;
+    margin-left: -15px;
+    }   
+</style>
 
-An aspiring business analyst and avid traveler, passionate about continuous learning, problem-solving, and empowering others through data-driven solutions.
 
-I am pursuing a Master's degree in Applied Business Analytics at Boston University and received a B.S. in Information and Communication Technology from Kazakh-British Technical University. 
+<div class="htitle">
+<p style="display:inline; font-size: 35px;">Dinara Zhorabek</p>
+<p style="margin: 2% 0;"><b>Business & Data Analyst | Full Stack Software Engineer</b></p>
+<hr style="width: 100px; height: 1px; border:none;color:#333;background-color:#333; margin:3% auto;"/>
+<ul class="list-inline social-buttons">
+<li class="list-inline-item social-buttons">
+[{{< fa brands github >}}](https://github.com/kalizhaankyzy)
+</li>
+<li class="list-inline-item social-buttons">
+[{{< fa brands linkedin >}}](https://www.linkedin.com/in/dinarazhorabek/)
+</li>
+</ul><br>
+
+</div>
+
+<div style="background-color: #f8f9fa; padding: 100px 0;">
+
+::: {.home-intro}
+<div style="max-width:33.3%;">
+![](./images/main.jpg){.home-image}
+</div>
+<div style="max-width:66.7%; padding: 15px;">
+Hi, I'm Dinara.
+
+An aspiring business & data analyst and middle software engineer, avid traveler, passionate about continuous learning, problem-solving, and empowering others through data-driven solutions.
+
+I am pursuing a Master's degree in Applied Business Analytics at [Boston University](https://www.bu.edu/) and received a B.S. in Information and Communication Technology from [Kazakh-British Technical University](https://kbtu.edu.kz/en/). 
 
 I’m skilled in Python, R, SQL, Tableau and Power BI, and I am deeply committed to using data and technology to solve business challenges.
 
-During the final year of my bachelor's studies, I began working full-time as a Full-Stack Software Engineer in the banking industry at VTB Bank Kazakhstan. In this role, I applied my academic knowledge in real-world scenarios and gained significant experience. In this role, I developed web applications from the ground up, enhanced existing ones, and managed databases. My work involved third-party API integrations, performance tuning, and seamless deployment into production environments. I led frontend and backend development using technologies such as Java, Node.js, React, and Oracle APEX, and worked extensively with PostgreSQL and Oracle databases. Additionally, I utilized tools like DBMS Profiler and Query Analyzer to optimize query performance and ensure system reliability.
+<!-- During the final year of my bachelor's studies, I began working full-time as a Full-Stack Software Engineer in the banking industry at VTB Bank Kazakhstan. In this role, I applied my academic knowledge in real-world scenarios and gained significant experience. In this role, I developed web applications from the ground up, enhanced existing ones, and managed databases. My work involved third-party API integrations, performance tuning, and seamless deployment into production environments. I led frontend and backend development using technologies such as Java, Node.js, React, and Oracle APEX, and worked extensively with PostgreSQL and Oracle databases. Additionally, I utilized tools like DBMS Profiler and Query Analyzer to optimize query performance and ensure system reliability.
 
-This experience led me to discover a fascination with data management and analytics — the way data surrounds us and can yield powerful insights into trends, behaviors, and decision-making. This interest inspired me to dive deeper into data analytics through online courses, and ultimately, to pursue a graduate degree in Applied Business Analytics at Boston University. So now, I'm a graduate student:)
+This experience led me to discover a fascination with data management and analytics — the way data surrounds us and can yield powerful insights into trends, behaviors, and decision-making. This interest inspired me to dive deeper into data analytics through online courses, and ultimately, to pursue a graduate degree in Applied Business Analytics at Boston University. So now, I'm a graduate student:) -->
 
+</div>
 
-Social Media:
-You can find me on LinkedIn.
+:::
+
+</div>
