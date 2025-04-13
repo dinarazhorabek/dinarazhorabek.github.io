@@ -1,8 +1,12 @@
 ---
-title: "Classification: Naive Bayes"
+title: "Complaint Classifier"
 format: html
 editor: visual
 ---
+
+As part of my Data Mining coursework, I’m building a Naive Bayes classification model to predict whether a consumer disputes a company's response using the Consumer Complaints dataset. The project involves cleaning and preprocessing the data, including renaming variables, removing redundancies, and binning categories. I evaluate the model's performance using confusion matrices and compare it to the naive rule, uncovering key insights into the challenges of predicting dispute outcomes and how predictions can be improved.
+
+The source of dataset is [Kaggle](https://www.kaggle.com/datasets/anandshaw2001/consumer-complaints).
 
 ### Data Exploration
 

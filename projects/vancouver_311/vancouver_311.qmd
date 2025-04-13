@@ -1,7 +1,5 @@
 ---
 title: "City service requests made in Vancouver, British Columbia from 2022 to the present."
-format: html
-editor: visual
 ---
 
 This project focuses on exploring and visualizing data related to city service requests in Vancouver, British Columbia. The dataset is sourced from Vancouver’s Open Data Portal and contains information about service requests made from 2022 to the present.

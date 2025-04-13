@@ -4,7 +4,9 @@ format: html
 editor: visual
 ---
 
-For this task, we will use Video Games dataset to create Classification Tree.
+Developed a classification model to predict video game sales performance using a real-world video game dataset. Preprocessed the data through binning, factor conversion, and top-category filtering. Built, visualized, and pruned decision trees using cross-validation, and evaluated model performance using confusion matrices.
+
+This work is part of an assignment for the AD699 Data Mining course.
 
 ```{r}
 library(tidyverse)

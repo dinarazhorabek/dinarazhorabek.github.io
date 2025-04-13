@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Dinara Zhorabek – quarto-portfolio</title>
+<title>Dinara Zhorabek</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -38,7 +38,9 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-530bf8e59df25186f8bffdc63bad3503.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/quarto-contrib/fontawesome6-1.2.0/all.min.css" rel="stylesheet">
+<link href="site_libs/quarto-contrib/fontawesome6-1.2.0/latex-fontsize.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -79,7 +81,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a class="navbar-brand" href="./index.html">
-    <span class="navbar-title">quarto-portfolio</span>
+    <span class="navbar-title">Dinara Zhorabek</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -94,7 +96,7 @@ ul.task-list li input[type="checkbox"] {
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./about.html"> 
-<span class="menu-text">Personal Projects</span></a>
+<span class="menu-text">About me</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
@@ -132,17 +134,302 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>Hey, I’m Dinara!</p>
-<p>An aspiring business analyst and avid traveler, passionate about continuous learning, problem-solving, and empowering others through data-driven solutions.</p>
-<p>I am pursuing a Master’s degree in Applied Business Analytics at Boston University and received a B.S. in Information and Communication Technology from Kazakh-British Technical University.</p>
+<style>
+    .title{
+        display: none;
+    }
+    body .page-columns {
+        display: flex!important;
+        justify-content: center;
+        /* width: 70%; */
+        /* margin: 0 auto; */
+    }
+    .htitle, .home-intro {
+        width: 70%;
+        margin: 0 auto;
+    }
+    .htitle{
+        text-align: center;
+        padding: 2em 3em;
+    }
+    ul.social-buttons li a {
+        font-size: 20px;
+        line-height: 40px;
+        display: block;
+        width: 40px;
+        height: 40px;
+        -webkit-transition: all 0.3s;
+        -moz-transition: all 0.3s;
+        transition: all 0.3s;
+        color: white;
+        border-radius: 100%;
+        outline: none;
+        background-color: #212529;
+    }
+    ul.social-buttons li a:hover{
+        background-color: #69b3a2;
+    }
+    ul.social-buttons li a i{
+        color: white;
+    }
+
+    .home-intro{
+        display: flex;
+        justify-content: space-between;
+    }
+    .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+        align-items: center;
+        justify-content: center;
+    }   
+    #projects div{
+        /* margin: 0 auto; */
+        text-align: center;
+    }
+    .projects-subheading{
+        font-size: 16px;
+        font-weight: 400;
+        font-style: italic;
+        margin-bottom: 45px;
+    }
+    /* .portfolio-item{
+        margin: 20px auto!important;
+    } */
+    .portfolio-item .portfolio-link {
+        position: relative;
+        display: block;
+        margin: 0 auto;
+        cursor: pointer;
+        border-radius: 2%;
+    }
+    .portfolio-item .portfolio-link .portfolio-hover {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all ease 1s;
+        -moz-transition: all ease 1s;
+        transition: all ease 1s;
+        opacity: 0;
+        background: rgba(88, 170, 151, 0.7);
+        border-radius: 2%;
+        background-color: #69b3a2 !important;
+    }
+    .portfolio-item .portfolio-link .portfolio-hover:hover{
+        opacity: 1;
+    }
+    .portfolio-item .portfolio-link .portfolio-hover .portfolio-hover-content {
+        font-size: 22px;
+        position: absolute;
+        top: 20%;
+        width: 100%;
+        height: 20px;
+        margin-top: -12px;
+        text-align: center;
+        color: white;
+        padding: 0 20px;
+    }
+    .img-fluid{
+        width: 100%;
+        height: auto;
+        border-radius: 2%;
+    }
+    @media (min-width: 768px) {
+    .portfolio-item {
+        max-width: 20%;
+        margin: 1% 2%;
+        }
+    }
+    @media (max-width: 768px) {
+    .portfolio-item {max-width: 45%;}
+    }
+</style>
+<div class="htitle">
+<p style="display:inline; font-size: 35px;">
+Dinara Zhorabek
+</p>
+<p style="margin: 2% 0;">
+<b>Business &amp; Data Analyst | Full Stack Software Engineer</b>
+</p>
+<hr style="width: 100px; height: 1px; border:none;color:#333;background-color:#333; margin:3% auto;">
+<ul class="list-inline social-buttons">
+<li class="list-inline-item social-buttons">
+<a href="https://github.com/kalizhaankyzy"><i class="fa-brands fa-github" aria-label="github"></i></a>
+</li>
+<li class="list-inline-item social-buttons">
+<a href="https://www.linkedin.com/in/dinarazhorabek/"><i class="fa-brands fa-linkedin" aria-label="linkedin"></i></a>
+</li>
+</ul>
+<p><br></p>
+</div>
+<div style="background-color: #f8f9fa; padding: 100px 0;">
+<div class="home-intro">
+<div style="max-width:33.3%;">
+<p><img src="./images/main.jpg" class="home-image img-fluid"></p>
+</div>
+<div style="max-width:66.7%; padding: 15px;">
+<p>Hi, I’m Dinara.</p>
+<p>An aspiring business &amp; data analyst and middle software engineer, avid traveler, passionate about continuous learning, problem-solving, and empowering others through data-driven solutions.</p>
+<p>I am pursuing a Master’s degree in Applied Business Analytics at <a href="https://www.bu.edu/">Boston University</a> and received a B.S. in Information and Communication Technology from <a href="https://kbtu.edu.kz/en/">Kazakh-British Technical University</a>.</p>
 <p>I’m skilled in Python, R, SQL, Tableau and Power BI, and I am deeply committed to using data and technology to solve business challenges.</p>
-<p>During the final year of my bachelor’s studies, I began working full-time as a Full-Stack Software Engineer in the banking industry at VTB Bank Kazakhstan. In this role, I applied my academic knowledge in real-world scenarios and gained significant experience. In this role, I developed web applications from the ground up, enhanced existing ones, and managed databases. My work involved third-party API integrations, performance tuning, and seamless deployment into production environments. I led frontend and backend development using technologies such as Java, Node.js, React, and Oracle APEX, and worked extensively with PostgreSQL and Oracle databases. Additionally, I utilized tools like DBMS Profiler and Query Analyzer to optimize query performance and ensure system reliability.</p>
-<p>This experience led me to discover a fascination with data management and analytics — the way data surrounds us and can yield powerful insights into trends, behaviors, and decision-making. This interest inspired me to dive deeper into data analytics through online courses, and ultimately, to pursue a graduate degree in Applied Business Analytics at Boston University. So now, I’m a graduate student:)</p>
-<p>Social Media: You can find me on LinkedIn.</p>
+</div>
+</div>
+</div>
+<!-- ::: {#projects} -->
+<div id="projects">
+<div>
+<h2 class="text-uppercase anchored" style="font-weight:10;font-size: 40px;">
+Portfolio
+</h2>
+<h3 class="projects-subheading anchored">
+A glimpse of the projects I’ve been working on
+</h3>
+</div>
+<!-- <div id="portfolio-button-container">
+<button class="btn btn-secondary active" data-portfolio-section="all">Show all</button>
+<button class="btn btn-secondary" data-portfolio-section="mining">R</button>
+<button class="btn btn-secondary" data-portfolio-section="mining">Python</button>
+<button class="btn btn-secondary" data-portfolio-section="dataviz">Hackathon>
+<button class="btn btn-secondary" data-portfolio-section="dashboard">SQL|MySQL</button>
+</div> -->
+<!-- <br> -->
+<div id="portfolio-items" class="row">
+<div class="portfolio-item">
+<a class="portfolio-link" data-toggle="modal" href="./projects/spotify/analysis.html">
+<div class="portfolio-hover">
+<div class="portfolio-hover-content">
+<p>
+You Like This Song…But Will George Like It?
+</p>
+<hr>
+<p class="explanation_portfolio">
+User Behavior Classification with Spotify Streaming Data.<br>
+</p>
+</div>
+</div>
+<img class="img-fluid" src="images/spot.jpeg"></a>
+</div>
+<div class="portfolio-item">
+<a class="portfolio-link" data-toggle="modal" href="./projects/consumer_complaints/naive_bayes.html">
+<div class="portfolio-hover">
+<div class="portfolio-hover-content">
+<p>
+Complaint Classifier
+</p>
+<hr>
+<p class="explanation_portfolio">
+Utilized the Naïve Bayes algorithm to classify and predict consumer disputes.<br>
+</p>
+</div>
+</div>
+<img class="img-fluid" src="images/cust.jpeg"> </a>
+</div>
+<div class="portfolio-item">
+<a class="portfolio-link" data-toggle="modal" href="./projects/groceries/arules.html">
+<div class="portfolio-hover">
+<div class="portfolio-hover-content">
+<p>
+Market Basket Insights
+</p>
+<hr>
+<p class="explanation_portfolio">
+Association rule mining.<br>
+</p>
+</div>
+</div>
+<img class="img-fluid" src="images/basket.jpeg"> </a>
+</div>
+<div class="portfolio-item">
+<a class="portfolio-link" data-toggle="modal" href="./projects/nhl_players/nhl_players_analysis.html">
+<div class="portfolio-hover">
+<div class="portfolio-hover-content">
+<p>
+Skating through Data
+</p>
+<hr>
+<p class="explanation_portfolio">
+Forecasting hockey player salaries by utilizing statistical analysis and machine learning methods.<br>
+</p>
+</div>
+</div>
+<img class="img-fluid" src="images/hockey.jpeg"> </a>
+</div>
+<div class="portfolio-item">
+<a class="portfolio-link" data-toggle="modal" href="./projects/video_games/classification.html">
+<div class="portfolio-hover">
+<div class="portfolio-hover-content">
+<p>
+Console to Category
+</p>
+<hr>
+<p class="explanation_portfolio">
+Predicting Video Game Sales Using Classification Trees.<br>
+</p>
+</div>
+</div>
+<img class="img-fluid" src="images/vgames.jpeg"> </a>
+</div>
+<div class="portfolio-item">
+<a class="portfolio-link" data-toggle="modal" href="./projects/vancouver_311/vancouver_311.html">
+<div class="portfolio-hover">
+<div class="portfolio-hover-content">
+<p>
+Voices of the City
+</p>
+<hr>
+<p class="explanation_portfolio">
+Analyzing Vancouver’s Service Request Patterns.<br>
+</p>
+</div>
+</div>
+<img class="img-fluid" src="./images/vancouver.jpeg"> </a>
+</div>
+<div class="portfolio-item">
+<a class="portfolio-link" data-toggle="modal" href="./projects/vortex/main.html">
+<div class="portfolio-hover">
+<div class="portfolio-hover-content">
+<p>
+MET ABA Hackathon 2025
+</p>
+<hr>
+<p class="explanation_portfolio">
+Vortex Sentiment Adaptive Volatility (VSAV) Strategy.<br>
+</p>
+</div>
+</div>
+<img class="img-fluid" src="images/vortex.png"> </a>
+</div>
+</div>
+</div>
+
+
+</main></div>
 
 
 
-</main> <!-- /main -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -560,7 +847,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+ <!-- /content -->
 
 
 
