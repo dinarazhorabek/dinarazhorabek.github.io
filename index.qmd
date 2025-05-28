@@ -171,6 +171,18 @@ I’m skilled in Python, R, SQL, Tableau and Power BI, and I am deeply committed
 <div id="portfolio-items" class="row">
 
 <div class="portfolio-item">
+<a class="portfolio-link" data-toggle="modal" href="./projects/airbnb/airbnb-copenhagen.html">
+<div class="portfolio-hover">
+<div class="portfolio-hover-content">
+<p>Words, Locations, and Prices</p>
+<hr>
+<p class="explanation_portfolio">Airbnb Analysis in Copenhagen.<br></p>
+</div>
+</div>
+<img class="img-fluid" src="images/copenhagen-main.jpg"></a>
+</div>
+
+<div class="portfolio-item">
 <a class="portfolio-link" data-toggle="modal" href="./projects/spotify/analysis.html">
 <div class="portfolio-hover">
 <div class="portfolio-hover-content">
@@ -191,7 +203,7 @@ I’m skilled in Python, R, SQL, Tableau and Power BI, and I am deeply committed
 <p class="explanation_portfolio">Utilized the Naïve Bayes algorithm to classify and predict consumer disputes.<br></p>
 </div>
 </div>
-<img class="img-fluid" src="images/cust.jpeg">
+<img class="img-fluid" src="images/complaints.webp">
 </a>
 </div>
 
@@ -255,6 +267,30 @@ I’m skilled in Python, R, SQL, Tableau and Power BI, and I am deeply committed
 </a>
 </div>
 
+<div class="portfolio-item">
+<a class="portfolio-link" data-toggle="modal" href="./projects/pokemon/pokemon.html">
+<div class="portfolio-hover">
+<div class="portfolio-hover-content">
+<p>Clustering Pokémon</p><hr>
+<p class="explanation_portfolio">A Hierarchical Approach to Character Grouping.<br></p>
+</div>
+</div>
+<img class="img-fluid" src="images/pokemon-main.jpg">
+</a>
 </div>
 
+<div class="portfolio-item">
+<a class="portfolio-link" data-toggle="modal" href="./projects/text_mining/breaking_bad.html">
+<div class="portfolio-hover">
+<div class="portfolio-hover-content">
+<p>Say My Name</p><hr>
+<p class="explanation_portfolio">Unpacking Emotion and Language in Breaking Bad Using R.<br></p>
+</div>
+</div>
+<img class="img-fluid" src="images/breaking_bad.jpg">
+</a>
+</div>
+
+
+</div>
 </div>

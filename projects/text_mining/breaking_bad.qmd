@@ -1,0 +1,134 @@
+---
+title: "Say my name: Unpacking Emotion and Language in Breaking Bad Using R"
+format: html
+editor: visual
+---
+
+Applied natural language processing techniques to a single episode of *Breaking Bad* using R. Conducted frequency analysis to identify top characters by line count, explored most common words and bigrams, and visualized key terms with a wordcloud. Performed sentiment analysis using Bing and AFINN lexicons to assess the emotional tone of the episode. Tools used include `dplyr`, `tidytext`, `ggplot2`, and `wordcloud`.
+
+This work is part of an assignment for the AD699 Data Mining course.
+
+### Text Mining
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+library(tidytext)
+library(tidyr)
+library(dplyr)
+library(ggplot2)
+library(reshape2)
+library(textdata)
+library(wordcloud)
+bb <- read.csv("BB_data.csv")
+```
+
+```{r}
+str(bb)
+```
+
+```{r, message=FALSE, results='hide'}
+my_data <- bb %>% filter(season==1 & episode==5)
+head(my_data)
+```
+
+```{r, echo=FALSE, message=FALSE}
+DT::datatable(
+  head(my_data),
+  options = list( scrollX = TRUE, searching = FALSE, paging = FALSE, info = FALSE)
+)
+```
+
+```{r, message=FALSE}
+top_10 <- my_data %>% 
+  count(actor, sort = TRUE) %>% 
+  slice(1:10)
+
+my_data <- my_data %>% filter(actor %in% top_10$actor) %>%
+  mutate(actor = factor(actor, levels = top_10$actor))
+
+
+ggplot(my_data) + geom_bar(aes(y = actor))
+```
+
+From the barplot above, we can see that Walter and Skyler have similar number of lines in Episode 5 Season 1, suggesting that they are the main characters here. They are followed by Jesse, Badger, and Elliot - most likely supporting characters who have shorter lines but appears alongside with main ones. Other remaining characters each have less than 20 lines, so they probably only showed up briefly or had minor roles in this episode.
+
+```{r, message=FALSE}
+my_data_txt <- my_data %>% select(text)
+
+tidy_const <- my_data_txt %>% unnest_tokens(word, text)
+tidy_const %>% count(word, sort=TRUE) %>% head(10)
+```
+
+After extracting 10 most frequently used words, we mostly ended up with common pronouns like "you", "I", "and", "these", "that". These are known as *stop words*—common terms that appear frequently across most texts. Since they don't provide any insight into the context of the episode, they are not useful at all.
+
+```{r, message=FALSE}
+# stop_words
+tidy_const <- my_data_txt %>% unnest_tokens(word, text) %>% anti_join(stop_words)
+tidy_const %>% count(word, sort=TRUE) %>% slice(1:10)
+```
+
+After removing stopwords, we extracted a different set of words. From the list we can see names of characters, like Walt, Elliiot, Skyler, which are can be main characters like we mentioned previously. Also, it contains less meaningful words like "yeah", "yo", "hey".
+
+```{r, message=FALSE}
+tidy_const2 <- my_data_txt %>% unnest_tokens(output = bigram, input=text, token="ngrams", n=2)
+tidy_const2 %>% count(bigram, sort=TRUE) %>% slice(1:10)
+```
+
+Bigrams is combination of two (bi) consecutive words, while unigrams are single words. Bigrams help to get more meaningful insights into context compared to unigrams. For example, the word “pillow” on its own just refers to an object, but the bigram “talking pillow” suggests something very different and more specific. By looking at pairs of words, we can better understand the meaning and flow of the text.
+
+```{r, message=FALSE, warning=FALSE}
+bigrams_sep <- tidy_const2 %>% separate(bigram, c("word1", "word2"), sep = " ")
+bigrams_filtered <- bigrams_sep %>% filter(!word1 %in% stop_words$word) %>% 
+  filter(!word2 %in% stop_words$word) %>% 
+  filter(!is.na(word1) | !is.na(word2)) %>% 
+  count(word1, word2, sort = TRUE)
+# bigrams_filtered
+bigrams_united <- bigrams_filtered %>% unite(col = bigram, word1, word2, sep=" ")
+bigrams_united %>% slice(1:10)
+```
+
+After extracting bigrams, the initial results included common phrases like “are you” and “this is,” as well as some NA values. These aren’t very meaningful on their own. However, after applying filters we ended up with a more useful and insightful list of bigrams.
+
+By reviewing the list of common words, we get a sense of the episode’s context. Walt, Elliot, and Skyler seem to be the main characters here. From the bigrams, “40 pills” could be related to drugs, possibly something illegal. The phrase “absolutely miserable” might indicate someone’s struggle with addiction, potentially to drugs. Additionally, the term “gray matter” is tied to chemicals, which gives us the impression that this episode could be about drug production or something related to the illegal drug trade.
+
+```{r, message=FALSE, warning=FALSE}
+my_data_txt %>% 
+  unnest_tokens(word, text) %>% 
+  inner_join(get_sentiments("bing")) %>% 
+  count(word, sentiment, sort = TRUE) %>% 
+  acast(word ~ sentiment, value.var = "n", fill = 0) %>% 
+  comparison.cloud(colors = c("red", "blue"), max.words = 50, title.size = 1)
+```
+
+I generated wordcloud using the bing sentiment analysis, which categorizes words into positive and negative groups. From the word cloud, we can see that the episode contains a number of negative words, but also some positive ones like “good,” “like,” and “beautiful.” But also we need to consider that these words are analyzed in isolation. While they are labeled as positive or negative by default, their actual meaning can change depending on the context in which they’re used.
+
+```{r, message=FALSE, warning=FALSE}
+bing <- my_data_txt %>% unnest_tokens(word, text) %>% 
+  inner_join(get_sentiments("bing")) %>% 
+  count(word, sentiment, sort = TRUE)
+
+bing %>% slice(1:10)
+```
+
+From the list above, we can see top 10 words that made the biggest sentiment contributions. Among these, 2 words are negative ("cancer", "hell") while the rest are positive. By looking at the result, the overall tone of the episode can be more positive. However, the appeareance of word "cancer" can mean that probably one of the characters have illness, which introduces a more emotionally heavy or serious atmosphere. Similarly, the word “hell” often reflects anger, frustration, or a chaotic situation. These two words hint at deeper emotional layers while other words gives more positive emotions.
+
+```{r, message=FALSE, warning=FALSE}
+# afinn <- my_data_txt %>% unnest_tokens(word, text) %>% 
+#   inner_join(get_sentiments("afinn")) %>% 
+#   count(word, value, sort = TRUE) %>% 
+#   mutate(contribution = n*value)
+
+# afinn %>% arrange(contribution) %>% slice(1:3)
+
+# afinn %>% arrange(desc(contribution)) %>% slice(1:3)
+```
+
+Three worst words are "no", "hell", "shit".\
+Three best words are "like", "good", "thank".
+
+```{r}
+# sum(afinn$contribution)
+```
+
+Sum of values is positive 146.
+
+The sum of sentiment values can help identify the overall emotional tone of an episode. In our case, since the total score is positive, it suggests the episode is generally positive. However, by analyzing in this way we are missing true meaning of words. For example, the word "hell" might be used in a positive or humorous way, while words considered positive—like "great"—could be used sarcastically, meaning the opposite. Additionally, simply counting the frequency of words overlooks deeper meaning. The tone and impact of a word can depend on who said it, how it was said, and in what scene. Without that context, the analysis can be incomplete or even misleading.

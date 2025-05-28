@@ -1,0 +1,936 @@
+---
+title: "Airbnb Analysis in Copenhagen"
+format: html
+editor: visual
+---
+
+![](/images/copenhagen-full.jpg)
+
+## Data Preparation & Exploration
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+library(leaflet)
+library(tm)
+library(tidytext)
+library(wordcloud)
+
+copenhagen <- read_csv('copenhagen_listings.csv')
+```
+
+The dataset contains information about Airbnb listings in Copenhagen, Denmark. Upon importing the data into R, we observed a significant number of missing values. To identify where these values occur, we used the colSums(is.na()) function, which enabled us to pinpoint missing data across columns and assess how best to handle them. By sorting these results in descending order, we prioritized columns with the most missing entries. We felt that values that are central to our exploratory and predictive analysis should have missing values removed, as imputing would potentially compromise these critical values. We chose to remove any rows that had NA values in price, review_scores_rating, and bedrooms. After this cleaning step, we retained 10,776 rows of information, plenty of data to run our analysis and a worthy compromise to ensure accuracy. For other columns with missing values, we applied targeted strategies. For example, we imputed missing values in the binary host_is_superhost column by assuming a value of FALSE for hosts without a recorded status. For the numeric variables bathrooms and beds, we replaced missing values with the median of each respective column. As for neighborhood_overview, we will simply exclude missing entries from any future analysis involving that variable. Remaining columns with missing values were deemed either nonessential for our analysis (e.g., license, host_neighbourhood, etc.), or had corresponding cleaned versions (e.g., neighbourhood and neighbourhood_cleansed). The has_availability field contained missing values. To impute these, we leveraged related variables: availability_30, availability_60, availability_90, and availability_365. If any of these showed more than 0 available days, we set has_availability to True. Furthermore, we found 2,630 records with no reviews, resulting in missing values for all review-related columns. We imputed review_scores_rating using the median value across the dataset. Overall, our cleaning approach allowed us to preserve a large portion of the dataset, while ensuring the data was complete for modeling purposes.
+
+### Missing Values
+
+```{r, message=FALSE, results='hide'}
+na_summary <- colSums(is.na(copenhagen)) %>%
+  sort(decreasing = TRUE) %>%
+  as.data.frame() %>%
+  tibble::rownames_to_column(var = "Column") %>%
+  rename(Missing_Count = ".") %>%
+  mutate(Missing_Percent = round((Missing_Count / nrow(copenhagen)) * 100, 2))
+
+print(na_summary)
+```
+
+```{r, echo=FALSE, message=FALSE}
+DT::datatable(
+  na_summary,
+  caption = "Missing Value Summary",
+  options = list(
+    pageLength = 10,
+    scrollX = TRUE,
+    searching = FALSE
+  )
+)
+```
+
+```{r, message=FALSE, warning=FALSE}
+copenhagen <- copenhagen %>%
+  filter(!is.na(price) & !is.na(review_scores_rating) & !is.na(bedrooms))
+
+copenhagen <- copenhagen %>%
+  mutate(
+    host_is_superhost = ifelse(is.na(host_is_superhost), "FALSE", host_is_superhost)
+    )
+
+copenhagen <- copenhagen %>%
+  group_by(room_type) %>%
+  mutate(
+    bathrooms = ifelse(is.na(bathrooms), median(bathrooms, na.rm = TRUE), bathrooms),
+    bedrooms = ifelse(is.na(bedrooms), median(bedrooms, na.rm = TRUE), bedrooms),
+    beds = ifelse(is.na(beds), median(beds, na.rm = TRUE), beds),
+    price = ifelse(is.na(price), median(price, na.rm = TRUE), price)
+  ) %>%
+  ungroup()
+
+# if property available in N days => has_availability is True
+copenhagen$has_availability[is.na(copenhagen$has_availability)] <- ifelse(
+  is.na(copenhagen$has_availability) &
+    rowSums(copenhagen[is.na(copenhagen$has_availability), c("availability_30", "availability_60", "availability_90", "availability_365")] > 0, na.rm = TRUE) > 0, TRUE, FALSE)
+
+# 2630 records with no_review
+copenhagen$reviews_per_month[copenhagen$number_of_reviews == 0] <- 0
+
+# set Median value for NAs in review related columns
+copenhagen$review_scores_rating <- replace_na(copenhagen$review_scores_rating, 
+                                              median(copenhagen$review_scores_rating, na.rm = TRUE))
+copenhagen$review_scores_location <- replace_na(copenhagen$review_scores_location, 
+                                                median(copenhagen$review_scores_location, na.rm = TRUE))
+copenhagen$review_scores_value <- replace_na(copenhagen$review_scores_value, 
+                                             median(copenhagen$review_scores_value, na.rm = TRUE))
+
+```
+
+### Summary Statistics
+
+```{r}
+table(copenhagen$neighbourhood_cleansed)
+```
+
+We first used table to see the different neighborhoods and how many listings were in each one. There are 11 neighborhoods and we chose to keep them all as these are the 10 municipal districts of Copenhagen plus Frederiksberg, which is its center. It felt like these would all be distinct and not too overwhelming to look at. We also knew we were going to want to look at price so made sure to convert it to a numeric and remove the dollar signs and commas.
+
+```{r, message=FALSE}
+copenhagen$price <- as.numeric(gsub("[$,]", "", copenhagen$price))
+avgpricebyneighborhood <- copenhagen %>% group_by(neighbourhood_cleansed) %>% 
+  summarise(mean(price))
+avgpricebyneighborhood
+```
+
+The first statistic we chose to look at was the average price per night for a listing in each neighborhood. We see here that the average price for listings in Indre By are basically double those in Bispebjerg and Brnshj-Husum. There’s quite a big range across the neighborhoods, so our takeaway is that different neighborhoods are more expensive—we don’t know why yet though, it could be due to demand or popularity or any other factor.
+
+```{r, message=FALSE}
+avgaccomodatesbyneighborhood <- copenhagen %>% group_by(neighbourhood_cleansed) %>% 
+  summarise(mean(accommodates))
+avgaccomodatesbyneighborhood
+```
+
+The next stat we chose to look at was the average number of people accommodated in each listing, or basically how many people can fit, by neighborhood. There is much less variety here with Nrrebro having a mean of approximately 3 and Brnshj-Husum having a mean of almost 4. Part of the reason for the smaller range is likely due to the fact that these are all still in the same city—it’s not likely for some neighborhoods to have properties accommodating 20 while some only accommodate 1.
+
+```{r, message=FALSE}
+propertytypebyneighborhood <- copenhagen %>% count(neighbourhood_cleansed, property_type, 
+                                                   sort = TRUE)
+propertytypebyneighborhood
+```
+
+Next, we looked at grouping by both property type and neighborhood. As we saw earlier by using table, Indre By has around 1800 listings. 1108 of them are entire rental units, this is the most common combination of neighborhood and property type. Entire rental units seem to make up a bulk of the listings in Copenhagen overall, accounting for the entire top 5 common combinations. By the time we even get to the 20th common combination, these are much rarer property types with less than 100 in each neighborhood.
+
+```{r, message=FALSE}
+superhostbyneighborhood <- copenhagen %>% group_by(neighbourhood_cleansed) %>% 
+  summarise(total=n(), superhost = sum(host_is_superhost == TRUE),
+            percent = (superhost/total) * 100)
+print(superhostbyneighborhood)
+```
+
+Next, we looked at the percentage of listings by superhosts per neighborhood. Indre By has the highest number of listings but it also has the highest superhost percentages with 23.21%. By contrast, Nrrerbro only has 14.57% even though it has a similar number of listings. Airbnb superhost status is something determined by Airbnb and is a status given to hosts that are top-rated and experienced. This suggests that either Indre By listings are reliable due to their superhosts, or it could also mean it’s a popular area letting the hosts get more experience. Knowing this is the most expensive average neighborhood, our takeaway is that it’s a bit of both. The price is likely due to popularity, and the hosts likely thus have competition so are more focused on making sure the guests have good experiences.
+
+```{r, message=FALSE}
+ratingbyneighborhood <- copenhagen %>% group_by(neighbourhood_cleansed) %>% 
+  summarise(mean(review_scores_rating))
+ratingbyneighborhood
+```
+
+Finally, we looked at the average review_scores_rating which we interpreted as the overall rating score. Here, there is again not a huge range with the lowest score being 4.79 and the highest being 4.85. Our takeaway here is that most people are having positive experiences, but we do need to consider that perhaps the only people who are reviewing are those happy while those unhappy may be filing complaints with Airbnb instead. Alternatively, some people may feel bad leaving anything lower than a 4 knowing these aren’t really corporations.
+
+### Data Visualization
+
+To begin our visualization process, we earlier cleaned the Copenhagen dataset by removing punctuation from the price column and converting it to numeric data. Additionally, we filtered the data to exclude any listings priced over 25,000 DKK per night, as these extreme outliers would skew our visualizations and detract from more meaningful trends.
+
+```{r}
+#clean price column
+copenhagen <- copenhagen %>% filter(price < 25000)
+
+#boxplot of price in top 10
+ggplot(copenhagen, aes(x = fct_reorder(neighbourhood_cleansed, price, .fun = median),
+                       y = price)) +
+  geom_boxplot(fill = "cornflowerblue") +
+  coord_flip() +
+  labs(title = "Price Distribution by Neighborhood",
+       x = "Neighborhood", y = "Price (DKK)")
+```
+
+Our first visualization is a boxplot comparing listing price distributions across the eleven Copenhagen neighborhoods. Indre By (which translates to "Inner City") exhibits both the highest median price and the widest price range, likely due to its central, high-demand location. Other neighborhoods with notable outliers above 10,000 DKK include Vesterbro/Kongens Enghave, Nørrebro (presented as "Nrrebro" in the data due to special character limitations), and Amager Øst ("Amager st" in the data). Each of these neighborhoods borders the water, suggesting that waterfront properties may be commanding a premium, due to location and aesthetic. In contrast, Bispebjerg and Brønshøj-Husum ("Brnshj-Husum") show lower median prices and fewer extreme outliers, indicating more affordable options. These neighborhoods are farther from the harbor and city center, making them less desirable for tourists.
+
+```{r}
+#group by neighborhood and superhost
+superhost_breakdown <- copenhagen %>%
+  group_by(neighbourhood_cleansed, host_is_superhost) %>%
+  summarise(count = n(), .groups = "drop") %>%
+  group_by(neighbourhood_cleansed) %>%
+  mutate(percent = count / sum(count) * 100)
+
+
+#plot by number of listings and breakdown of super or not 
+ggplot(superhost_breakdown, aes(x = reorder(neighbourhood_cleansed, -count), y = count, fill = host_is_superhost)) +
+  geom_col() +
+  geom_text(
+    aes(label = paste0(round(percent), "%")),
+    position = position_stack(vjust = 0.5), 
+    color = "white",                               
+    size = 2) +
+  coord_flip() +
+  labs(
+    title = "Superhost Composition by Neighborhood",
+    x = "Neighborhood",
+    y = "Number of Listings",
+    fill = "Superhost") +
+  scale_fill_manual(values = c("FALSE" = "cornflowerblue", "TRUE" = "salmon"))
+```
+
+Our second visualization is a stacked bar plot showing the percentage of Superhosts by neighborhood, with the total number of listings displayed along the x-axis. Superhost percentages generally fall within the 15–20% range, with Indre By again standing out at 23%. Indre By also has the second-highest number of listings, reinforcing its competitiveness and potentially explaining the higher concentration of Superhosts, the high number of listings also explains the wide range of pricing seen in the boxplot. Vesterbro/Kongens Enghave, Indre By, and Nørrebro also have significantly more listings than other neighborhoods, reflecting their popularity among tourists. On the other hand, Brønshøj-Husum and Vanløse have the lowest Superhost rates at 9%, aligning with their lower pricing and likely simpler accommodation offerings.
+
+```{r, message=FALSE, warning=FALSE}
+# distribution of reviews with proportions and mean 
+ggplot(copenhagen, aes(x = review_scores_rating)) +
+  geom_histogram(
+    binwidth = 0.2, 
+    fill = "cornflowerblue", 
+    color = "salmon") +
+  stat_bin(
+    binwidth = 0.2,
+    geom = "text",
+    aes(label = scales::percent(after_stat(count / sum(count)), accuracy = .1)),
+    vjust = -0.5,
+    color = "black",
+    size = 2) +
+  geom_vline(
+    xintercept = mean(copenhagen$review_scores_rating, na.rm = TRUE),
+    color = "orchid",
+    linetype = "dashed",
+    size = 1) +
+  labs(
+    title = "Distribution of Review Scores",
+    x = "Review Score",
+    y = "Number of Listings") +
+  theme_minimal()
+```
+
+The third visualization is a histogram showing the distribution of review scores across all listings. Review scores are heavily left-skewed, with almost all reviews clustered between 4.5 and 5.0. The mean review score, marked by a dashed orchid line on the plot, is 4.82. Each bar is labeled with the percentage of total listings it represents, helping highlight how concentrated the reviews are in the highest ranges. There is a small uptick (only around .3%) in reviews around 3.0 likely represents guests who had neutral experiences, possibly correlating with lower-cost, lower-amenity listings. While this diagram suggests almost exclusive positive reviews, this is possibly due to the subjective nature of voluntary reviewing. Guests who felt incredibly satisfied with their stays are more likely to share their happy feelings than those who simply felt neutral, or unhappy. It would be interesting to explore if Airbnb filters out negative reviews, as the near total absence of low scores seems somewhat unlikely.
+
+```{r, message=FALSE, warning=FALSE}
+mean(copenhagen$review_scores_rating)
+
+#price vs review scatterplot
+ggplot(copenhagen, aes(x = review_scores_rating, y = price)) +
+  geom_point(alpha = 0.3, color = "orchid") +
+  geom_smooth(method = "lm", se = FALSE, color = "black", linetype = "dashed") +
+  labs(
+    title = "Price vs. Review Score",
+    x = "Review Score",
+    y = "Price (DKK)")
+```
+
+The fourth visualization is a scatterplot examining the relationship between price and review score, with a dashed line representing the line of best fit. While the trend line does have a slight positive incline, it is nearly flat suggesting that a higher price does not correlate to a higher review score. This indicates that other factors (such as location or amenities) likely correlate more to guest satisfaction than value. It is interesting to note that all the listings with a per night price of 10,000 DKK or more received a review score of 4.5 or greater. This indicates an incredibly premium price does tend to correlate with a satisfied guest.
+
+```{r, message=FALSE, warning=FALSE}
+#density plot of price by room type
+ggplot(copenhagen, aes(x = price, fill = room_type)) +
+  geom_density(alpha = 0.4) +
+  labs(
+    title = "Price Distribution by Room Type",
+    x = "Price (DKK)",
+    y = "Density",
+    fill = "Room Type") +
+  xlim(0, 3000) +
+  theme_minimal() +
+  scale_fill_brewer(palette = "Set2")
+```
+
+Finally, the fifth visualization is a density plot illustrating price distributions across different room types. As expected, entire homes/apartments have the highest price range, reflecting one of Airbnb’s main benefits compared to hotels. Hotel rooms show a spike in the mid-to-high range, with little variation at the higher end but a small second spike at the very low end. Perhaps these are hostel style accommodations that are being referred to as hotel rooms, as hotels are typically Airbnb's main competitors. Private rooms and shared rooms are concentrated at lower price points, likely catering to students and budget-conscious travelers such as backpackers. Overall, room type and location are likely the strongest predictors of listing price.
+
+### Mapping
+
+```{r}
+leaflet(data = copenhagen) %>%
+  addTiles() %>%
+  addCircleMarkers(
+    ~longitude, ~latitude,
+    radius = .1,
+    color = "#6A5ACD",
+    fillOpacity = 0.2) %>%
+  setView(lng = mean(copenhagen$longitude),
+          lat = mean(copenhagen$latitude),
+          zoom = 12)
+```
+
+The interactive map built with the Leaflet package shows the geographic distribution of Airbnb listings across Copenhagen. The map confirms what the neighborhood listings bar plot displayed in Part III, listings are highly concentrated in Vesterbro/Kongens Enghave, Indre By, and Nørrebro, as these areas are located in close proximity to both the city center and the harbor. As one moves farther from the city center, the density of listings decreases noticeably, with much sparser coverage in outlying areas that are likely residential suburbs. Additionally, there are very few listings directly along the harborfront, likely due to commercial zones for cargo and cruise ships. The map suggests that Airbnb hosts strategically locate their listings near Copenhagen's main attractions, shopping areas, restaurants, historical sites, and public transportation. The density also drops off significantly in suburban residential areas, which are less accessible to tourists and are likely populated primarily by full-time local residents. Finally, several large patches of open land visible on the map correspond to Copenhagen’s protected parks and green spaces. The lack of Airbnb listings in these areas reflects a cultural phenomenon in the region. Copenhagen, and Denmark as a whole, are well known for their emphasis on sustainability and their strong commitment to preserving the environment. This is reflected in strict land use regulations that prevent commercial developments, including Airbnb listings, from encroaching on protected natural spaces.
+
+### Wordcloud
+
+#### Unigram wordcloud
+
+```{r, message=FALSE, warning=FALSE}
+copenhagen_text <- copenhagen %>%
+  filter(!is.na(neighborhood_overview)) %>%
+  pull(neighborhood_overview) %>%
+  iconv(from = "UTF-8", to = "ASCII", sub = "") %>%
+  paste(collapse = " ")
+
+copenhagen_text_df <- data.frame(text = copenhagen_text)
+
+copenhagen_text_clean <- copenhagen_text_df %>%
+  unnest_tokens(word, text) %>%
+  filter(!word %in% stopwords("english")) %>%
+  filter(!word %in% c("copenhagen", "area", "neighborhood", "location", "br"))
+
+copenhagen_freq <- copenhagen_text_clean %>%
+  count(word, sort = TRUE)
+
+wordcloud(
+  words = copenhagen_freq$word,
+  freq = copenhagen_freq$n,
+  max.words = 100,
+  colors = brewer.pal(8, "Dark2"),
+  random.order = TRUE)
+```
+
+The wordcloud visualization is generated from the neighborhood overview descriptions from the Airbnb listings. The most common term is restaurants, followed by words like walk, located, close, minutes, shopping, and metro. These terms emphasize proximity and convenience, giving guests the impression of walkability and easy access to amenities. This again confirms the popularity of listings near Copenhagen’s city center, as guests tend to prioritize connection to attractions and transportation. Copenhagen is renowned for its public transportation system and overall walkability, making it strategic for hosts to highlight these traits in their descriptions.
+
+Descriptive words such as quiet, cozy, charming, and vibrant also appear prominently, reflecting the hosts' efforts to market a welcoming and pleasant atmosphere. The Danish concept of hygge is centered around creating warm, cozy environments and enjoying simple pleasures, particularly in the winter months. Given that Copenhagen experiences very short daylight hours in winter (an average of just one hour of sunshine in December), emphasizing a cozy and comfortable environment is an effective way for hosts to appeal to guests seeking an authentic hygge experience. The hosts' use of these descriptive words evokes a strong sense of hygge, making their listings even more attractive to travelers looking for comfort and community during the darker months.
+
+#### Bigram cloud
+
+```{r, message=FALSE, warning=FALSE}
+bigrams <- copenhagen_text_df %>%
+  unnest_tokens(bigram, text, token = "ngrams", n = 2)
+
+bigrams_separated <- bigrams %>%
+  separate(bigram, into = c("word1", "word2"), sep = " ")
+
+bigrams_filtered <- bigrams_separated %>%
+  filter(!word1 %in% stopwords("english"),
+         !word2 %in% stopwords("english"),
+         !word1 %in% c("copenhagen", "br"),
+         !word2 %in% c("copenhagen", "br"))
+
+bigrams_united <- bigrams_filtered %>%
+  unite(bigram, word1, word2, sep = " ")
+bigram_freq <- bigrams_united %>%
+  count(bigram, sort = TRUE)
+
+wordcloud(
+  words = bigram_freq$bigram,
+  freq = bigram_freq$n,
+  max.words = 100,
+  colors = brewer.pal(8, "Dark2"),
+  random.order = FALSE)
+```
+
+To add further context, we also generated a second wordcloud based on bigrams from the neighborhood overview descriptions. While not explicitly required for the assignment, we felt the bigram visualization provided additional insight into features that hosts highlight in their listings. Common phrases such as city center, minute walk, metro station, and central station once again emphasize the value of proximity and accessibility. This reinforces the recurring theme that guests place a very high value on location and walkability. The more a host can market the convenience and centrality of their listing, the more it will likely appeal to potential guests. Additionally, the bigram cloud included Copenhagen-specific tourism features such as Islands Brygge, meatpacking district, and the Little Mermaid, suggesting that hosts emphasize proximity to famous landmarks when marketing their properties.
+
+## Prediction
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+library(reshape2)
+```
+
+```{r}
+set.seed(699)
+train.indexpred <- sample(c(1:nrow(copenhagen)), nrow(copenhagen)*0.6)
+train.df <- copenhagen[train.indexpred,]
+valid.df <- copenhagen[-train.indexpred,]
+
+train.df = train.df %>% select(19,29,33:36,38,39,41,52:55,57:59,62:68,70)
+
+train.df$host_is_superhost <- as.factor(train.df$host_is_superhost)
+train.df$neighbourhood_cleansed <- as.factor(train.df$neighbourhood_cleansed)
+train.df$property_type <- as.factor(train.df$property_type)
+train.df$room_type <- as.factor(train.df$room_type)
+train.df$instant_bookable <- as.factor(train.df$instant_bookable)
+```
+
+To build our multiple linear regression model, we first began with dividing our data into a training and validation set. Then, we looked at the dataset and dataset description and selected the variables that we thought would be relevant, excluding things like url, host profile photo, etc… landing on the following variables:
+
+```{r}
+colnames(train.df)
+```
+
+```{r}
+# Compute correlation matrix
+cordata = train.df %>% select(5:8,10:23)
+cormat <- cor(cordata, use = "pairwise.complete.obs")
+
+# Convert to long format
+melted_cormat <- melt(cormat)
+
+# Heatmap
+ggplot(melted_cormat, aes(Var1, Var2, fill = value)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white",
+                       midpoint = 0, limit = c(-1,1), space = "Lab",
+                       name = "Correlation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, vjust = 1, hjust=1)) +
+  coord_fixed() +
+  labs(title = "Correlation Heatmap")
+```
+
+We then looked at correlation to try and avoid collinearity. We removed bedrooms, beds, availability_60, availability_90, number_of_reviews, and review_scores_value due to strong correlations with other variables.
+
+```{r}
+train.df = subset(train.df, select=-c(
+  bedrooms, beds, availability_60, availability_90, number_of_reviews_ltm,review_scores_value))
+```
+
+Finally, we used backwards elimination to remove some more variables.
+
+```{r}
+mlrmodel <-lm(price ~ .,
+              data = train.df)
+
+mlrmodel.step <- step(mlrmodel, direction = "backward")
+```
+
+The regression equation that the model generated is extremely long because of the categorical variables that remain. It is the intercept (134.7556) + the product of each intercept times the value for each variable (ex:212.7862 \* the number of people the listing can accommodate).
+
+```{r}
+summary(mlrmodel.step)
+```
+
+To evaluate the model, we first looked at its r-squared. The r-squared is 0.4019 which is not a super strong r-squared value or sign of a super great model, but this was better than other iterations of the model we tried (ex: without property type). Because the model has so many predictors, we also looked at the adjusted r-squared which is 0.3966 and also not too good. There is also a residual standard error of 704.3. However, the f-statistic is 75.52 so quite large and combined with a pretty small p-value, which would suggest that the model is statistically significant. In other words, the model doesn’t explain a lot of the variation within price, but the predictors are predictors that matter.
+
+There are many possible reasons for why the model is not performing as well as we would have liked. For instance, while we did include all the numerical variables initially, we removed some after checking for multicollinearity. Perhaps we removed some that are actually key to predicting price. Additionally, one  big reason is that Airbnb pricing is very nuanced based on human perception. There are things like decor, vibe, or even the host’s personal financial situation that just can’t be captured in a model.
+
+## Classification
+
+### K-Nearest Neighbors
+
+In this session, we want to explore whether or not rentals in Copenhagen have a combination of amenities: dining tables and wine glasses. This is interesting to us because dining tables and wine glasses can add a sense of 'home' in the rental and we want to know what kinds of rentals are more likely to provide a combination of these 2 amenities. To do this, we hand-picked several numeric variables to conduct a K-nearest neighbors analysis.
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+library(caret)
+library(FNN)
+```
+
+```{r}
+column_names = data.frame(colnames(copenhagen))
+
+numeric_df = copenhagen %>% select_if(is.numeric)
+character_df = copenhagen %>% select_if(is.character)
+```
+
+We first selected necessary numeric columns and created relevant data frames:
+
+```{r}
+# Use variables price, bedrooms, accommodates, review_scores_value, review_scores_rating, review_scores_cleanliness, reviews_per_month to predict whether the room has both dining table and wine glasses
+data_knn_1 = copenhagen %>%
+  select(price, 
+         bedrooms, 
+         accommodates, 
+         review_scores_value,
+         review_scores_rating,
+         review_scores_cleanliness,
+         reviews_per_month,
+         amenities)
+
+# 2. Omit all the NA values
+data_knn_1 = na.omit(data_knn_1)
+
+# 3. Create target variable: have both dining table and wine glasses
+data_knn_1 = data_knn_1 %>%
+  mutate(Dine_Wine = grepl("Dining table", amenities, ignore.case = TRUE) 
+         & grepl("Wine glasses", amenities, ignore.case = TRUE))
+table(data_knn_1$Dine_Wine)
+data_knn_1$Dine_Wine = as.factor(data_knn_1$Dine_Wine)
+```
+
+We then partitioned the data and performed t-tests to test whether there are significant differences among groups.
+
+```{r}
+# 4. Data Partition
+set.seed(5)
+train.index = sample(c(1:nrow(data_knn_1)), nrow(data_knn_1)*0.6)
+train.set = data_knn_1[train.index,]
+valid.set = data_knn_1[-train.index,]
+
+# 5. Doing t-tests to test the significance of input variables
+train.true = train.set %>%
+  filter(Dine_Wine == 'TRUE')
+
+train.false = train.set %>%
+  filter(Dine_Wine == 'FALSE')
+
+price_test = t.test(train.true$price, 
+                    train.false$price)
+price_test
+
+bedrooms_test = t.test(train.true$bedrooms, 
+                       train.false$bedrooms)
+bedrooms_test
+
+accommadates_test = t.test(train.true$accommodates, 
+                           train.false$accommodates)
+accommadates_test
+
+review_value_test = t.test(train.true$review_scores_value, 
+                           train.false$review_scores_value)
+review_value_test
+
+review_rate_test = t.test(train.true$review_scores_rating, 
+                          train.false$review_scores_rating)
+review_rate_test
+
+review_clean_test = t.test(train.true$review_scores_cleanliness, 
+                           train.false$review_scores_cleanliness)
+review_clean_test
+
+review_per_test = t.test(train.true$reviews_per_month, 
+                         train.false$reviews_per_month)
+review_per_test
+```
+
+All variables passed the t-test and show significant difference \# between true and false groups. We then create a KNN model and try to predict a hypothetical case:
+
+```{r}
+# 6. Normalize the data
+norm.values = preProcess(train.set[, 1:ncol(train.set)],
+                         method = c("center", "scale"))
+train.norm.set = predict(norm.values, train.set[, 1:ncol(train.set)])
+valid.norm.set = predict(norm.values, valid.set[, 1:ncol(valid.set)])
+knn.norm.raw = predict(norm.values, data_knn_1[, 1:ncol(data_knn_1)])
+
+# Build a KNN model to predict a new record (k=7)
+new_rental = data.frame(price = 2800,
+                        bedrooms = 4,
+                        accommodates = 8,
+                        review_scores_value = 4.85,
+                        review_scores_rating = 4.90,
+                        review_scores_cleanliness = 4.80,
+                        reviews_per_month = 0.50)
+new_norm_rental = predict(norm.values, new_rental)
+
+nn = knn(train = train.norm.set[, 1:7],
+         test = new_norm_rental,
+         cl = train.norm.set[[9]],
+         k = 7)
+nn
+
+# 7. Try to find the optimal k-value
+accuracy.df = data.frame(k = seq(1,20,1), accuracy = rep(0,20))
+
+for (i in 1:20) {
+  knn.pred = knn(train.norm.set[, 1:7],
+                 valid.norm.set[, 1:7],
+                 cl = train.norm.set[[9]],
+                 k = i)
+  accuracy.df[i,2] = confusionMatrix(knn.pred, valid.norm.set[[9]])$overall[1]
+}
+
+accuracy.df
+accuracy.df %>%
+  filter(accuracy == max(accuracy, na.rm = TRUE))
+
+
+# 8. It seems that k=16 gives the best result, so run knn again
+nn_2 = knn(train = train.norm.set[, 1:7],
+           test = new_norm_rental,
+           cl = train.norm.set[[9]],
+           k = 16)
+nn_2
+```
+
+We then evaluated the model’s performance compared to the naive benchmark:
+
+```{r}
+# 9. Compare again the naive benchmark
+knn_pred = knn(
+  train = train.norm.set[, 1:7],
+  test = valid.norm.set[, 1:7],
+  cl = train.norm.set[[9]],
+  k = 16
+)
+mean(knn_pred == valid.norm.set[[9]])
+
+most_common = names(which.max(table(train.norm.set[[9]])))
+naive_pred = rep(most_common, nrow(valid.norm.set))
+mean(naive_pred == valid.norm.set[[9]])
+```
+
+As a summary, here is a recap of the KNN model building process: 1. Amenities and Predictors Choices: as illustrated in the beginning, our team wants to predict whether rentals in Copenhagen have a combination of dining tables and wine glasses in the rentals or not. Seven predictors were chosen: price, bedrooms, accommodates, review_scores_value, review_scores_rating, review_scores_cleanliness, reviews_per_month. Those predictors were chosen because we predict that higher prices, more bedrooms, and more accommodation capacity can indicate that the rentals are more high-end and therefore should have both dining tables and wine glasses. It is also inferred that the better review scores are, the more likely the rentals will have the combination, as better reviews can indicate good amenity supply and great environments. The hypothetical rental (with price = 2800, 4 bedrooms, 8 accommodation capacity, etc.) is classified by the model as a "TRUE" case, meaning that it is likely to have the combination of dining tables and wine glasses.
+
+For model assessment: we used an iteration method to try to find the optimal k-value by comparing the performance of using different k-values on the validation data. We chose a range of 1 to 20 for the k-value and tested the accuracy of those values on the validation set. The iteration process showed us that when k = 16, the accuracy of the model is maximized (0.5812065, or 58.12%), so the k = 16 value is decided. We then compared the accuracy of our model to the naive method (i.e. simply predict if the new rental belongs to the most class in our dataset), and found that our model's accuracy is 0.84% point better (or 1.47% better) than the naive method. Although this may not seem to be a huge improvement, when rental data gets large, our model can predict more accurately  than the naive method.
+
+### Naive Bayes
+
+In this part our team was tasked with predicting the binned version of the review_scores_value variable. We selected four categorical variables as the input variables:
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+library(e1071)
+```
+
+```{r, message=FALSE}
+# 1. Selecting input categorical variables
+naive_raw = copenhagen %>%
+  select(neighbourhood_cleansed,
+         property_type,
+         room_type,
+         bathrooms_text,
+         review_scores_value)
+
+# 2. Binning the response variable review_score_value
+naive_raw <- naive_raw %>%
+  mutate(
+    value_bin = ntile(review_scores_value, 3),
+    value_label = case_when(
+      value_bin == 1 ~ "not good",
+      value_bin == 2 ~ "medium",
+      value_bin == 3 ~ "good"
+    )
+  )
+
+# 3. Look at the data and do necessary adjustments
+str(naive_raw)
+sapply(naive_raw, n_distinct)
+
+naive_raw %>%
+  count(property_type, sort = TRUE)
+naive_raw %>%
+  count(bathrooms_text, sort = TRUE)
+naive_raw %>%
+  count(neighbourhood_cleansed, sort = TRUE)
+
+# To keep top 10 values for property_type and bathrooms_text
+top10_col1 = naive_raw %>%
+  count(property_type, sort = TRUE) %>%
+  slice_head(n = 10)
+
+top10_col2 = naive_raw %>%
+  count(bathrooms_text, sort = TRUE) %>%
+  slice_head(n = 10)
+
+naive_clean = naive_raw %>%
+  filter(
+    property_type %in% top10_col1$property_type,
+    bathrooms_text %in% top10_col2$bathrooms_text
+  )
+
+sapply(naive_clean, n_distinct)
+
+# delete NA value in value_label and delete the original value columns
+naive_clean = naive_clean %>%
+  filter(!is.na(value_label))
+sapply(naive_clean, n_distinct)
+
+naive_clean = naive_clean %>%
+  select(
+    -review_scores_value,
+    -value_bin
+  )
+
+naive_clean$value_label = as.factor(naive_clean$value_label)
+class(naive_clean$value_label)
+```
+
+We then made several graphs to get a basic sense of how the input variables impact the response binned variable:
+
+```{r, message=FALSE}
+# 4. Visualize value_label by different input variables
+pro_chart_function = function(i) {
+  df = naive_clean %>%
+    count(!!sym(i), value_label) %>%
+    group_by(!!sym(i)) %>%
+    mutate(proportion = n / sum(n)) %>%
+    ungroup()
+  
+  chart = ggplot(df, aes(x = !!sym(i), y = proportion, fill = value_label)) +
+    geom_bar(stat = "identity", position = "fill") +
+    labs(y = "Proportion", x = paste(i), title = paste("Proportional Bar Plot for Consumer Value Perception by", i)) +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+  
+  return(chart)
+}
+
+pro_chart_function('neighbourhood_cleansed')
+pro_chart_function('property_type')
+pro_chart_function('room_type')
+pro_chart_function('bathrooms_text')
+```
+
+It seems that all of our input variables have some impact on the response variable (by showing results differences among different categories which are within the same input variables). For example, we can see that the Entire Serviced Apartment property type seems to be prone to generating customer reviews which are "not so good". To assess the results in a more sophisticated way, we then build a naive bayes model:
+
+```{r, message=FALSE}
+# 5. Data Partitioning
+set.seed(5)
+train.index_naive = sample(c(1:nrow(naive_clean)), 
+                           nrow(naive_clean)*0.6)
+train.set_naive = naive_clean[train.index_naive, ]
+valid.set_naive = naive_clean[-train.index_naive, ]
+
+# 6. Build the Naive Bayes Model
+value.nb = naiveBayes(value_label ~ ., 
+                      data = train.set_naive,
+                      laplace = 1) # Laplace (add-one) smoothing
+value.nb
+```
+
+A fictional rental scenario we made up is located in Valby, is the entire home, and has 1.5 shared baths. Our model shows that the A-priori probabilities for the 3 target bins are 0.3374610 (good), 0.3334521 (medium) and 0.3290869 (not good), respectively. The model predicts that our fictional rental (which is in the neighborhood Valby, is the Entire Home property type, is the Entire home/apt room type, and has 1.5 shared baths) will be likely to receive "Good" reviews from customers.
+
+```{r, message=FALSE}
+# 7. Make a prediction based on a fictional rental scenario
+fiction_rental = data.frame(
+  neighbourhood_cleansed = 'Valby',
+  property_type = 'Entire home',
+  room_type = 'Entire home/apt',
+  bathrooms_text = '1.5 shared baths'
+)
+
+fic.pred = predict(value.nb, fiction_rental)
+fic.pred
+```
+
+Next, we assessed our model using the validation set:
+
+```{r, message=FALSE}
+# 8. Assessing the model
+train_pred = predict(value.nb, train.set_naive)
+train_matrix = confusionMatrix(train_pred, train.set_naive$value_label)
+train_accuracy = train_matrix$overall['Accuracy']
+train_accuracy
+train_matrix
+
+valid_pred = predict(value.nb, valid.set_naive)
+valid_matrix = confusionMatrix(valid_pred, valid.set_naive$value_label)
+valid_accuracy = valid_matrix$overall['Accuracy']
+valid_accuracy
+valid_matrix
+```
+
+The confusion matrices for the training set and validation set show that the respective accuracy scores are 0.3846 (train set) and 0.3749 (valid set). The similar accuracy scores demonstrate that there is no overfitting concern in our model. As for the naive method, as we have 3 classes which are binned by the equal frequency method, the naive rates for all 3 classes will be around 33.33% (100%/3). In other words, our model will have a 12.48% improvement (using the 37.49% accuracy rate of the validation set) compared to the naive method, proving the value of our naive bayes model.
+
+In summary, to predict the review_scores_value which shows how much value a customer sees in the rental experience, our team used an equal frequency binning method which splits the target variable into 3 bins -- good, medium, and not good. We built a naive bayes model which uses the neighbourhood_cleansed, property_type, room_type, bathrooms_text variables (all categorical) as input variables, because we infer that these rental features are most likely to make a difference in determining a customer's perceived value gained. Note that for both the property_type and bathrooms_text variables, only the 10 most frequent values are kept to simplify our analysis. Our model predicts that a fictional rental which is in the neighborhood Valby, is the Entire Home property type, is the Entire home/apt room type, and has 1.5 shared baths will probably receive "Good" reviews from customers.
+
+When assessing our model against both the training data and validation data, it has been found that the model's accuracy is more than 37% in both cases. This means that we can get a 12.48% improvement compared to the naive method which predicts the probabilities to be 33.33% for all 3 bins. In other words, when taking values from the rental's neighborhood, property, room and bathroom features, we are more confident than the naive method that we'll predict customers' value review types correctly.
+
+### Classification Tree
+
+To predict whether a rental is short-term or long-term, we used a classification tree model with the following features: host_is_superhost, neighbourhood_cleansed, host_identity_verified, property_type, room_type, accommodates, bathrooms, bedrooms, price, review_scores_rating, has_availability.
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+library(rpart)
+library(rpart.plot)
+```
+
+```{r}
+tree_data <- copenhagen %>% 
+  select(host_is_superhost,
+         neighbourhood_cleansed,
+         host_identity_verified, 
+         property_type,
+         room_type, 
+         accommodates,
+         bathrooms,
+         bedrooms,
+         # beds,
+         price, 
+         review_scores_rating, 
+         has_availability, 
+         minimum_nights)
+
+sum(is.na(tree_data))
+```
+
+Since property_type had too many unique values, we restricted it to the top 10 most frequent property types.
+
+```{r}
+top_10_property <- tree_data %>% 
+  count(property_type, sort = TRUE) %>% 
+  slice(1:10)
+
+tree_data = tree_data %>%
+  filter(property_type %in% top_10_property$property_type)
+
+tree_data$host_identity_verified <- factor(tree_data$host_identity_verified)
+tree_data$property_type <- factor(tree_data$property_type)
+tree_data$neighbourhood_cleansed <- factor(tree_data$neighbourhood_cleansed)
+tree_data$host_is_superhost <- factor(tree_data$host_is_superhost)
+tree_data$has_availability <- factor(tree_data$has_availability)
+```
+
+After cleaning the data, we binned minimum_nights into 3 categories: short(\<2 nights), medium(2-5 nights), and long (\>5 nights). What's interesting, at the beginning we tried to bin minimum_nights into 2 categories, but observed a large number of extremely long stays (e.g., \>100 nights). Thus, using three categories provided a better balance between classes and more meaningful distinctions in rental behavior.
+
+```{r}
+# Bin the minimum nights into 3 bins
+tree_data$rental_type <- cut(tree_data$minimum_nights,
+                             breaks = c(0, 2, 5, Inf),
+                             labels = c("Short", "Medium", "Long"))
+table(tree_data$rental_type)
+
+tree_data <- tree_data %>% select(-minimum_nights)
+summary(tree_data)
+
+# data partitioning
+set.seed(79)
+tree_data.index <- sample(c(1:nrow(tree_data)), nrow(tree_data)*0.6)
+train_set <- tree_data[tree_data.index, ]
+valid_set <- tree_data[-tree_data.index, ]
+
+tree_model <- rpart(rental_type ~ .,
+                    method = 'class', 
+                    data = train_set)
+
+rpart.plot(tree_model)
+```
+
+Our initial tree was very shallow (only one level) and did not perform well. We applied cross-validation to select optimal cp value that minimizes prediction error. After pruning the tree using optimal cp, the final tree performed better: the training set’s accuracy is 56.35%, while the validation set’s is 54.15%. While the overall accuracy is lower, the smaller performance gap between training and validation data indicates that the pruned tree generalizes better and is less prone to overfitting.
+
+```{r}
+#cross validation
+five_fold_cv <- 
+  rpart(rental_type ~ .,method = 'class', cp=0.00001, minsplit=5, xval=5,  data = train_set)
+a <- printcp(five_fold_cv)
+```
+
+```{r}
+# Re-build model with optimal CP value
+pruned.ct <- prune(five_fold_cv,
+                   cp=five_fold_cv$cptable[which.min(five_fold_cv$cptable[,"xerror"]),"CP"])
+rpart.plot(pruned.ct,type=5, extra = 2, fallen.leaves=FALSE)
+
+head(rpart.rules(pruned.ct))
+
+#assessing model
+# Training Set
+train.pred <- predict(pruned.ct, train_set, type="class")
+confusionMatrix(train.pred, train_set$rental_type)
+# Validation Set
+valid.pred <- predict(pruned.ct, valid_set, type="class")
+confusionMatrix(valid.pred, valid_set$rental_type)
+```
+
+Property type, price, and number of bedrooms are among the most influential variables in predicting whether a rental is short-, medium-, or long-term. However, since the overall model performance is not so high, it suggests that rental duration is hard to predict based on listing features alone. Other factors — such as individual traveler preferences, trip purpose, or external events — likely play a major role in determining how long guests stay, but these factors are not captured in the dataset.
+
+## Clustering
+
+To cluster properties we used 7 features and created new variable "price per bedroom". The neighborhood_cleansed and room_type columns were listed as categorical variables, so we converted them to factors and assigned them dummy values, since k-means clustering requires all input features to be numeric.
+
+```{r, message=FALSE, warning=FALSE}
+# Select features
+features <- copenhagen %>%
+  select(price, number_of_reviews, review_scores_rating, minimum_nights, bedrooms,
+         neighbourhood_cleansed, room_type)
+
+#  Check NAs
+colSums(is.na(features))
+
+#  Create new feature: price_per_bedroom
+features <- features %>%
+  mutate(price_per_bedroom = price / bedrooms)
+
+features$price_per_bedroom[is.infinite(features$price_per_bedroom)] <- NA
+features <- features %>% drop_na()
+
+# Convert categorical columns to factors
+features$neighbourhood_cleansed <- as.factor(features$neighbourhood_cleansed)
+features$room_type <- as.factor(features$room_type)
+
+# Create dummy variables
+dummies <- dummyVars(~ neighbourhood_cleansed + room_type, data = features)
+categorical_data <- as.data.frame(predict(dummies, newdata = features))
+
+# Select numeric variables 
+numeric_data <- features %>%
+  select(price_per_bedroom, number_of_reviews, review_scores_rating, minimum_nights)
+```
+
+Then, we combined our data together and scaled final data to ensure even weighting.
+
+```{r, message=FALSE, warning=FALSE}
+#  Combine data
+final_data <- bind_cols(numeric_data, categorical_data)
+
+# Scale the final dataset
+scaled_data <- scale(final_data)
+
+colSums(is.na(features))
+```
+
+We then created an Elbow plot based on the scaled data to determine the ideal number of clusters. While the elbow plot is not a perfect way to determine the number of clusters (as there really is no perfect number) it can still give insight. We chose to use 3 clusters based on the elbow plot, and found three clusters resulted in distinguishable characteristics.
+
+```{r, message=FALSE, warning=FALSE}
+set.seed(9) 
+wss <- vector()
+
+for (k in 1:10) {
+  kmeans_model <- kmeans(scaled_data, centers = k, nstart = 25)
+  wss[k] <- kmeans_model$tot.withinss
+}
+
+# Elbow plot
+plot(1:10, wss, type = "b", pch = 19,
+     xlab = "Number of Clusters (k)",
+     ylab = "Total Within-Cluster Sum of Squares",
+     main = "Elbow Method for Choosing k")
+
+set.seed(9)
+kmeans_model <- kmeans(scaled_data, centers = 3, nstart = 25)
+features$cluster <- as.factor(kmeans_model$cluster)
+```
+
+As a result we have 3 Clusters:
+
+Cluster 1: Apples - basic, common, and affordable;  not many people’s favorite fruit but still solid. Lowest mean price per bedroom, highest mean number of reviews, smallest mean number of bedrooms, and slightly lower review scores. This indicates cheap, small properties that are popular but not necessarily top-rated.
+
+Cluster 2: Mango - typically more expensive/seen as exotic, not everyone has tried it (medium \# of reviews). Highest mean price per bedroom, medium number of reviews, and medium size. This may represent higher-end or luxury properties, potentially located in desirable neighborhoods but reviewed slightly less frequently.
+
+Cluster 3: Strawberries - not as expensive as mangos but more expensive than apples, come in bunches like the bedrooms in these properties, and are many people’s favorite fruit. Medium mean price per bedroom, highest number of bedrooms, and highest review score. This suggests larger properties , offering excellent guest experiences at a moderate price.
+
+```{r, message=FALSE, warning=FALSE}
+# features
+features %>%
+  group_by(cluster) %>%
+  summarise(across(everything(), list(mean = mean), .names = "mean_{col}"))
+
+ggplot(features, aes(x = cluster)) +
+  geom_bar(fill = "skyblue") +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5, size = 3) +
+  labs(title = "Number of Listings per Cluster",
+       x = "Cluster",
+       y = "Count of Listings") +
+  theme_minimal()
+```
+
+From first plot we see that, cluster 1 has 1890 values, cluster 2 has 6442, cluster 3 has 13214. Cluster 3 has a much higher amount of listings in it, suggesting the majority of listings are medium price, well reviewed, and have a greater number of bedrooms.
+
+```{r, message=FALSE, warning=FALSE}
+ggplot(features %>% filter(price < 10000), 
+       aes(x=room_type, y=price, fill=cluster)) + 
+  geom_bar(position="dodge", stat="identity") +
+  labs(title = "Distribution of price within different room types per Cluster (price < 10000)",
+       x = "Room Type",
+       y = "Price") +
+  theme_minimal()
+
+```
+
+This plot shows the relationship between room type and price across clusters. We observe that Cluster 1 has the lowest prices, so it includes all kinds of room types . In contrast, Cluster 2 and Cluster 3 have much higher prices, and mainly offer entire homes/apartments. This suggests that higher-priced properties are usually entire listings, while lower-priced properties offer more diverse room options.
+
+```{r}
+ggplot(features %>% filter(price < 5000), 
+       aes(x = price, y = review_scores_rating, color = cluster)) +
+  geom_point(alpha = 0.7, size = 1.5) +
+  scale_x_continuous(breaks = seq(0, 5000, by = 500)) +
+  scale_y_continuous(breaks = seq(0, 5, by = 1)) +
+  labs(
+    title = "K-Means Clustering: Price per Bedroom vs Rating (price < 5000)",
+    x = "Price per Bedroom",
+    y = "Review Score Rating"
+  ) +
+  theme_minimal()
+```
+
+This plot shows that higher price per bedroom is not strongly associated with higher review scores. This suggests that customer satisfaction depends more on experience and value for money than on the property's price. Thus, offering better service and cost performance is more important for achieving high ratings than simply charging more.
+
+## Conclusions
+
+This project gave our team valuable hands-on experience in both technical and interpretive data mining. It was fascinating to learn about Copenhagen, a city which we had limited familiarity with, through the lens of the Airbnb rental market. Beyond the data itself, we gained insight into the geography, culture, and the tourism dynamics of Copenhagen. One of the biggest challenges we encountered was realizing that real-world data is rarely clean or complete. Throughout the project, we encountered missing values, inconsistent formats, and variables that did not always behave as expected. Through trial and error, data cleaning, and model adjustments, we were able to reach results we feel are meaningful and reflective of the Copenhagen rental market.
+
+Some of the outcomes surprised us, while others were disappointing. The MLR, classification tree, regression, and naive bayes models reminded us that not every outcome is predictable in the real world, especially when human behavior is involved. This project proves that using more complicated methods does not necessarily lead to better predictions, and that in the real world any increase in accuracy, no matter how seemingly small, can be incredibly valuable. Real world data can also be shocking and questionable, listings priced over 60,000 DKK per night or minimum stays of over 200 nights could either represent exceptional cases or possible errors.  What was ultimately most interesting about our work was seeing how different visualizations and modeling approaches revealed different parts of the same story. Rental markets are volatile, but certain themes consistently emerged across our analysis, like location and size importance to guests. This project reinforced the importance of patience and critical thinking when interpreting data. We must often look at the bigger picture and use domain knowledge to help understand the complexities of the real world.
+
+The data mining findings from this project could be beneficial to a wide range of audiences, both within Copenhagen and beyond. In Copenhagen itself, the most obvious beneficiaries are Airbnb hosts themselves! These hosts could use the insights from our neighborhood trends, regression pricing model, and clustering analysis to better position their listings thus optimizing both demand and revenue. Understanding what characteristics drive guests to book a stay, leave a review, and pay a premium is incredibly valuable. Our cluster analysis allows hosts to better identify their direct competition and adjust their pricing and marketing strategies accordingly. Investors could use neighborhood analysis to identify more affordable neighborhoods for property acquisition or target higher value neighborhoods to increase profits. Similarly, travelers visiting Copenhagen on a specific budget can use the findings to select rental types and locations that best align with their needs and desires. Competitors such as hotels or Verbo hosts could also use the data to adapt their pricing models or service offerings based on Airbnb’s successes and shortcomings. Additionally, the Copenhagen tourism department could leverage the geographic patterns we uncovered to promote less-saturated neighborhoods and better understand the features of Copenhagen that are naturally attracting tourists. Existing Airbnb hosts could use our superhost analysis to strategically decide if pursuing superhost status would benefit their listings. Although our regression model indicated superhost is not a significant driver of pricing, neighborhood patterns showed where superhosts are concentrated. Achieving superhost status could be a way for hosts to differentiate in underrepresented neighborhoods and potentially boost bookings.
+
+Outside of Copenhagen, city planners and analysts in other major urban cities could gain insights into what amenities, price points, and property types travelers prefer. Our modeling techniques, particularly the regression model and clustering analysis, could be replicated using other cities’ datasets to better understand their own local rental markets. Identifying which property features drive price premiums or rental satisfactions could help shape tourism strategies and investment decisions in cities with similar rental markets. Finally, marketers across the travel, real estate, and hospitality sectors would find significant value in this data mining work. Airbnb hosts, hotel brands, real estate agents, and tourism boards could all use our insights to better tailor their marketing strategies. In particular, our word cloud and clustering could help marketers craft more effective messaging by emulating key neighborhood descriptors and property features that are successful with Copenhagens’ guests. Popular property types, frequently mentioned listing characteristics, and pricing strategies identified in our analysis provide guidance for designing compelling marketing and promotional campaigns.
+
+Our insight into which factors most influence pricing, listing successes, and guest satisfaction, our findings offer actionable strategies for a wide variety of audiences, both within Copenhagen and across the broader travel and hospitality industries.

@@ -8,11 +8,18 @@ In this project, Iâ€™ll use k-NN clustering analysis to find out whether Georgeâ
 
 This work is part of an assignment for the AD699 Data Mining course.
 
-```{r}
+```{r, message=FALSE, warning=FALSE, results='hide'}
 library(tidyverse)
 library(dplyr)
+library(skimr)
+library(caret)
+library(FNN)
+library(ggplot2)
 
 spotify_2023 <- read.csv('spotify-2023.csv')
+```
+
+```{r}
 str(spotify_2023)
 ```
 
@@ -27,9 +34,15 @@ liveness: 21\
 valence: 37\
 BPM: 144
 
-```{r}
+```{r, message=FALSE, results='hide'}
 my_song <- spotify_2023 %>% filter(track_name == 'Money Trees')
 my_song
+```
+
+```{r, echo=FALSE, message=FALSE}
+DT::datatable(my_song, 
+          options = list(scrollX = TRUE, searching = FALSE, paging = FALSE, info = FALSE)
+             )
 ```
 
 ```{r}
@@ -55,8 +68,8 @@ colSums(is.na(spotify))
 
 There is no NA values in this dataset.
 
-```{r}
-summary(spotify_2023)
+```{r, message=FALSE, warning=FALSE}
+skim(spotify_2023)
 
 spotify_2023$danceability_. <- spotify_2023$danceability_./100
 spotify_2023$energy_. <- spotify_2023$energy_./100
@@ -102,8 +115,14 @@ spotify_train.df <- spotify_train.df %>% select(-tempo, -energy, -liveness)
 
 k-NN method draws information from similarities between the variables by measuring distance between records. Variables with similar values across different outcome classes cannot provide useful information for distinguishing between groups. Including such variables can lead to overfitting, where the model performs well on training data but fails to generalize to new data. These insignificant variables affect the distance calculation, making it harder to distinguish between groups.
 
-```{r}
+```{r, message=FALSE, results='hide'}
 head(spotify_train.df)
+```
+
+```{r, echo=FALSE, message=FALSE}
+DT::datatable(head(spotify_train.df), 
+          options = list(scrollX = TRUE, searching = FALSE, paging = FALSE, info = FALSE)
+             )
 ```
 
 ### Normalization
@@ -111,8 +130,6 @@ head(spotify_train.df)
 In this step we are normalizing only those columns that will be used in k-NN model building.
 
 ```{r}
-library(caret)
-
 spotify_train_norm.df <- spotify_train.df
 spotify_valid_norm.df <- spotify_valid.df
 spotify_norm.df <- spotify
@@ -137,22 +154,40 @@ spotify_norm.df[, c("acousticness", "danceability", "speechiness", "valence")] <
 
 my_song_norm[, c("acousticness", "danceability", "speechiness", "valence")] <- 
   predict(norm_values, my_song[, c("acousticness", "danceability", "speechiness", "valence")])
-my_song_norm
+```
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
+print(my_song_norm)
+```
+
+```{r, echo=FALSE, message=FALSE}
+DT::datatable(
+    my_song_norm, 
+    options = list(scrollX = TRUE, searching = FALSE, paging = FALSE, info = FALSE)
+)
 ```
 
 ### Clustering
 
-```{r}
-#| echo: false
-library(FNN)
+```{r, message=FALSE, warning=FALSE}
 # knn is all about numeric data, classification using numeric values
 nn <- knn( train = spotify_train_norm.df[, c("acousticness", "danceability", "speechiness", "valence")],
            test = my_song_norm[, c("acousticness", "danceability", "speechiness", "valence")],
            cl = spotify_train_norm.df[,c("target")],##what we are classifying: like or dislike
            k=7)
-nn
+print(nn)
+```
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
 nn_indexes <- row.names(spotify_train.df)[attr(nn, "nn.index")]
 spotify_train.df[nn_indexes, ] %>% select(song_title, artist, target, acousticness, danceability, speechiness, valence)
+```
+
+```{r, echo=FALSE, message=FALSE}
+DT::datatable(
+    spotify_train.df[nn_indexes, ] %>% select(song_title, artist, target, acousticness, danceability, speechiness, valence), 
+    options = list(scrollX = TRUE, searching = FALSE, paging = FALSE, info = FALSE)
+)
 ```
 
 By running k-NN model as a result get "1", which indicates that George will like my song. And by listing 7 nearest neighbors, I see that my song is also in this list and George already marked it as favorite. Within this songs, George marked only one song as disliked, which highlights not all similar songs are guaranteed to be liked. This disliked song has high valence value compared to others, but there is no difference in other variables. By running knn classification we get 7 nearest records with low distance value from our selected song. So if we just use numbers these songs look very similar to each other. But they are not. And the diversity of artists suggests George's musical preferences are varied.
@@ -175,9 +210,6 @@ accuracy.df[order(-accuracy.df$accuracy), ]
 From the list above we can see accuracy for different k values between 1 and 14. We can see that the difference in accuracy between values is very small. k=14 has highest accuracy value 0.6183395, also k=5 provides very similar number 0.6022305.
 
 ```{r}
-#| echo: false
-library(ggplot2)
-
 ggplot(accuracy.df, aes(x=k, y=accuracy)) + 
   geom_point() +
   geom_line() +
@@ -194,9 +226,19 @@ nn_10 <- knn( train = spotify_train_norm.df[, c("acousticness", "danceability", 
            test = my_song_norm[, c("acousticness", "danceability", "speechiness", "valence")],
            cl = spotify_train_norm.df[,c("target")],##what we are classifying: like or dislike
            k=10)
-nn_10
+print(nn_10)
+```
+
+```{r, message=FALSE, warning=FALSE, results='hide'}
 nn_indexes_10 <- row.names(spotify_train.df)[attr(nn_10, "nn.index")]
 spotify_train.df[nn_indexes_10, ] %>% select(song_title, artist, target, acousticness, danceability, speechiness, valence)
+```
+
+```{r, echo=FALSE, message=FALSE}
+DT::datatable(
+    spotify_train.df[nn_indexes_10, ] %>% select(song_title, artist, target, acousticness, danceability, speechiness, valence), 
+    options = list(scrollX = TRUE, searching = FALSE, paging = FALSE, info = FALSE)
+)
 ```
 
 I chose k=10 as optimal with moderate accuracy value. The output of model didn't change, it indicates George will like my song. But for now I got 10 nearest neighbors, and from this new list George disliked 3 songs. All these songs have high value of danceability around 70%, low speechiness and acousticness. All 3 disliked songs as for k=7, have higher value of valence compared to others. Higher valence indicates more positive, cheerful, or euphoric songs. It seems that George might prefer songs with lower valence, which are less positive, more neutral in mood or moodier over cheerful ones. Disliked songs have relatively low acousticness, this suggest that George prefer songs with slightly more acoustic elements. The danceability is quite similar for both groups, which implies this factor is not strong in determining preferences. The disliked songs have relatively low speechiness, and some liked songs have higher speechiness ('Pacifier' has 0.1240) indicating George prefer songs with more spoken lyrics or rap.
