@@ -8,18 +8,29 @@ Developed a classification model to predict video game sales performance using a
 
 This work is part of an assignment for the AD699 Data Mining course.
 
-```{r}
+```{r, message=FALSE, warning=FALSE, results='hide'}
 library(tidyverse)
 library(dplyr)
 library(caret)
-```
+library(rpart)
+library(rpart.plot)
 
-```{r}
 vg <- read.csv('vgchartz-2024.csv')
-head(vg)
 ```
 
 This dataset appears to contain information about video games, including the title, the console it was developed for, genre, publisher, developer, game rating, various sales numbers, release date, and, if available, the last update date. While some titles appear multiple times, other variables indicate that these entries correspond to the same game released on different consoles or different versions, such as remakes. The critic_score represents the overall rating of a game, with a maximum score of 10. And the dataset includes sales data across different regions (NA, JP, PAL, Other), and difference between numbers suggest the game popularity across various geographical areas. Furthermore, there is huge number of NAs.
+
+```{r, echo=FALSE, message=FALSE, results='hide'}
+head(vg)
+```
+
+```{r, echo=FALSE, message=FALSE}
+DT::datatable(head(vg), 
+          options = list(scrollX = TRUE, searching = FALSE, paging = FALSE, info = FALSE)
+             )
+```
+
+After using equal frequency binning method to our output variable, we can see that the data equally was distributed within three groups: Low, Medium, High.
 
 ```{r}
 vg$total_sales <- cut(vg$total_sales, 
@@ -28,8 +39,6 @@ vg$total_sales <- cut(vg$total_sales,
                       labels = c("Low", "Medium", "High"))
 table(vg$total_sales)
 ```
-
-After using equal frequency binning method to our output variable, we can see that the data equally was distributed within three groups: Low, Medium, High.
 
 ```{r}
 str(vg)
@@ -113,27 +122,27 @@ vg_train <- vg[vg.index, ]
 vg_valid <- vg[-vg.index, ]
 ```
 
-Next we will use rpart.plot to display a classification tree that depicts your model.
+Next we will use rpart.plot to display a classification tree that depicts our model.
 
 ```{r}
-library(rpart)
-library(rpart.plot)
-
-# names(vg)
 model <- rpart(total_sales ~ console + genre + publisher + developer + critic_score, method = 'class', data = vg_train)
 
 rpart.plot(model)
 ```
 
+The initial plot starts with default parameters, where the tree starts from console varaible at the root. Each node represents type of total_sales (Low, Medium, High) differentiated by color. Within each node, we see class probabilities and the percentage of observations classified at that node.
+
 ```{r}
 rpart.plot(model, extra=2, fallen.leaves = FALSE)
 ```
+
+After adding extra=2, in the new plot the class rate is relative to the total number of observations in each class. For instance, in the second left node, 50 observations belong to Low sales category out of 102 total observations. And setting fallen.leaves = FALSE, moves the leaf nodes away from the bottom, changing the structure of trees.
 
 ```{r}
 rpart.plot(model, type=5, extra = 2, fallen.leaves=FALSE)
 ```
 
-The initial plot starts with default parameters, where the tree starts from console varaible at the root. Each node represents type of total_sales (Low, Medium, High) differentiated by color. Within each node, we see class probabilities and the percentage of observations classified at that node. After adding extra=2, in the new plot the class rate is relative to the total number of observations in each class. For instance, in the second left node, 50 observations belong to Low sales category out of 102 total observations. And setting fallen.leaves = FALSE, moves the leaf nodes away from the bottom, changing the structure of trees. In the third plot used type=5, which adds variable names for each split line, and class labels appear only at the leaves. This layout more intuitive, as it avoids overwhelming details such as numbers and labels.
+In the third plot used type=5, which adds variable names for each split line, and class labels appear only at the leaves. This layout more intuitive, as it avoids overwhelming details such as numbers and labels.
 
 The root node is console variable, and rule is Console = DS or PC. The root node is starting point of model, and have highest impact on outcome variable. In our model, the type of console is primary factor to decide total sales number. So, this approach can help strategize future plans for the game publisher, focusing more on high-performance consoles.
 

@@ -8,17 +8,22 @@ For this task, we will be using data from Groceries, a dataset that can be found
 
 This work is part of an assignment for the AD699 Data Mining course.
 
-```{r}
+```{r, message=FALSE, warning=FALSE, results='hide'}
 library(tidyverse)
 library(dplyr)
 library(arules)
 library(arulesViz)
 
 data("Groceries")
-summary(Groceries)
 ```
 
 Groceries is of class transactions (sparse matrix). The data consists of 9835 rows, and 169 columns.
+
+```{r}
+summary(Groceries)
+```
+
+The bar plot below displays frequent items, that meet the support value. The minimum support threshold is set at 7.25%, meaning that only items appearing in at least 7.25% of all transactions are considered frequent. As a result we got 16 frequent products.
 
 ```{r}
 itemFrequencyPlot(Groceries, 
@@ -28,7 +33,7 @@ itemFrequencyPlot(Groceries,
                   main = "Frequent Grocery items (Support > 7.25%)")
 ```
 
-The bar plot above displays frequent items, that meet the support value. The minimum support threshold is set at 7.25%, meaning that only items appearing in at least 7.25% of all transactions are considered frequent. As a result we got 16 frequent products.
+Let's create subset of rules that contain my grocery item - cream cheese.
 
 ```{r}
 rules <- apriori (Groceries, parameter = list(supp = 0.001, conf = 0.5))
@@ -42,21 +47,19 @@ summary(lhs_rules)
 summary(rhs_rules)
 ```
 
-Let's create subset of rules that contain my grocery item - cream cheese.
-
 There is 233 rules that contain my product - on the left hand side. 59 rules involve three product subset, 137 four product subset, and 37 five product subset. And we get only 1 rule with cream cheese on right hand side, which is in the subset of five products. Indicating that cream cheese appears in combination with other products.
+
+Let's look at the first rule: If a person buys other vegetables, curd, yogurt, and whipped/sour cream this person 14.83 times more likely to buy cream cheese than a random customer in store. The support number is 0.001, meaning that 0.1% of all transactions studied had exact same item sets. Confidence is 0.59 =\> If someone buys other vegetables, curd, yogurt, and whipped/sour cream, there’s a 59% chance that they also buy cream cheese. Coverage number gives an idea how often the rule can be applied, in this case it equals to 0.002. This rule applies to 0.2% of all transactions in the dataset.
 
 ```{r}
 inspect(sort(rhs_rules, by="lift"))
 ```
 
-Let's look at the first rule: If a person buys other vegetables, curd, yogurt, and whipped/sour cream this person 14.83 times more likely to buy cream cheese than a random customer in store. The support number is 0.001, meaning that 0.1% of all transactions studied had exact same item sets. Confidence is 0.59 =\> If someone buys other vegetables, curd, yogurt, and whipped/sour cream, there’s a 59% chance that they also buy cream cheese. Coverage number gives an idea how often the rule can be applied, in this case it equals to 0.002. This rule applies to 0.2% of all transactions in the dataset.
+The next rule: If a person buys citrus fruit, other vegetables, whole milk, and cream cheese he/she is 9.12 times more likely to buy domestic eggs than a random purchaser in store. The support number is 0.001, this rule applies to only 0.1% of all transactions. This rule also have high confidence, saying that if customer buys citrus fruit, other vegetables, whole milk, and cream cheese, there is 58% chance they also buy domestic eggs. Coverage number is 0.002, meaning that this combination occurs in 0.2% of all transactions.
 
 ```{r}
 inspect(sort(lhs_rules, by="lift")[2])
 ```
-
-The next rule: If a person buys citrus fruit, other vegetables, whole milk, and cream cheese he/she is 9.12 times more likely to buy domestic eggs than a random purchaser in store. The support number is 0.001, this rule applies to only 0.1% of all transactions. This rule also have high confidence, saying that if customer buys citrus fruit, other vegetables, whole milk, and cream cheese, there is 58% chance they also buy domestic eggs. Coverage number is 0.002, meaning that this combination occurs in 0.2% of all transactions.
 
 From these rules we see that certain sets of products are frequently purchased together. In combination they may be ingredients for salads, or other recipes. Cream cheese, in particular, is commonly used in baking and is a key ingredient in cheesecake. Despite that, cream cheese widely used for frosting, spreads, pasta sauces, dips, making it a versatile ingredient in a variety of dishes.
 

@@ -187,35 +187,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-exploration" class="level3">
 <h3 class="anchored" data-anchor-id="data-exploration">Data Exploration</h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
-✔ dplyr     1.1.4     ✔ readr     2.1.5
-✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.4     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
-── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()
-ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'consumer_complaints.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: lattice
-
-Attaching package: 'caret'
-
-The following object is masked from 'package:purrr':
-
-    lift</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'consumer_complaints.csv'</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Numeric: Resolution.time.in.days, Year<br>
+Categorical: X.ID</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 14,000
 Columns: 16
@@ -237,26 +220,26 @@ $ Year                     &lt;int&gt; 2015, 2014, 2014, 2015, 2015, 2015, 2016,
 $ QTR..US.FLY.             &lt;chr&gt; "Q4", "Q1", "Q4", "Q1", "Q4", "Q2", "Q2", "Q2…</code></pre>
 </div>
 </div>
-<p>Numeric: Resolution.time.in.days, Year<br>
-Categorical: X.ID</p>
+<p>Consumer.disputed. variable is of type chr, then I converted it to factor. Now it has 2 levels: Yes or No.<br>
+We see that the data is imbalanced, out of 14,000 complaints only 3138 (22.4%) disputed.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc<span class="sc">$</span>Consumer.disputed.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc<span class="sc">$</span>Consumer.disputed.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> chr [1:14000] "No" "No" "No" "No" "No" "No" "No" "No" "No" "No" "No" "No" ...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>cc<span class="sc">$</span>Consumer.disputed. <span class="ot">&lt;-</span> <span class="fu">factor</span>(cc<span class="sc">$</span>Consumer.disputed.)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(cc<span class="sc">$</span>Consumer.disputed.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>cc<span class="sc">$</span>Consumer.disputed. <span class="ot">&lt;-</span> <span class="fu">factor</span>(cc<span class="sc">$</span>Consumer.disputed.)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(cc<span class="sc">$</span>Consumer.disputed.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "No"  "Yes"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cc<span class="sc">$</span>Consumer.disputed.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cc<span class="sc">$</span>Consumer.disputed.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    No   Yes 
 10862  3138 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>cc <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Consumer.disputed.) <span class="sc">%&gt;%</span> </span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Count =</span> <span class="fu">n</span>()<span class="sc">/</span><span class="dv">14000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cc <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(Consumer.disputed.) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Count =</span> <span class="fu">n</span>()<span class="sc">/</span><span class="dv">14000</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
   Consumer.disputed. Count
@@ -265,10 +248,9 @@ Categorical: X.ID</p>
 2 Yes                0.224</code></pre>
 </div>
 </div>
-<p>Consumer.disputed. variable is of type chr, then I converted it to factor. Now it has 2 levels: Yes or No.<br>
-We see that the data is imbalanced, out of 14,000 complaints only 3138 (22.4%) disputed.</p>
+<p>I removed dots from variables that had them at the end, and renamed QTR..US.FLY. to Quarter.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "X.ID"                     "Company"                 
  [3] "Product"                  "Issue"                   
@@ -279,14 +261,14 @@ We see that the data is imbalanced, out of 14,000 complaints only 3138 (22.4%) d
 [13] "Date.resolved.1"          "Resolution.time.in.days."
 [15] "Year"                     "QTR..US.FLY."            </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Resolution.time.in.days =</span> Resolution.time.in.days., </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">Timely.response=</span>Timely.response.,</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">Consumer.disputed=</span>Consumer.disputed.,</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">Quarter =</span> QTR..US.FLY.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Resolution.time.in.days =</span> Resolution.time.in.days., </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>              <span class="at">Timely.response=</span>Timely.response.,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>              <span class="at">Consumer.disputed=</span>Consumer.disputed.,</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">Quarter =</span> QTR..US.FLY.)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>I removed dots from variables that had them at the end, and renamed QTR..US.FLY. to Quarter.</p>
+<p>After examining number of unique values in each column, we observe that a few columns contain more than 100 distinct values. Specifically, there are 14,000 unique ID records, 1,050 companies, and over 1,300 date values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(cc, <span class="cf">function</span>(x) <span class="fu">length</span>(<span class="fu">unique</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sapply</span>(cc, <span class="cf">function</span>(x) <span class="fu">length</span>(<span class="fu">unique</span>(x)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                   X.ID                 Company                 Product 
                   14000                    1050                      12 
@@ -302,11 +284,10 @@ We see that the data is imbalanced, out of 14,000 complaints only 3138 (22.4%) d
                       4 </code></pre>
 </div>
 </div>
-<p>After examining number of unique values in each column, we observe that a few columns contain more than 100 distinct values. Specifically, there are 14,000 unique ID records, 1,050 companies, and over 1,300 date values.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>X.ID, <span class="sc">-</span>Company, <span class="sc">-</span>Date.received, <span class="sc">-</span>Date.resolved, <span class="sc">-</span>Date.received<span class="fl">.1</span>, <span class="sc">-</span>Date.resolved<span class="fl">.1</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>X.ID, <span class="sc">-</span>Company, <span class="sc">-</span>Date.received, <span class="sc">-</span>Date.resolved, <span class="sc">-</span>Date.received<span class="fl">.1</span>, <span class="sc">-</span>Date.resolved<span class="fl">.1</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   14000 obs. of  10 variables:
  $ Product                : chr  "Mortgage" "Mortgage" "Debt collection" "Credit card" ...
@@ -321,8 +302,9 @@ We see that the data is imbalanced, out of 14,000 complaints only 3138 (22.4%) d
  $ Quarter                : chr  "Q4" "Q1" "Q4" "Q1" ...</code></pre>
 </div>
 </div>
+<p>By examining the results of the summary() function, we notice an impossible negative number for the resolution date. Additionally, there are two overlapping columns: State and State_name.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Product             Issue              State           Submitted.via     
  Length:14000       Length:14000       Length:14000       Length:14000      
@@ -346,7 +328,10 @@ We see that the data is imbalanced, out of 14,000 complaints only 3138 (22.4%) d
  3rd Qu.:  2.000         3rd Qu.:2016                     
  Max.   :286.000         Max.   :2016                     </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cc<span class="sc">$</span>State)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Before that, when counting unique values by column, we observed that the State column had 60 unique values, while the State_name column had 52. Upon examining the values, it appears that the State column includes more detailed information, possibly encompassing territories and military postal codes. We can also keep Year, Resolution.time.in.days, and Quarter, which are related to the removed columns date_received, and date_resolved.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cc<span class="sc">$</span>State)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
        AA   AE   AK   AL   AP   AR   AS   AZ   CA   CO   CT   DC   DE   FL   GA 
@@ -358,10 +343,10 @@ We see that the data is imbalanced, out of 14,000 complaints only 3138 (22.4%) d
   SC   SD   TN   TX   UT   VA   VI   VT   WA   WI   WV   WY 
  194   26  238 1040   77  480    8   29  303  178   32   11 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>state.name) <span class="sc">%&gt;%</span> </span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Resolution.time.in.days<span class="sc">&gt;=</span><span class="dv">0</span>)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>state.name) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Resolution.time.in.days<span class="sc">&gt;=</span><span class="dv">0</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   13997 obs. of  9 variables:
  $ Product                : chr  "Mortgage" "Mortgage" "Debt collection" "Credit card" ...
@@ -375,16 +360,15 @@ We see that the data is imbalanced, out of 14,000 complaints only 3138 (22.4%) d
  $ Quarter                : chr  "Q4" "Q1" "Q4" "Q1" ...</code></pre>
 </div>
 </div>
-<p>By examining the results of the summary() function, we notice an impossible negative number for the resolution date. Additionally, there are two overlapping columns: State and State_name.</p>
-<p>Before that, when counting unique values by column, we observed that the State column had 60 unique values, while the State_name column had 52. Upon examining the values, it appears that the State column includes more detailed information, possibly encompassing territories and military postal codes. We can also keep Year, Resolution.time.in.days, and Quarter, which are related to the removed columns date_received, and date_resolved.</p>
+<p>The Year column contains four unique values: 2013, 2014, 2015, and 2016. For binning, we can group them into two categories: ‘Earlier period’ for 2013 and 2014, and ‘Later period’ for 2015 and 2016.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> </span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">cut</span>(Year,</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">2012</span>, <span class="dv">2014</span>, <span class="dv">2016</span>),</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Earlier period"</span>, <span class="st">"Later period"</span>),</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">right =</span> <span class="cn">TRUE</span>))</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Year =</span> <span class="fu">cut</span>(Year,</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">2012</span>, <span class="dv">2014</span>, <span class="dv">2016</span>),</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>                    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Earlier period"</span>, <span class="st">"Later period"</span>),</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">right =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   13997 obs. of  9 variables:
  $ Product                : chr  "Mortgage" "Mortgage" "Debt collection" "Credit card" ...
@@ -397,7 +381,11 @@ We see that the data is imbalanced, out of 14,000 complaints only 3138 (22.4%) d
  $ Year                   : Factor w/ 2 levels "Earlier period",..: 2 1 1 2 2 2 2 2 1 2 ...
  $ Quarter                : chr  "Q4" "Q1" "Q4" "Q1" ...</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cc<span class="sc">$</span>Resolution.time.in.days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The Resolution_time variable contains a significant number of zeros (8,316) along with other values. This imbalance caused issues when using the equal frequency method for binning. To address this, I first filtered out the non-zero values to determine the breaks within the data. Then, I added zero to this group.<br>
+As a result, we have three groups: low, medium, and high.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cc<span class="sc">$</span>Resolution.time.in.days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    0    1    2    3    4    5    6    7    8    9   10   11   12   13   14   15 
@@ -411,77 +399,77 @@ We see that the data is imbalanced, out of 14,000 complaints only 3138 (22.4%) d
   72   76   77   79   83   90   93   95   98  106  151  286 
    1    1    1    1    1    1    1    1    1    1    1    1 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>non_zero_values <span class="ot">&lt;-</span> cc<span class="sc">$</span>Resolution.time.in.days[cc<span class="sc">$</span>Resolution.time.in.days <span class="sc">&gt;</span> <span class="dv">0</span>]</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">quantile</span>(non_zero_values, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">3</span>))</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, breaks)</span>
-<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>cc<span class="sc">$</span>Resolution.time.in.days <span class="ot">&lt;-</span> <span class="fu">cut</span>(cc<span class="sc">$</span>Resolution.time.in.days, <span class="at">breaks =</span> breaks, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span>), <span class="at">include.lowest =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cc<span class="sc">$</span>Resolution.time.in.days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>non_zero_values <span class="ot">&lt;-</span> cc<span class="sc">$</span>Resolution.time.in.days[cc<span class="sc">$</span>Resolution.time.in.days <span class="sc">&gt;</span> <span class="dv">0</span>]</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">quantile</span>(non_zero_values, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">3</span>))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>breaks <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, breaks)</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>cc<span class="sc">$</span>Resolution.time.in.days <span class="ot">&lt;-</span> <span class="fu">cut</span>(cc<span class="sc">$</span>Resolution.time.in.days, <span class="at">breaks =</span> breaks, <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"low"</span>, <span class="st">"medium"</span>, <span class="st">"high"</span>), <span class="at">include.lowest =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(cc<span class="sc">$</span>Resolution.time.in.days)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    low medium   high 
   9932   1966   2099 </code></pre>
 </div>
 </div>
-<p>The Year column contains four unique values: 2013, 2014, 2015, and 2016. For binning, we can group them into two categories: ‘Earlier period’ for 2013 and 2014, and ‘Later period’ for 2015 and 2016.</p>
-<p>The Resolution_time variable contains a significant number of zeros (8,316) along with other values. This imbalance caused issues when using the equal frequency method for binning. To address this, I first filtered out the non-zero values to determine the breaks within the data. Then, I added zero to this group.<br>
-As a result, we have three groups: low, medium, and high.</p>
+<p>For the next few steps, we are going to be reducing the number of unique levels for some of our factor variables:</p>
+<p>The Product column has 12 unique values, but we will use only the 6 most common ones.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(cc<span class="sc">$</span>Product))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(cc<span class="sc">$</span>Product))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 12</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>top_6_Product <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Product, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Product)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(cc<span class="sc">$</span>Issue))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>top_6_Product <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Product, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Product)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The Issue column contains 81 unique values, and we will use only the 7 most common ones. Also changed these 7 values to the shorter names.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(cc<span class="sc">$</span>Issue))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 81</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>top_7_Issue <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Issue, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Issue)</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(cc<span class="sc">$</span>State))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>top_7_Issue <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(Issue, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(Issue)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The State column has 60 unique values, and we will use the 10 most common ones.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(<span class="fu">unique</span>(cc<span class="sc">$</span>State))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 60</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>top_10_State <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> </span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(State, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(State)</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Product <span class="sc">%in%</span> top_6_Product<span class="sc">$</span>Product <span class="sc">&amp;</span> </span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>                Issue <span class="sc">%in%</span> top_7_Issue<span class="sc">$</span>Issue <span class="sc">&amp;</span></span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>                State <span class="sc">%in%</span> top_10_State<span class="sc">$</span>State)</span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> </span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Issue =</span> <span class="fu">case_when</span>(</span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Account opening, closing, or management"</span> <span class="sc">~</span> <span class="st">"Account Management"</span>,</span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Application, originator, mortgage broker"</span> <span class="sc">~</span> <span class="st">"Mortgage Application"</span>,</span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Communication tactics"</span> <span class="sc">~</span> <span class="st">"Communication"</span>,</span>
-<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Credit reporting company's investigation"</span> <span class="sc">~</span> <span class="st">"Credit Investigation"</span>,</span>
-<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Deposits and withdrawals"</span> <span class="sc">~</span> <span class="st">"Transactions"</span>,</span>
-<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Loan modification,collection,foreclosure"</span> <span class="sc">~</span> <span class="st">"Loan Modification"</span>,</span>
-<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Loan servicing, payments, escrow account"</span> <span class="sc">~</span> <span class="st">"Loan Servicing"</span>,</span>
-<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> Issue</span>
-<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a>  ))</span>
-<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-22"><a href="#cb40-22" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>top_10_State <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(State, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(State)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Product <span class="sc">%in%</span> top_6_Product<span class="sc">$</span>Product <span class="sc">&amp;</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                Issue <span class="sc">%in%</span> top_7_Issue<span class="sc">$</span>Issue <span class="sc">&amp;</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>                State <span class="sc">%in%</span> top_10_State<span class="sc">$</span>State)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>cc <span class="ot">&lt;-</span> cc <span class="sc">%&gt;%</span> </span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Issue =</span> <span class="fu">case_when</span>(</span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Account opening, closing, or management"</span> <span class="sc">~</span> <span class="st">"Account Management"</span>,</span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Application, originator, mortgage broker"</span> <span class="sc">~</span> <span class="st">"Mortgage Application"</span>,</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Communication tactics"</span> <span class="sc">~</span> <span class="st">"Communication"</span>,</span>
+<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Credit reporting company's investigation"</span> <span class="sc">~</span> <span class="st">"Credit Investigation"</span>,</span>
+<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Deposits and withdrawals"</span> <span class="sc">~</span> <span class="st">"Transactions"</span>,</span>
+<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Loan modification,collection,foreclosure"</span> <span class="sc">~</span> <span class="st">"Loan Modification"</span>,</span>
+<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a>    Issue <span class="sc">==</span> <span class="st">"Loan servicing, payments, escrow account"</span> <span class="sc">~</span> <span class="st">"Loan Servicing"</span>,</span>
+<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> Issue</span>
+<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a>  ))</span>
+<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4110</code></pre>
 </div>
 </div>
-<p>For the next few steps, we are going to be reducing the number of unique levels for some of our factor variables:</p>
-<p>The Product column has 12 unique values, but we will use only the 6 most common ones.<br>
-The Issue column contains 81 unique values, and we will use only the 7 most common ones. Also changed these 7 values to the shorter names.<br>
-The State column has 60 unique values, and we will use the 10 most common ones.</p>
 <p>After reducing the unique levels, the dataset now contains 4110 rows.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(cc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -508,13 +496,13 @@ The State column has 60 unique values, and we will use the 10 most common ones.<
 </section>
 <section id="data-partitioning" class="level3">
 <h3 class="anchored" data-anchor-id="data-partitioning">Data Partitioning</h3>
+<p>After converting all variables to factor type, I partitioned the data into training(60%) and validation(40%) sets.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">79</span>)</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>cc.index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(cc)), <span class="fu">nrow</span>(cc)<span class="sc">*</span><span class="fl">0.6</span>)</span>
 <span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>cc_train.df <span class="ot">&lt;-</span> cc[cc.index, ]</span>
 <span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>cc_valid.df <span class="ot">&lt;-</span> cc[<span class="sc">-</span>cc.index, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>After converting all variables to factor type, I partitioned the data into training(60%) and validation(40%) sets.</p>
 </section>
 <section id="data-visualization---proportional-barplot" class="level3">
 <h3 class="anchored" data-anchor-id="data-visualization---proportional-barplot">Data Visualization - Proportional Barplot</h3>
@@ -525,7 +513,7 @@ The State column has 60 unique values, and we will use the 10 most common ones.<
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="naive_bayes_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="naive_bayes_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -537,7 +525,7 @@ The State column has 60 unique values, and we will use the 10 most common ones.<
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="naive_bayes_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="naive_bayes_files/figure-html/unnamed-chunk-17-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -547,7 +535,7 @@ The State column has 60 unique values, and we will use the 10 most common ones.<
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="naive_bayes_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="naive_bayes_files/figure-html/unnamed-chunk-17-3.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -557,7 +545,7 @@ The State column has 60 unique values, and we will use the 10 most common ones.<
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="naive_bayes_files/figure-html/unnamed-chunk-11-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="naive_bayes_files/figure-html/unnamed-chunk-17-4.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -567,7 +555,7 @@ The State column has 60 unique values, and we will use the 10 most common ones.<
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="naive_bayes_files/figure-html/unnamed-chunk-11-5.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="naive_bayes_files/figure-html/unnamed-chunk-17-5.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -577,7 +565,7 @@ The State column has 60 unique values, and we will use the 10 most common ones.<
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="naive_bayes_files/figure-html/unnamed-chunk-11-6.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="naive_bayes_files/figure-html/unnamed-chunk-17-6.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -587,7 +575,7 @@ The State column has 60 unique values, and we will use the 10 most common ones.<
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="naive_bayes_files/figure-html/unnamed-chunk-11-7.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="naive_bayes_files/figure-html/unnamed-chunk-17-7.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -597,7 +585,7 @@ The State column has 60 unique values, and we will use the 10 most common ones.<
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="naive_bayes_files/figure-html/unnamed-chunk-11-8.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="naive_bayes_files/figure-html/unnamed-chunk-17-8.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -680,6 +668,7 @@ Y             No        Yes
 </section>
 <section id="confusion-matrix" class="level3">
 <h3 class="anchored" data-anchor-id="confusion-matrix">Confusion Matrix</h3>
+<p>Comparing the accuracy metrics, the validation set achieved 74.45%, which is lower than the training set’s 77.05%. However, both sets reveal that the model predominantly predicts ‘No’ for all instances (100%). a.The model predicts ‘No’ for every case and never predicts ‘Yes’, indicating an imbalance among predictions. Although the accuracy appears relatively high, it is misleading as it reflects the model’s bias rather than its true predictive power.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(<span class="fu">predict</span>(cc.nb, <span class="at">newdata=</span>cc_train.df), cc_train.df<span class="sc">$</span>Consumer.disputed)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -742,7 +731,6 @@ Prediction   No  Yes
                                           </code></pre>
 </div>
 </div>
-<p>Comparing the accuracy metrics, the validation set achieved 74.45%, which is lower than the training set’s 77.05%. However, both sets reveal that the model predominantly predicts ‘No’ for all instances (100%). a.The model predicts ‘No’ for every case and never predicts ‘Yes’, indicating an imbalance among predictions. Although the accuracy appears relatively high, it is misleading as it reflects the model’s bias rather than its true predictive power.</p>
 </section>
 <section id="naive-rule-vs-naive-bayes" class="level3">
 <h3 class="anchored" data-anchor-id="naive-rule-vs-naive-bayes">Naive Rule vs Naive Bayes</h3>
@@ -752,6 +740,8 @@ Prediction   No  Yes
 </section>
 <section id="scoring-data-using-naive-bayes" class="level3">
 <h3 class="anchored" data-anchor-id="scoring-data-using-naive-bayes">Scoring data using Naive Bayes</h3>
+<p>I took 25 records by sorting the probability for the “Yes” column in descending order, selecting the top 25 as the most likely to belong to the “YES” group.</p>
+<p>Among these 25 records, 5 records truly belong to “Yes” group. The accuracy for these predictions = 80%. Even though the model didn’t predict any “Yes” values, it still achieved 80% accuracy by correctly classifying 20 out of 20 “No” records. Since the “Yes” group is a small portion of the dataset, its impact on accuracy is minimal. Compared to accuracy of overall model 74.45%, these selected proportion of data have relatively high value.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>pred.prob <span class="ot">&lt;-</span> <span class="fu">predict</span>(cc.nb, <span class="at">newdata=</span>cc_valid.df, <span class="at">type=</span><span class="st">"raw"</span>)</span>
 <span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="co"># pred.prob</span></span>
@@ -780,8 +770,6 @@ Prediction   No  Yes
 5    Yes        No 0.6137075 0.3862925</code></pre>
 </div>
 </div>
-<p>I took 25 records by sorting the probability for the “Yes” column in descending order, selecting the top 25 as the most likely to belong to the “YES” group.</p>
-<p>Among these 25 records, 5 records truly belong to “Yes” group. The accuracy for these predictions = 80%. Even though the model didn’t predict any “Yes” values, it still achieved 80% accuracy by correctly classifying 20 out of 20 “No” records. Since the “Yes” group is a small portion of the dataset, its impact on accuracy is minimal. Compared to accuracy of overall model 74.45%, these selected proportion of data have reslatively high value.</p>
 <p>Identifying this subset of records helps us to see that the model completely fails at identifying “Yes” cases. On the other hand, by assigning all records to the majority class “No,” the model achieves high accuracy, performing well in most cases. By identifying this main issue, we can focus on other ways to dealing with imbalanced data or try other models.</p>
 </section>
 <section id="manual-calculation-of-probability" class="level3">

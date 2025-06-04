@@ -8,19 +8,29 @@ This work is part of an assignment for the AD699 Data Mining course.
 
 ### Data Exploration
 
-```{r}
+```{r, message=FALSE, warning=FALSE, results='hide'}
 library(tidyverse)
 library(dplyr)
+library(lubridate)
+library(leaflet)
+
 vancouver_df <- read.csv('./vancouver_311_requests.csv', sep = ';')
+```
+
+```{r, echo=FALSE, message=FALSE, results='hide'}
 head(vancouver_df)
 ```
 
+```{r, echo=FALSE, message=FALSE}
+DT::datatable(head(vancouver_df), 
+          options = list(scrollX = TRUE, searching = FALSE, paging = FALSE, info = FALSE)
+          )
+```
+str() function shows structure of an object. From the result below we can see that, type of our dataset is data.frame which consists of 842862 rows and 13 columns. And also shows the type of each column.
 ```{r}
 str(vancouver_df)
 ```
-
-str() function shows structure of an object. From the result above we can see that, type of our dataset is data.frame which consists of 842862 rows and 13 columns. And also shows the type of each column.
-
+In our dataset 23 unique values of Local.area including empty value.
 ```{r}
 unique(vancouver_df$Local.area)
 ```
@@ -28,8 +38,6 @@ unique(vancouver_df$Local.area)
 ```{r}
 length(unique(vancouver_df$Local.area))
 ```
-
-In our dataset 23 unique values of Local.area including empty value.
 
 ```{r}
 sunset_df <- filter(vancouver_df, Local.area == 'Sunset')
@@ -73,8 +81,6 @@ colSums(is.na(sunset_df))
 Here is the total \# of NA values for each column. The columns Latitude and Longitude each has 20062 missing values, probably Address column is also contain empty values. The service close date didn't recorded 523 times, which is affected duration column too.
 
 ```{r}
-library(lubridate)
-
 birthday_reqs <- sunset_df %>% filter(month(Service.request.open.timestamp) == 11 & day(Service.request.open.timestamp) == 24)
 nrow(birthday_reqs)
 ```
@@ -233,9 +239,8 @@ ggplot(sunset_df_top7, aes(x=Channel, fill = Service.request.type)) +
 
 This plot shows the distribution of service request types across channels. Interesting, that Abandoned Non-Recyclables mostly reported via mobile app, while City and Park Maintenance dominate in Social Media and E-mail. Also, Building and Development Inquiry mostly reported via WEB. Different requests seems like have preferred channels. For instance, garbage and green bin requests prefer chat or phone, that do not require any additional resources like images. For the City and Park Maintenance social media is popular, maybe because people prefer post about their awareness of city to public discussion.
 
+Created map with Esri World Imagery tiles, and added popup text which will display department name for each service request.
 ```{r}
-library(leaflet)
-
 sunset_df_map <- sunset_df %>% filter(!is.na(Latitude) & !is.na(Longitude))
 
 leaflet(data = sunset_df_map) %>%
@@ -248,5 +253,3 @@ leaflet(data = sunset_df_map) %>%
   addProviderTiles("Esri.WorldImagery") %>% 
   addCircles(~Longitude, ~Latitude, radius = 5, color = "gold", popup = ~Department)
 ```
-
-Created map with Esri World Imagery tiles, and added popup text which will display department name for each service request.
