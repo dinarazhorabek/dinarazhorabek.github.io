@@ -1,7 +1,12 @@
 ---
-title: "My website"
+title: "Welcome to My Website"
+author: "Dinara Zhorabek"
+date: "`r Sys.Date()`"
+format:
+  html:
+    theme: minty
+    toc: true
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+# Hello, World!  
+Welcome to my Quarto website. 
