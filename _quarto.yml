@@ -20,6 +20,10 @@ format:
       - brand
     css: styles.css
     toc: true
+    code-fold: true
+
+execute: 
+  warning: false
 
 
 

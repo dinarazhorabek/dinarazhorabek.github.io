@@ -183,6 +183,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Developed a classification model to predict video game sales performance using a real-world video game dataset. Preprocessed the data through binning, factor conversion, and top-category filtering. Built, visualized, and pruned decision trees using cross-validation, and evaluated model performance using confusion matrices.</p>
 <p>This work is part of an assignment for the AD699 Data Mining course.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
@@ -190,21 +192,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rpart.plot)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>vg <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'vgchartz-2024.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>This dataset appears to contain information about video games, including the title, the console it was developed for, genre, publisher, developer, game rating, various sales numbers, release date, and, if available, the last update date. While some titles appear multiple times, other variables indicate that these entries correspond to the same game released on different consoles or different versions, such as remakes. The critic_score represents the overall rating of a game, with a maximum score of 10. And the dataset includes sales data across different regions (NA, JP, PAL, Other), and difference between numbers suggest the game popularity across various geographical areas. Furthermore, there is huge number of NAs.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-82fa63e98451cb445a5d" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-82fa63e98451cb445a5d">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["/games/boxart/full_6510540AmericaFrontccc.jpg","/games/boxart/full_5563178AmericaFrontccc.jpg","/games/boxart/827563ccc.jpg","/games/boxart/full_9218923AmericaFrontccc.jpg","/games/boxart/full_4990510AmericaFrontccc.jpg","/games/boxart/full_call-of-duty-modern-warfare-3_517AmericaFront.jpg"],["Grand Theft Auto V","Grand Theft Auto V","Grand Theft Auto: Vice City","Grand Theft Auto V","Call of Duty: Black Ops 3","Call of Duty: Modern Warfare 3"],["PS3","PS4","PS2","X360","PS4","X360"],["Action","Action","Action","Action","Shooter","Shooter"],["Rockstar Games","Rockstar Games","Rockstar Games","Rockstar Games","Activision","Activision"],["Rockstar North","Rockstar North","Rockstar North","Rockstar North","Treyarch","Infinity Ward"],[9.4,9.699999999999999,9.6,null,8.1,8.699999999999999],[20.32,19.39,16.15,15.86,15.09,14.82],[6.37,6.06,8.41,9.06,6.18,9.07],[0.99,0.6,0.47,0.06,0.41,0.13],[9.85,9.710000000000001,5.49,5.33,6.05,4.29],[3.12,3.02,1.78,1.42,2.44,1.33],["2013-09-17","2014-11-18","2002-10-28","2013-09-17","2015-11-06","2011-11-08"],["","2018-01-03","","","2018-01-14",""]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>img<\/th>\n      <th>title<\/th>\n      <th>console<\/th>\n      <th>genre<\/th>\n      <th>publisher<\/th>\n      <th>developer<\/th>\n      <th>critic_score<\/th>\n      <th>total_sales<\/th>\n      <th>na_sales<\/th>\n      <th>jp_sales<\/th>\n      <th>pal_sales<\/th>\n      <th>other_sales<\/th>\n      <th>release_date<\/th>\n      <th>last_update<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[7,8,9,10,11,12]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"img","targets":1},{"name":"title","targets":2},{"name":"console","targets":3},{"name":"genre","targets":4},{"name":"publisher","targets":5},{"name":"developer","targets":6},{"name":"critic_score","targets":7},{"name":"total_sales","targets":8},{"name":"na_sales","targets":9},{"name":"jp_sales","targets":10},{"name":"pal_sales","targets":11},{"name":"other_sales","targets":12},{"name":"release_date","targets":13},{"name":"last_update","targets":14}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-66d18753bc31acc40ce5" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-66d18753bc31acc40ce5">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["/games/boxart/full_6510540AmericaFrontccc.jpg","/games/boxart/full_5563178AmericaFrontccc.jpg","/games/boxart/827563ccc.jpg","/games/boxart/full_9218923AmericaFrontccc.jpg","/games/boxart/full_4990510AmericaFrontccc.jpg","/games/boxart/full_call-of-duty-modern-warfare-3_517AmericaFront.jpg"],["Grand Theft Auto V","Grand Theft Auto V","Grand Theft Auto: Vice City","Grand Theft Auto V","Call of Duty: Black Ops 3","Call of Duty: Modern Warfare 3"],["PS3","PS4","PS2","X360","PS4","X360"],["Action","Action","Action","Action","Shooter","Shooter"],["Rockstar Games","Rockstar Games","Rockstar Games","Rockstar Games","Activision","Activision"],["Rockstar North","Rockstar North","Rockstar North","Rockstar North","Treyarch","Infinity Ward"],[9.4,9.699999999999999,9.6,null,8.1,8.699999999999999],[20.32,19.39,16.15,15.86,15.09,14.82],[6.37,6.06,8.41,9.06,6.18,9.07],[0.99,0.6,0.47,0.06,0.41,0.13],[9.85,9.710000000000001,5.49,5.33,6.05,4.29],[3.12,3.02,1.78,1.42,2.44,1.33],["2013-09-17","2014-11-18","2002-10-28","2013-09-17","2015-11-06","2011-11-08"],["","2018-01-03","","","2018-01-14",""]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>img<\/th>\n      <th>title<\/th>\n      <th>console<\/th>\n      <th>genre<\/th>\n      <th>publisher<\/th>\n      <th>developer<\/th>\n      <th>critic_score<\/th>\n      <th>total_sales<\/th>\n      <th>na_sales<\/th>\n      <th>jp_sales<\/th>\n      <th>pal_sales<\/th>\n      <th>other_sales<\/th>\n      <th>release_date<\/th>\n      <th>last_update<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[7,8,9,10,11,12]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"img","targets":1},{"name":"title","targets":2},{"name":"console","targets":3},{"name":"genre","targets":4},{"name":"publisher","targets":5},{"name":"developer","targets":6},{"name":"critic_score","targets":7},{"name":"total_sales","targets":8},{"name":"na_sales","targets":9},{"name":"jp_sales","targets":10},{"name":"pal_sales","targets":11},{"name":"other_sales","targets":12},{"name":"release_date","targets":13},{"name":"last_update","targets":14}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>After using equal frequency binning method to our output variable, we can see that the data equally was distributed within three groups: Low, Medium, High.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vg<span class="sc">$</span>total_sales <span class="ot">&lt;-</span> <span class="fu">cut</span>(vg<span class="sc">$</span>total_sales, </span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">breaks =</span> <span class="fu">quantile</span>(vg<span class="sc">$</span>total_sales, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">length.out =</span> <span class="dv">4</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>), </span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">include.lowest =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                      <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Low"</span>, <span class="st">"Medium"</span>, <span class="st">"High"</span>))</span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(vg<span class="sc">$</span>total_sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
    Low Medium   High 
@@ -212,7 +218,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(vg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   64016 obs. of  14 variables:
  $ img         : chr  "/games/boxart/full_6510540AmericaFrontccc.jpg" "/games/boxart/full_5563178AmericaFrontccc.jpg" "/games/boxart/827563ccc.jpg" "/games/boxart/full_9218923AmericaFrontccc.jpg" ...
@@ -232,6 +241,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>vg<span class="sc">$</span>img <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(vg<span class="sc">$</span>img)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>vg<span class="sc">$</span>title <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(vg<span class="sc">$</span>title)</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>vg<span class="sc">$</span>console <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(vg<span class="sc">$</span>console)</span>
@@ -242,6 +253,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>vg<span class="sc">$</span>last_update <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(vg<span class="sc">$</span>last_update)</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(vg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   64016 obs. of  14 variables:
  $ img         : Factor w/ 56177 levels "/games/boxart/1000386ccc.jpg",..: 31526 27433 6702 42887 25079 47407 47389 23589 12344 23571 ...
@@ -263,10 +275,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>After converting all chr parameters to factor, our dataset contains only numbers or factors.</p>
 <p>Next we are going to do some “topN” filtering.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>top_7_Console <span class="ot">&lt;-</span> vg <span class="sc">%&gt;%</span> </span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(console, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>)</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>top_7_Console</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>  console     n
 1      PC 12617
@@ -280,10 +295,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>7 popular console types: PC, PS2, DS, PS4, PS, NS, XBL. Also there is huge difference between PC and other remaining values, making PC much more popular. This is likely due to its open system, allowing users to install and download games freely without strict platform restrictions.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>top_7_Genre <span class="ot">&lt;-</span> vg <span class="sc">%&gt;%</span> </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(genre, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>)</span>
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>top_7_Genre</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>         genre    n
 1         Misc 9304
@@ -297,10 +315,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>7 most common genres: misc, action, adventure, role-playing, sports, shooter, platform. The most prevalent genre is Miscellaneous, likely due to games that don’t fit into traditional categories or are poorly documented. Following that, Action games are the second most popular, with Adventure games ranking third. The popularity of platform games (Mario, Zelda or Sonic) shows that traditional gameplay styles still have a strong place in market.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>top_7_Publisher <span class="ot">&lt;-</span> vg <span class="sc">%&gt;%</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(publisher, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>) </span>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>top_7_Publisher</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        publisher    n
 1         Unknown 8842
@@ -314,10 +335,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>7 most common publishers: unknown, sega, ubisoft, electronic arts, activision, konami, nintendo. Notably, 8,842 records lack publisher information, categorized under “Unknown.” Among named publishers, Sega remains a key player. Also, Ubisoft, EA, Activision have released most of the popular games over the last few years.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>top_7_Developer <span class="ot">&lt;-</span> vg <span class="sc">%&gt;%</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(developer, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">7</span>)</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>top_7_Developer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        developer    n
 1         Unknown 4435
@@ -331,36 +355,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>7 most common developers: unknown, konami, sega, namco, square enix, capcom, snk corporation. Similarly, 4,435 records lack developer information. Several major developers, such as Sega and Konami, also appear among the top publishers, reinforcing their influence in the industry.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>vg <span class="ot">&lt;-</span> vg <span class="sc">%&gt;%</span> <span class="fu">filter</span>(console <span class="sc">%in%</span> top_7_Console<span class="sc">$</span>console <span class="sc">&amp;</span> </span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                      genre <span class="sc">%in%</span> top_7_Genre<span class="sc">$</span>genre <span class="sc">&amp;</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                      publisher <span class="sc">%in%</span> top_7_Publisher<span class="sc">$</span>publisher <span class="sc">&amp;</span></span>
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                      developer <span class="sc">%in%</span> top_7_Developer<span class="sc">$</span>developer)</span>
 <span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(vg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 939</code></pre>
 </div>
 </div>
 <p>After applying these filters, the dataset is reduced to 939 rows.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>vg <span class="ot">&lt;-</span> <span class="fu">droplevels</span>(vg)</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(vg)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 939</code></pre>
 </div>
 </div>
 <p>The dataset contains 939 records.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">79</span>)</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>vg.index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(vg)), <span class="fu">nrow</span>(vg)<span class="sc">*</span><span class="fl">0.6</span>)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>vg_train <span class="ot">&lt;-</span> vg[vg.index, ]</span>
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>vg_valid <span class="ot">&lt;-</span> vg[<span class="sc">-</span>vg.index, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Next we will use rpart.plot to display a classification tree that depicts our model.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">rpart</span>(total_sales <span class="sc">~</span> console <span class="sc">+</span> genre <span class="sc">+</span> publisher <span class="sc">+</span> developer <span class="sc">+</span> critic_score, <span class="at">method =</span> <span class="st">'class'</span>, <span class="at">data =</span> vg_train)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -371,7 +407,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The initial plot starts with default parameters, where the tree starts from console varaible at the root. Each node represents type of total_sales (Low, Medium, High) differentiated by color. Within each node, we see class probabilities and the percentage of observations classified at that node.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(model, <span class="at">extra=</span><span class="dv">2</span>, <span class="at">fallen.leaves =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -382,7 +421,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>After adding extra=2, in the new plot the class rate is relative to the total number of observations in each class. For instance, in the second left node, 50 observations belong to Low sales category out of 102 total observations. And setting fallen.leaves = FALSE, moves the leaf nodes away from the bottom, changing the structure of trees.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(model, <span class="at">type=</span><span class="dv">5</span>, <span class="at">extra =</span> <span class="dv">2</span>, <span class="at">fallen.leaves=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -395,7 +437,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The root node is console variable, and rule is Console = DS or PC. The root node is starting point of model, and have highest impact on outcome variable. In our model, the type of console is primary factor to decide total sales number. So, this approach can help strategize future plans for the game publisher, focusing more on high-performance consoles.</p>
 <p>We see that from 5 input variables (console, genre, publisher, developer, critic score), only 2 (console, genre) appears in the tree model, as a useful parameters to predict price. Variable subset selection is automatic since it is part of the split selection.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.rules</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code> total_sales   Low Medi High                                                                                                    
          Low [ .56  .27  .16] when console is DS or NS or PC or PS or PS2 &amp; genre is Action or Adventure or Misc or Role-Playing
@@ -406,9 +451,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>From the rules of our model, let’s describe second rule (index = 10): The video game is for PS console and Sports genre, by following tree nodes this game will be classified into Medium sales group.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>complex_model <span class="ot">&lt;-</span> <span class="fu">rpart</span>(total_sales <span class="sc">~</span> console <span class="sc">+</span> genre <span class="sc">+</span> publisher <span class="sc">+</span> developer <span class="sc">+</span> critic_score, <span class="at">method=</span><span class="st">"class"</span>, <span class="at">cp=</span><span class="dv">0</span>, <span class="at">minsplit=</span><span class="dv">2</span>, <span class="at">data =</span> vg_train)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(complex_model, <span class="at">extra=</span><span class="dv">1</span>, <span class="at">fallen.leaves=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -418,10 +466,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>five_fold_cv <span class="ot">&lt;-</span> <span class="fu">rpart</span>(total_sales <span class="sc">~</span> console <span class="sc">+</span> genre <span class="sc">+</span> publisher <span class="sc">+</span> developer <span class="sc">+</span> critic_score, <span class="at">method=</span><span class="st">"class"</span>,</span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">cp=</span><span class="fl">0.00001</span>, <span class="at">minsplit=</span><span class="dv">5</span>, <span class="at">xval=</span><span class="dv">5</span>, <span class="at">data=</span>vg_train)</span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">printcp</span>(five_fold_cv)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Classification tree:
@@ -446,8 +497,11 @@ n=127 (436 observations deleted due to missingness)
 7 0.0061728     10   0.33333 0.77778 0.069562
 8 0.0000100     12   0.32099 0.80247 0.069545</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(a)</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>a</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>          CP nsplit rel.error    xerror       xstd
 1 0.16666667      0 1.0000000 1.0864198 0.06417809
@@ -462,10 +516,13 @@ n=127 (436 observations deleted due to missingness)
 </div>
 <p>From the complexity parameter table for eight trees, we see that xerror value decreased at some point and started to increase again. This minimum value of cross validation error (0.7037037) gives optimal cp value. In our case cp = 0.03703704</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>pruned.ct <span class="ot">&lt;-</span> <span class="fu">prune</span>(five_fold_cv,</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>                   <span class="at">cp=</span>five_fold_cv<span class="sc">$</span>cptable[<span class="fu">which.min</span>(five_fold_cv<span class="sc">$</span>cptable[,<span class="st">"xerror"</span>]),<span class="st">"CP"</span>])</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rpart.plot</span>(pruned.ct,<span class="at">type=</span><span class="dv">5</span>, <span class="at">extra =</span> <span class="dv">2</span>, <span class="at">fallen.leaves=</span><span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -475,9 +532,12 @@ n=127 (436 observations deleted due to missingness)
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Huge tree results</span></span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>complex_model.pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(complex_model, vg_train, <span class="at">type=</span><span class="st">"class"</span>)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(complex_model.pred, vg_train<span class="sc">$</span>total_sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Confusion Matrix and Statistics
 
@@ -510,8 +570,11 @@ Detection Rate           0.3071        0.2598      0.1811
 Detection Prevalence     0.4173        0.3701      0.2126
 Balanced Accuracy        0.8480        0.7723      0.7975</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>complex_model.pred2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(complex_model, vg_valid, <span class="at">type=</span><span class="st">"class"</span>)</span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(complex_model.pred2, vg_valid<span class="sc">$</span>total_sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Confusion Matrix and Statistics
 
@@ -547,9 +610,12 @@ Balanced Accuracy        0.6083        0.5529      0.6660</code></pre>
 </div>
 <p>The fully grown tree model have a high accuracy for training data (74.8%), but its performance drops significantly on the validation data (49.25%). This suggests that the model is overfitting, meaning it has learned the noise and specific patterns of the training set that do not generalize well to new, unseen data.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Pruned tree results</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>pruned.ct.pred <span class="ot">&lt;-</span> <span class="fu">predict</span>(pruned.ct, vg_train, <span class="at">type=</span><span class="st">"class"</span>)</span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(pruned.ct.pred, vg_train<span class="sc">$</span>total_sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Confusion Matrix and Statistics
 
@@ -582,8 +648,11 @@ Detection Rate           0.2520        0.2677      0.1181
 Detection Prevalence     0.3622        0.4961      0.1417
 Balanced Accuracy        0.7702        0.6906      0.6918</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>pruned.ct.pred2 <span class="ot">&lt;-</span> <span class="fu">predict</span>(pruned.ct, vg_valid, <span class="at">type=</span><span class="st">"class"</span>)</span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">confusionMatrix</span>(pruned.ct.pred2, vg_valid<span class="sc">$</span>total_sales)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Confusion Matrix and Statistics
 

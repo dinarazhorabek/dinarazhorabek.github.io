@@ -178,16 +178,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For this task, we will be using data from Groceries, a dataset that can be found with the arules package. Each row in the file represents one buyer’s purchases. We will generate item frequency plots, identify strong association rules involving a specific product, and visualize rules using scatter and graph-based methods.</p>
 <p>This work is part of an assignment for the AD699 Data Mining course.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arules)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(arulesViz)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"Groceries"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Groceries is of class transactions (sparse matrix). The data consists of 9835 rows, and 169 columns.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Groceries)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>transactions as itemMatrix in sparse format with
  9835 rows (elements/itemsets/transactions) and
@@ -218,11 +224,14 @@ includes extended item information - examples:
 </div>
 <p>The bar plot below displays frequent items, that meet the support value. The minimum support threshold is set at 7.25%, meaning that only items appearing in at least 7.25% of all transactions are considered frequent. As a result we got 16 frequent products.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">itemFrequencyPlot</span>(Groceries, </span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>                  <span class="at">support=</span><span class="fl">0.0725</span>, </span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">horiz =</span> <span class="cn">TRUE</span>, </span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">col =</span> <span class="st">"ivory"</span>,</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">main =</span> <span class="st">"Frequent Grocery items (Support &gt; 7.25%)"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -233,7 +242,10 @@ includes extended item information - examples:
 </div>
 <p>Let’s create subset of rules that contain my grocery item - cream cheese.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>rules <span class="ot">&lt;-</span> <span class="fu">apriori</span> (Groceries, <span class="at">parameter =</span> <span class="fu">list</span>(<span class="at">supp =</span> <span class="fl">0.001</span>, <span class="at">conf =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Apriori
 
@@ -257,6 +269,8 @@ checking subsets of size 1 2 3 4 5 6 done [0.01s].
 writing ... [5668 rule(s)] done [0.00s].
 creating S4 object  ... done [0.00s].</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary(rules)</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="co"># inspect(rules[1:5])</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="co"># itemLabels(Groceries)</span></span>
@@ -264,6 +278,7 @@ creating S4 object  ... done [0.00s].</code></pre>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>rhs_rules <span class="ot">&lt;-</span> <span class="fu">subset</span>(rules, rhs <span class="sc">%in%</span> <span class="st">"cream cheese "</span>)</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lhs_rules)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>set of 233 rules
 
@@ -296,7 +311,10 @@ mining info:
                                                                   call
  apriori(data = Groceries, parameter = list(supp = 0.001, conf = 0.5))</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rhs_rules)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>set of 1 rules
 
@@ -333,7 +351,10 @@ mining info:
 <p>There is 233 rules that contain my product - on the left hand side. 59 rules involve three product subset, 137 four product subset, and 37 five product subset. And we get only 1 rule with cream cheese on right hand side, which is in the subset of five products. Indicating that cream cheese appears in combination with other products.</p>
 <p>Let’s look at the first rule: If a person buys other vegetables, curd, yogurt, and whipped/sour cream this person 14.83 times more likely to buy cream cheese than a random customer in store. The support number is 0.001, meaning that 0.1% of all transactions studied had exact same item sets. Confidence is 0.59 =&gt; If someone buys other vegetables, curd, yogurt, and whipped/sour cream, there’s a 59% chance that they also buy cream cheese. Coverage number gives an idea how often the rule can be applied, in this case it equals to 0.002. This rule applies to 0.2% of all transactions in the dataset.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inspect</span>(<span class="fu">sort</span>(rhs_rules, <span class="at">by=</span><span class="st">"lift"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    lhs                     rhs                 support confidence    coverage     lift count
 [1] {other vegetables,                                                                       
@@ -344,7 +365,10 @@ mining info:
 </div>
 <p>The next rule: If a person buys citrus fruit, other vegetables, whole milk, and cream cheese he/she is 9.12 times more likely to buy domestic eggs than a random purchaser in store. The support number is 0.001, this rule applies to only 0.1% of all transactions. This rule also have high confidence, saying that if customer buys citrus fruit, other vegetables, whole milk, and cream cheese, there is 58% chance they also buy domestic eggs. Coverage number is 0.002, meaning that this combination occurs in 0.2% of all transactions.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inspect</span>(<span class="fu">sort</span>(lhs_rules, <span class="at">by=</span><span class="st">"lift"</span>)[<span class="dv">2</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    lhs                    rhs                 support confidence    coverage     lift count
 [1] {citrus fruit,                                                                          
@@ -356,7 +380,10 @@ mining info:
 <p>From these rules we see that certain sets of products are frequently purchased together. In combination they may be ingredients for salads, or other recipes. Cream cheese, in particular, is commonly used in baking and is a key ingredient in cheesecake. Despite that, cream cheese widely used for frosting, spreads, pasta sauces, dips, making it a versatile ingredient in a variety of dishes.</p>
 <p>By identifying frequent combinations with cream cheese, the store can strategically place those items nearby—such as positioning cream cheese close to the vegetables/fruits section or within the dairy aisle for convenient access. Also, offering special discounts can boost sales. For example, if a customer buys cream cheese, offering a discount on berries or bagels can encourage bundled purchases. Additionally, analyzing product pairs allows the store to anticipate demand and adjust inventory accordingly, ensuring high-demand combinations are well-stocked ahead of time, especially during peak shopping seasons.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">inspect</span>(lhs_rules[<span class="dv">7</span><span class="sc">:</span><span class="dv">9</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    lhs                              rhs                support     confidence
 [1] {cream cheese , frozen meals} =&gt; {whole milk}       0.001016777 0.7142857 
@@ -367,7 +394,10 @@ mining info:
 [2] 0.001931876 2.992090 11   
 [3] 0.001931876 2.059815 10   </code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lhs_rules[<span class="dv">7</span><span class="sc">:</span><span class="dv">9</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -378,10 +408,13 @@ mining info:
 </div>
 <p>From the plot above, we observe the distribution of three association rules based on confidence (y-axis), support (x-axis), and lift (represented by color). First rule: {cream cheese , frozen meals} =&gt; {whole milk} has the highest confidence and lift values but a low support. This means the rule highly reliable: there is 71.43% chance that a customer who buys cream cheese and frozen meals will also buy whole milk. And the strength of the association is strong. However, it applies to 0.10% of the transactions. Second rule: {hard cheese, cream cheese } =&gt; {other vegetables} has a higher support and lift compared to the first rule, but its confidence is lower (57.9%). This suggests that while this combination of products occurs more frequently, it may not be as strong in predicting the purchase of vegetables when a customer buys both hard cheese and cream cheese. Third rule: {hard cheese, cream cheese } =&gt; {whole milk} has a similar support as a first rule, meaning that it applies to the same small proportion of transactions. However, it has lowest confidence and lift values, making it less reliable and significant to customer behaviour. This rule can demonstrate rare combination of items.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lhs_rules[<span class="dv">7</span><span class="sc">:</span><span class="dv">9</span>], <span class="at">method =</span> <span class="st">"graph"</span>, <span class="at">engine=</span><span class="st">"htmlwidget"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
-<div class="visNetwork html-widget html-fill-item" id="htmlwidget-6448e9b490f96b800e60" style="width:100%;height:464px;"></div>
-<script type="application/json" data-for="htmlwidget-6448e9b490f96b800e60">{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8],"label":["other vegetables","whole milk","hard cheese","cream cheese ","frozen meals","rule 1","rule 2","rule 3"],"group":[1,1,1,1,1,2,2,2],"value":[1,1,1,1,1,1,100,1],"color":["#CBD2FC","#CBD2FC","#CBD2FC","#CBD2FC","#CBD2FC","#EE5050","#EE1B1B","#EEDCDC"],"title":["other vegetables","whole milk","hard cheese","cream cheese ","frozen meals","<B>[1]<\/B><BR><B>{cream cheese ,<BR>&nbsp;&nbsp;frozen meals}<\/B><BR>&nbsp;&nbsp; => <B>{whole milk}<\/B><BR><BR>support = 0.00102<BR>confidence = 0.714<BR>coverage = 0.00142<BR>lift = 2.8<BR>count = 10<BR>order = 3<BR>id = 1","<B>[2]<\/B><BR><B>{hard cheese,<BR>&nbsp;&nbsp;cream cheese }<\/B><BR>&nbsp;&nbsp; => <B>{other vegetables}<\/B><BR><BR>support = 0.00112<BR>confidence = 0.579<BR>coverage = 0.00193<BR>lift = 2.99<BR>count = 11<BR>order = 3<BR>id = 2","<B>[3]<\/B><BR><B>{hard cheese,<BR>&nbsp;&nbsp;cream cheese }<\/B><BR>&nbsp;&nbsp; => <B>{whole milk}<\/B><BR><BR>support = 0.00102<BR>confidence = 0.526<BR>coverage = 0.00193<BR>lift = 2.06<BR>count = 10<BR>order = 3<BR>id = 3"],"shape":["box","box","box","box","box","circle","circle","circle"],"x":[-1,0.2710719153921495,-0.6344320903691922,-0.06959101513149568,1,0.4952504614769446,-0.619978094014388,-0.1883441767909065],"y":[1,-1,-0.4541731038328323,-0.006147621549303928,-0.1760636918574225,-0.2872137785584022,0.3680563686879452,-0.7655601815910478]},"edges":{"from":[4,5,3,4,3,4,6,7,8],"to":[6,6,7,7,8,8,2,1,2],"arrows":["to","to","to","to","to","to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"hover":true,"zoomSpeed":1}},"groups":["1","2"],"width":null,"height":null,"idselection":{"enabled":true,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","highlight":{"enabled":true,"hoverNearest":true,"degree":1,"algorithm":"all","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":false,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"}},"evals":[],"jsHooks":[]}</script>
+<div class="visNetwork html-widget html-fill-item" id="htmlwidget-84103ee26d0cf7e9ef5d" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-84103ee26d0cf7e9ef5d">{"x":{"nodes":{"id":[1,2,3,4,5,6,7,8],"label":["other vegetables","whole milk","hard cheese","cream cheese ","frozen meals","rule 1","rule 2","rule 3"],"group":[1,1,1,1,1,2,2,2],"value":[1,1,1,1,1,1,100,1],"color":["#CBD2FC","#CBD2FC","#CBD2FC","#CBD2FC","#CBD2FC","#EE5050","#EE1B1B","#EEDCDC"],"title":["other vegetables","whole milk","hard cheese","cream cheese ","frozen meals","<B>[1]<\/B><BR><B>{cream cheese ,<BR>&nbsp;&nbsp;frozen meals}<\/B><BR>&nbsp;&nbsp; => <B>{whole milk}<\/B><BR><BR>support = 0.00102<BR>confidence = 0.714<BR>coverage = 0.00142<BR>lift = 2.8<BR>count = 10<BR>order = 3<BR>id = 1","<B>[2]<\/B><BR><B>{hard cheese,<BR>&nbsp;&nbsp;cream cheese }<\/B><BR>&nbsp;&nbsp; => <B>{other vegetables}<\/B><BR><BR>support = 0.00112<BR>confidence = 0.579<BR>coverage = 0.00193<BR>lift = 2.99<BR>count = 11<BR>order = 3<BR>id = 2","<B>[3]<\/B><BR><B>{hard cheese,<BR>&nbsp;&nbsp;cream cheese }<\/B><BR>&nbsp;&nbsp; => <B>{whole milk}<\/B><BR><BR>support = 0.00102<BR>confidence = 0.526<BR>coverage = 0.00193<BR>lift = 2.06<BR>count = 10<BR>order = 3<BR>id = 3"],"shape":["box","box","box","box","box","circle","circle","circle"],"x":[0.5663595681593823,-0.827697326569802,-1,0.1612801742092103,1,0.3422113160804605,0.1076644563862394,-0.9654947782341208],"y":[-1,0.5200104975575839,-0.3926953786059729,0.01801705798224451,1,0.5741877983764165,-0.541552457632501,0.06501315431558496]},"edges":{"from":[4,5,3,4,3,4,6,7,8],"to":[6,6,7,7,8,8,2,1,2],"arrows":["to","to","to","to","to","to","to","to","to"]},"nodesToDataframe":true,"edgesToDataframe":true,"options":{"width":"100%","height":"100%","nodes":{"shape":"dot","physics":false},"manipulation":{"enabled":false},"edges":{"smooth":false},"physics":{"stabilization":false},"interaction":{"hover":true,"zoomSpeed":1}},"groups":["1","2"],"width":null,"height":null,"idselection":{"enabled":true,"style":"width: 150px; height: 26px","useLabels":true,"main":"Select by id"},"byselection":{"enabled":false,"style":"width: 150px; height: 26px","multiple":false,"hideColor":"rgba(200,200,200,0.5)","highlight":false},"main":null,"submain":null,"footer":null,"background":"rgba(0, 0, 0, 0)","igraphlayout":{"type":"square"},"tooltipStay":300,"tooltipStyle":"position: fixed;visibility:hidden;padding: 5px;white-space: nowrap;font-family: verdana;font-size:14px;font-color:#000000;background-color: #f5f4ed;-moz-border-radius: 3px;-webkit-border-radius: 3px;border-radius: 3px;border: 1px solid #808074;box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);","highlight":{"enabled":true,"hoverNearest":true,"degree":1,"algorithm":"all","hideColor":"rgba(200,200,200,0.5)","labelOnly":true},"collapse":{"enabled":false,"fit":false,"resetHighlight":true,"clusterOptions":null,"keepCoord":true,"labelSuffix":"(cluster)"}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Now the plot shows the relationship between rules as a graph. The central node represents cream cheese, which appears in all three rules, indicating that it is a key item in these associations. Hard cheese and whole milk appear in two rules each, showing that these items are associated with more than one combination of products. Frozen meals and other vegetables only appear in one rule each, which indicates that they are more specific to particular product combinations. Also the color differentiation in the plot corresponds to the lift value of each rule. The rule 3, which has lowest lift value in represented in light red. Meanwhile, Rules 1 and 2 are highlighted in bold red, suggesting that they have higher lift values and stronger associations between the items. Compared to previous plot, this visual shows elements of rules, allowing to quickly identify the central elements, and the relative strength of the rules. This plot also displays measures of rules (confidence, support) if we click on rule node. However, if we want to select strong rule the scatter plot is more useful because it clearly shows rules with higher support and confidence in a more clearer way. Therefore, the choice of plot depends on the purpose.</p>

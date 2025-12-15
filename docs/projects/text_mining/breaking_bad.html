@@ -191,6 +191,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="text-mining" class="level3">
 <h3 class="anchored" data-anchor-id="text-mining">Text Mining</h3>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
@@ -199,9 +201,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(textdata)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(wordcloud)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>bb <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"BB_data.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(bb)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   5641 obs. of  5 variables:
  $ actor  : chr  "Walter" "Skyler" "Walter" "Skyler" ...
@@ -212,16 +218,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>my_data <span class="ot">&lt;-</span> bb <span class="sc">%&gt;%</span> <span class="fu">filter</span>(season<span class="sc">==</span><span class="dv">1</span> <span class="sc">&amp;</span> episode<span class="sc">==</span><span class="dv">5</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(my_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-5e8115cf126ad2180fea" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-5e8115cf126ad2180fea">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Jesse","Manager","Jesse","Manager","Jesse","Manager"],["Here's my resume. I mean, technically it says \"curriculum vitae,\" which I think is more professional, but, you know, the same thing pretty much.","Great. But this position truly is a no-experience-necessary kind of thing.","Well, and it doesn't really say it here, but I have a solid background in sales. I'm pretty much a self-starter, so.","That's excellent, but…","I really feel I could be a major, major asset to your sales force.","I'm thinking there's a little misunderstanding. This isn't actually a sales job. I mean, I'd be happy to consider you for a sales position, but our agents need to be licensed, have at least two years on-the-job experience, and usually a college degree. What you would be doing is more like advertising."],[1,1,1,1,1,1],[5,5,5,5,5,5],["Grey Matter","Grey Matter","Grey Matter","Grey Matter","Grey Matter","Grey Matter"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>actor<\/th>\n      <th>text<\/th>\n      <th>season<\/th>\n      <th>episode<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"actor","targets":1},{"name":"text","targets":2},{"name":"season","targets":3},{"name":"episode","targets":4},{"name":"title","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-ba1b64a3fd3feede05ae" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ba1b64a3fd3feede05ae">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Jesse","Manager","Jesse","Manager","Jesse","Manager"],["Here's my resume. I mean, technically it says \"curriculum vitae,\" which I think is more professional, but, you know, the same thing pretty much.","Great. But this position truly is a no-experience-necessary kind of thing.","Well, and it doesn't really say it here, but I have a solid background in sales. I'm pretty much a self-starter, so.","That's excellent, but…","I really feel I could be a major, major asset to your sales force.","I'm thinking there's a little misunderstanding. This isn't actually a sales job. I mean, I'd be happy to consider you for a sales position, but our agents need to be licensed, have at least two years on-the-job experience, and usually a college degree. What you would be doing is more like advertising."],[1,1,1,1,1,1],[5,5,5,5,5,5],["Grey Matter","Grey Matter","Grey Matter","Grey Matter","Grey Matter","Grey Matter"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>actor<\/th>\n      <th>text<\/th>\n      <th>season<\/th>\n      <th>episode<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"actor","targets":1},{"name":"text","targets":2},{"name":"season","targets":3},{"name":"episode","targets":4},{"name":"title","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>top_10 <span class="ot">&lt;-</span> my_data <span class="sc">%&gt;%</span> </span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(actor, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
@@ -231,6 +242,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(my_data) <span class="sc">+</span> <span class="fu">geom_bar</span>(<span class="fu">aes</span>(<span class="at">y =</span> actor))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -241,10 +253,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>From the barplot above, we can see that Walter and Skyler have similar number of lines in Episode 5 Season 1, suggesting that they are the main characters here. They are followed by Jesse, Badger, and Elliot - most likely supporting characters who have shorter lines but appears alongside with main ones. Other remaining characters each have less than 20 lines, so they probably only showed up briefly or had minor roles in this episode.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>my_data_txt <span class="ot">&lt;-</span> my_data <span class="sc">%&gt;%</span> <span class="fu">select</span>(text)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>tidy_const <span class="ot">&lt;-</span> my_data_txt <span class="sc">%&gt;%</span> <span class="fu">unnest_tokens</span>(word, text)</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>tidy_const <span class="sc">%&gt;%</span> <span class="fu">count</span>(word, <span class="at">sort=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>   word   n
 1   you 154
@@ -261,9 +276,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>After extracting 10 most frequently used words, we mostly ended up with common pronouns like “you”, “I”, “and”, “these”, “that”. These are known as <em>stop words</em>—common terms that appear frequently across most texts. Since they don’t provide any insight into the context of the episode, they are not useful at all.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># stop_words</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>tidy_const <span class="ot">&lt;-</span> my_data_txt <span class="sc">%&gt;%</span> <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span> <span class="fu">anti_join</span>(stop_words)</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>tidy_const <span class="sc">%&gt;%</span> <span class="fu">count</span>(word, <span class="at">sort=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>        word  n
 1       walt 21
@@ -280,8 +298,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>After removing stopwords, we extracted a different set of words. From the list we can see names of characters, like Walt, Elliiot, Skyler, which are can be main characters like we mentioned previously. Also, it contains less meaningful words like “yeah”, “yo”, “hey”.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>tidy_const2 <span class="ot">&lt;-</span> my_data_txt <span class="sc">%&gt;%</span> <span class="fu">unnest_tokens</span>(<span class="at">output =</span> bigram, <span class="at">input=</span>text, <span class="at">token=</span><span class="st">"ngrams"</span>, <span class="at">n=</span><span class="dv">2</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>tidy_const2 <span class="sc">%&gt;%</span> <span class="fu">count</span>(bigram, <span class="at">sort=</span><span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>      bigram  n
 1   you know 19
@@ -298,6 +319,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Bigrams is combination of two (bi) consecutive words, while unigrams are single words. Bigrams help to get more meaningful insights into context compared to unigrams. For example, the word “pillow” on its own just refers to an object, but the bigram “talking pillow” suggests something very different and more specific. By looking at pairs of words, we can better understand the meaning and flow of the text.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>bigrams_sep <span class="ot">&lt;-</span> tidy_const2 <span class="sc">%&gt;%</span> <span class="fu">separate</span>(bigram, <span class="fu">c</span>(<span class="st">"word1"</span>, <span class="st">"word2"</span>), <span class="at">sep =</span> <span class="st">" "</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>bigrams_filtered <span class="ot">&lt;-</span> bigrams_sep <span class="sc">%&gt;%</span> <span class="fu">filter</span>(<span class="sc">!</span>word1 <span class="sc">%in%</span> stop_words<span class="sc">$</span>word) <span class="sc">%&gt;%</span> </span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>word2 <span class="sc">%in%</span> stop_words<span class="sc">$</span>word) <span class="sc">%&gt;%</span> </span>
@@ -306,6 +329,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># bigrams_filtered</span></span>
 <span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>bigrams_united <span class="ot">&lt;-</span> bigrams_filtered <span class="sc">%&gt;%</span> <span class="fu">unite</span>(<span class="at">col =</span> bigram, word1, word2, <span class="at">sep=</span><span class="st">" "</span>)</span>
 <span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>bigrams_united <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                 bigram n
 1           snot trough 3
@@ -323,12 +347,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>After extracting bigrams, the initial results included common phrases like “are you” and “this is,” as well as some NA values. These aren’t very meaningful on their own. However, after applying filters we ended up with a more useful and insightful list of bigrams.</p>
 <p>By reviewing the list of common words, we get a sense of the episode’s context. Walt, Elliot, and Skyler seem to be the main characters here. From the bigrams, “40 pills” could be related to drugs, possibly something illegal. The phrase “absolutely miserable” might indicate someone’s struggle with addiction, potentially to drugs. Additionally, the term “gray matter” is tied to chemicals, which gives us the impression that this episode could be about drug production or something related to the illegal drug trade.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>my_data_txt <span class="sc">%&gt;%</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">get_sentiments</span>(<span class="st">"bing"</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, sentiment, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">acast</span>(word <span class="sc">~</span> sentiment, <span class="at">value.var =</span> <span class="st">"n"</span>, <span class="at">fill =</span> <span class="dv">0</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comparison.cloud</span>(<span class="at">colors =</span> <span class="fu">c</span>(<span class="st">"red"</span>, <span class="st">"blue"</span>), <span class="at">max.words =</span> <span class="dv">50</span>, <span class="at">title.size =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -339,11 +366,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>I generated wordcloud using the bing sentiment analysis, which categorizes words into positive and negative groups. From the word cloud, we can see that the episode contains a number of negative words, but also some positive ones like “good,” “like,” and “beautiful.” But also we need to consider that these words are analyzed in isolation. While they are labeled as positive or negative by default, their actual meaning can change depending on the context in which they’re used.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>bing <span class="ot">&lt;-</span> my_data_txt <span class="sc">%&gt;%</span> <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">inner_join</span>(<span class="fu">get_sentiments</span>(<span class="st">"bing"</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(word, sentiment, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>bing <span class="sc">%&gt;%</span> <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>     word sentiment  n
 1    like  positive 20
@@ -360,6 +390,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>From the list above, we can see top 10 words that made the biggest sentiment contributions. Among these, 2 words are negative (“cancer”, “hell”) while the rest are positive. By looking at the result, the overall tone of the episode can be more positive. However, the appeareance of word “cancer” can mean that probably one of the characters have illness, which introduces a more emotionally heavy or serious atmosphere. Similarly, the word “hell” often reflects anger, frustration, or a chaotic situation. These two words hint at deeper emotional layers while other words gives more positive emotions.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># afinn &lt;- my_data_txt %&gt;% unnest_tokens(word, text) %&gt;% </span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co">#   inner_join(get_sentiments("afinn")) %&gt;% </span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co">#   count(word, value, sort = TRUE) %&gt;% </span></span>
@@ -368,11 +400,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># afinn %&gt;% arrange(contribution) %&gt;% slice(1:3)</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="co"># afinn %&gt;% arrange(desc(contribution)) %&gt;% slice(1:3)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Three worst words are “no”, “hell”, “shit”.<br>
 Three best words are “like”, “good”, “thank”.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># sum(afinn$contribution)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Sum of values is positive 146.</p>
 <p>The sum of sentiment values can help identify the overall emotional tone of an episode. In our case, since the total score is positive, it suggests the episode is generally positive. However, by analyzing in this way we are missing true meaning of words. For example, the word “hell” might be used in a positive or humorous way, while words considered positive—like “great”—could be used sarcastically, meaning the opposite. Additionally, simply counting the frequency of words overlooks deeper meaning. The tone and impact of a word can depend on who said it, how it was said, and in what scene. Without that context, the analysis can be incomplete or even misleading.</p>

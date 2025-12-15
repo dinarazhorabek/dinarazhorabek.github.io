@@ -1,5 +1,5 @@
 ## Hi there 👋
-[Portfolio](https://dinarazhorabek.github.io/dinarazhorabek/)
+[Portfolio](https://dinarazhorabek.github.io)
 <!--
 **kalizhaankyzy/kalizhaankyzy** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 

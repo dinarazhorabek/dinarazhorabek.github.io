@@ -182,6 +182,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="simple-linear-regression" class="level3">
 <h3 class="anchored" data-anchor-id="simple-linear-regression">Simple Linear Regression</h3>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
@@ -189,13 +191,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gplots)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>main_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'nhl_players.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>By looking at dataset, we can see that all variables that are represented by number are numeric. Even the salary column is represented as character because of the dollar sign, it is also numeric. And all other remaining variables are categorical.</p>
 <p>Categorical: name, Team_y, Position_y, Handed<br>
 Numeric: GP, G, A, P, Sh, Sh_perc, Salary, PIM, Giveaways, Takeaways, Hits, Hits.Taken, blocked_shots, PlusMinus</p>
 <p>Discrete numeric: GP, G, A, P, Sh, Giveaways, Takeaways, Hits, Hits.Taken, blocked_shots, PlusMinus Continuous numeric: Sh_perc, Salary, PIM</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(main_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 568
 Columns: 18
@@ -221,7 +227,10 @@ $ PlusMinus     &lt;int&gt; -1, 2, 0, -11, 13, 0, 0, 6, -5, -2, 11, 0, -8, -21, 
 </div>
 <p>Our dataset doesn’t have any NA values.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(main_data))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>         name        Team_y    Position_y        HANDED            GP 
             0             0             0             0             0 
@@ -235,8 +244,11 @@ $ PlusMinus     &lt;int&gt; -1, 2, 0, -11, 13, 0, 0, 6, -5, -2, 11, 0, -8, -21, 
 </div>
 <p>I renamed the columns ‘Team_y’, ‘Position_y’ by removing last two characters, since they are not useful at all.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>main_data <span class="ot">&lt;-</span> main_data <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">Team =</span> Team_y, <span class="at">Position =</span> Position_y)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(main_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "name"          "Team"          "Position"      "HANDED"       
  [5] "GP"            "G"             "A"             "P"            
@@ -247,22 +259,31 @@ $ PlusMinus     &lt;int&gt; -1, 2, 0, -11, 13, 0, 0, 6, -5, -2, 11, 0, -8, -21, 
 </div>
 <p>There are 7 duplicated name values found, after removing them we had 561 values in dataset.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>main_data<span class="sc">$</span>name[<span class="fu">duplicated</span>(main_data<span class="sc">$</span>name)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Zach Bogosian"     "Valeri Nichushkin" "Troy Brouwer"     
 [4] "Paul Byron"        "Kevin Shattenkirk" "Corey Perry"      
 [7] "Andrej Sekera"    </code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>clean_data <span class="ot">&lt;-</span> main_data <span class="sc">%&gt;%</span> <span class="fu">distinct</span>(name, <span class="at">.keep_all =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(clean_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 561</code></pre>
 </div>
 </div>
 <p>After clearing up the Salary variable from specific characters, I converted it to numeric type.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>clean_data<span class="sc">$</span>SALARY <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">"[$,]"</span>, <span class="st">""</span>, clean_data<span class="sc">$</span>SALARY))</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(clean_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>'data.frame':   561 obs. of  18 variables:
  $ name         : chr  "Zemgus Girgensons" "Zack Smith" "Zack Kassian" "Zach Parise" ...
@@ -287,10 +308,13 @@ $ PlusMinus     &lt;int&gt; -1, 2, 0, -11, 13, 0, 0, 6, -5, -2, 11, 0, -8, -21, 
 </div>
 <p>Data partitioning helps prevent biased decisions by ensuring that insights from training dataset also applicable to validation set. If we analyze first, we may unintentionally use insights that we think are applicable for every scenario while it can lead to overfitting. By partitioning first, we can ensure that our tests on training and validation sets provide independent performance measures.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">79</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>nhl.index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(clean_data)), <span class="fu">nrow</span>(clean_data)<span class="sc">*</span><span class="fl">0.6</span>)</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>nhl_train.df <span class="ot">&lt;-</span> clean_data[nhl.index, ]</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>nhl_valid.df <span class="ot">&lt;-</span> clean_data[<span class="sc">-</span>nhl.index, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>From the plot below we can see that most of players with small salary also have small number of points, and by increase of total points salary also going up. However despite the total points, it seems like other parameters also affect the salary. Because in some cases even the player has not so high points, the salary is extremely large number. For instance, let’s look at X=60, where we can see that there is one player with very high salary around 16000000, while majority’s salary below 10 million. Maybe other factors such as budget of the team, position type, total number of games played have more impact to the salary. A player with more games may be valued higher due to greater experience, and their impact on team performance could also be considered in the evaluation.</p>
 <div class="cell">
@@ -304,11 +328,17 @@ $ PlusMinus     &lt;int&gt; -1, 2, 0, -11, 13, 0, 0, 6, -5, -2, 11, 0, -8, -21, 
 </div>
 <p>Correlation is the linear relationship between two continuous variables. Pearson’s correlation measures strength of that relationship.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor</span>(nhl_train.df<span class="sc">$</span>SALARY, nhl_train.df<span class="sc">$</span>P)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6699033</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(nhl_train.df<span class="sc">$</span>SALARY, nhl_train.df<span class="sc">$</span>P)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
     Pearson's product-moment correlation
@@ -325,8 +355,11 @@ sample estimates:
 </div>
 <p>Correlation value here is 0.67, which is not strong(&lt;0.7) but around that value. High t-value and very low p-value suggests correlation is significant, meaning we can reject null hypothesis that there is no correlation between Price and Salary.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(SALARY <span class="sc">~</span> P, <span class="at">data =</span> nhl_train.df)</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -350,17 +383,26 @@ F-statistic: 271.9 on 1 and 334 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>For highest residual value in the model: Actual salary:14,500,000 Predicted salary:5,290,369 Residual is difference between actual and predicted values, which is 9,209,631 for this player.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">max</span>(<span class="fu">residuals</span>(model))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 9209631</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>max_res_index <span class="ot">&lt;-</span> <span class="fu">which.max</span>(<span class="fu">residuals</span>(model))</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>actual_data_max_res <span class="ot">&lt;-</span> nhl_train.df[max_res_index, ]</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>actual_data_max_res<span class="sc">$</span>SALARY</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 14500000</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(model, <span class="at">newdata =</span> actual_data_max_res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>    371 
 5290369 </code></pre>
@@ -368,17 +410,26 @@ F-statistic: 271.9 on 1 and 334 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>For lowest residual value in the model: Actual Salary: 1,400,000 Predicted Salary: 6,086,187 From this record we can determine which value was subtracted from another, so residual = actual - predicted = 1400000 - 6086187 = -4686187</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(<span class="fu">residuals</span>(model))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] -4686187</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>min_res_index <span class="ot">&lt;-</span> <span class="fu">which.min</span>(<span class="fu">residuals</span>(model))</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>actual_data_min_res <span class="ot">&lt;-</span> nhl_train.df[min_res_index, ]</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>actual_data_min_res<span class="sc">$</span>SALARY</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1400000</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(model, <span class="at">newdata =</span> actual_data_min_res)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>     33 
 6086187 </code></pre>
@@ -386,7 +437,10 @@ F-statistic: 271.9 on 1 and 334 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>Besides Points the number of games played, shot percentage, penalties in minutes can also impact salary. More games played more reliable player looks like, higher shot percentage shows higher efficiency of scoring, more penalties can negatively impact team. The player’s performance, and defensive skills could have more impact. Even if a player just joined the team, his strong impact on team performance and outstanding gameplay can boost their popularity. The increased demand may attract interest from other team managers which definitely influence the player’s value.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -411,17 +465,23 @@ F-statistic: 271.9 on 1 and 334 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>The regression equation is 1311280 + 99477*P From the equation, we see that even if the player doesn’t have any points he will start with 1,311,280 salary. And each earned point will increase that minimum salary by 99,477. Let’s assume P=10 –&gt; Salary=2,306,050.</p>
 <p>Since we are using our model to predict value, we need to be sure that we are not overfitting our data. Overfitting would make the model ineffective, as it would perform well on training data but fail to new, unseen data.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>train <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, nhl_train.df)</span>
 <span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>valid <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, nhl_valid.df)</span>
 <span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Training Set</span></span>
 <span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(train, nhl_train.df<span class="sc">$</span>SALARY)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                       ME    RMSE     MAE       MPE     MAPE
 Test set 0.00000000443383 2213352 1688599 -51.21713 77.33822</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validation Set</span></span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(valid, nhl_valid.df<span class="sc">$</span>SALARY)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                ME    RMSE     MAE       MPE     MAPE
 Test set -30878.14 2126314 1659595 -47.01189 71.70397</code></pre>
@@ -430,15 +490,24 @@ Test set -30878.14 2126314 1659595 -47.01189 71.70397</code></pre>
 <p>The values above show overall measures of predictive accuracy. RMSE value for validation data (2126314) is smaller than for the training data, which is 2213352. However both values are close, which is indicates that model is not overfitting. Mean absolute error for holdout set (1659595) also smaller than the value for training set (1688599). Thus, we actually see less error on validation data.</p>
 <p>Let’s compare RMSE to the standard deviation of training set. Both values are very close, and relatively accurate since SD tells us how much variable’s value differ from its mean value. If the RMSE higher than SD, model’s predictions are not much better than using the mean value of the dataset as a predictor.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(nhl_train.df<span class="sc">$</span>SALARY)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2985599</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2213352</span><span class="sc">/</span><span class="fu">sd</span>(nhl_train.df<span class="sc">$</span>SALARY)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7413428</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2126314</span><span class="sc">/</span><span class="fu">sd</span>(nhl_train.df<span class="sc">$</span>SALARY)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7121902</code></pre>
 </div>
@@ -447,15 +516,21 @@ Test set -30878.14 2126314 1659595 -47.01189 71.70397</code></pre>
 <section id="multiple-linear-regression" class="level3">
 <h3 class="anchored" data-anchor-id="multiple-linear-regression">Multiple Linear Regression</h3>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gplots)</span>
 <span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(visualize)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>nhl_train_numbers <span class="ot">&lt;-</span> nhl_train.df <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>name, <span class="sc">-</span>Team, <span class="sc">-</span>Position, <span class="sc">-</span>HANDED)</span>
 <span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>cor_table <span class="ot">&lt;-</span> nhl_train_numbers <span class="sc">%&gt;%</span> <span class="fu">cor</span>()</span>
 <span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co"># cor_table</span></span>
 <span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a><span class="fu">heatmap.2</span>(cor_table, <span class="at">Rowv=</span><span class="cn">FALSE</span>, <span class="at">Colv=</span><span class="cn">FALSE</span>, <span class="at">dendrogram=</span><span class="st">"none"</span>, <span class="at">trace =</span> <span class="st">"none"</span>, <span class="at">cellnote=</span><span class="fu">round</span>(cor_table,<span class="dv">2</span>), <span class="at">notecol =</span> <span class="st">"black"</span>, <span class="at">density.info =</span> <span class="st">"none"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -476,8 +551,11 @@ Test set -30878.14 2126314 1659595 -47.01189 71.70397</code></pre>
 </div>
 <p>In new heatmap, we can see that Takeaways and Points are highly correlated (=0.8). Maybe these numbers are not dependent, but when player took a puck from an opposite it can lead to goal. Let’s remove Takeaways from our model. The player with high giveaways have a tendency to lose a puck more often, which can decrease team’s performance. Which also can affect Points earned. Also let’s remove Hits.Taken since its highly correlated with Games Played (=0.71). More games played more possibility to make a contact with the player who has the puck. And let’s build model with remaining variables, and use backward elimination.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>nhl_train_numbers <span class="ot">&lt;-</span> nhl_train_numbers <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Takeaways, <span class="sc">-</span>Giveaways, <span class="sc">-</span>Hits.Taken)</span>
 <span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>nhl_train_numbers <span class="sc">%&gt;%</span> <span class="fu">cor</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                      GP          P      SALARY         PIM        Hits
 GP            1.00000000 0.67582735  0.42421317 0.520448294  0.49558958
@@ -499,10 +577,13 @@ PlusMinus         0.1222777 1.000000000</code></pre>
 </div>
 <p>When categorical variables used as predictors, we convert them into dummy variables. A variable with n categories will have n-1 dummy variables, and remaining one value will be as reference level. This helps in analyzing the impact of categorical predictors on the dependent variable.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>nhl_train.df <span class="ot">&lt;-</span> nhl_train.df <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>G, <span class="sc">-</span>A, <span class="sc">-</span>Sh, <span class="sc">-</span>Sh_perc, <span class="sc">-</span>Takeaways, <span class="sc">-</span>Giveaways, <span class="sc">-</span>Hits.Taken)</span>
 <span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>nhl_train.df <span class="ot">&lt;-</span> nhl_train.df <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>name)</span>
 <span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">step</span>(<span class="fu">lm</span>(SALARY<span class="sc">~</span>., <span class="at">data =</span> nhl_train.df), <span class="at">direction =</span> <span class="st">"backward"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Start:  AIC=9856.2
 SALARY ~ Team + Position + HANDED + GP + P + PIM + Hits + blocked_shots + 
@@ -574,7 +655,10 @@ SALARY ~ GP + P + Hits + blocked_shots + PlusMinus
 </div>
 <p>Below is the summary of our model. I didn’t include name of the player as an input. From the model we can see that Games Played, Hits, PlusMinus have negative impact on salary. Maybe because of the demand to new players, we got negative coef to GP.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -602,26 +686,38 @@ F-statistic: 66.31 on 5 and 330 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>mean_salary <span class="ot">&lt;-</span> <span class="fu">mean</span>(nhl_train.df<span class="sc">$</span>SALARY)</span>
 <span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>sst <span class="ot">&lt;-</span> <span class="fu">sum</span>((nhl_train.df<span class="sc">$</span>SALARY <span class="sc">-</span> mean_salary)<span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>sst</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2986122868827386</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>ssr <span class="ot">&lt;-</span> <span class="fu">sum</span>((model1<span class="sc">$</span>fitted.values<span class="sc">-</span>mean_salary)<span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>ssr</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1496580443217731</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>ssr<span class="sc">/</span>sst</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.5011785</code></pre>
 </div>
 </div>
 <p>The final value is exactly same as r-squared value of the model.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="fu">visualize.t</span>(<span class="at">stat=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">2.384</span>, <span class="fl">2.384</span>), <span class="at">df=</span><span class="dv">330</span>, <span class="at">section=</span><span class="st">"bounded"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -632,7 +728,10 @@ F-statistic: 66.31 on 5 and 330 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>t-value for GP is -2.384. After plotting distribution for that t-value, we can see that 98.2% of the curve is shaded. A bigger t-value occupy more space, and p-value goes lower. The remaining 1.8% (p-value) is the probability of obtaining a t-statistic beyond [-2.384, 2.384].</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -661,6 +760,8 @@ F-statistic: 66.31 on 5 and 330 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>F-statistic: 66.31 F-statistic tests overall significance of the model. The better the fit, the higher the F-score will be.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="co"># F-statistic calculation</span></span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>k <span class="ot">&lt;-</span> <span class="dv">5</span></span>
 <span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">336</span></span>
@@ -669,12 +770,16 @@ F-statistic: 66.31 on 5 and 330 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a>numerator <span class="ot">&lt;-</span> ssr<span class="sc">/</span>k</span>
 <span id="cb62-7"><a href="#cb62-7" aria-hidden="true" tabindex="-1"></a>denominator <span class="ot">&lt;-</span> sse <span class="sc">/</span> (n<span class="sc">-</span>k<span class="dv">-1</span>)</span>
 <span id="cb62-8"><a href="#cb62-8" aria-hidden="true" tabindex="-1"></a>numerator <span class="sc">/</span> denominator</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 66.31185</code></pre>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(model1, <span class="at">newdata =</span> <span class="fu">data.frame</span>(<span class="at">GP=</span><span class="dv">82</span>, <span class="at">P=</span><span class="dv">60</span>, <span class="at">Hits=</span><span class="dv">150</span>, <span class="at">blocked_shots=</span><span class="dv">100</span>, <span class="at">PlusMinus=</span><span class="dv">20</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>      1 
 7211812 </code></pre>
@@ -682,17 +787,23 @@ F-statistic: 66.31 on 5 and 330 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 <p>So, by using the predict() function with random data the predicted salary is $7,211,812. It was found by using Regression Equation: 1587099-24975<em>GP+118004</em>P-5146<em>Hits+21018</em>blocked_shots-36873*PlusMinus</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>train1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model1, nhl_train.df)</span>
 <span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>valid1 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model1, nhl_valid.df)</span>
 <span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Training Set</span></span>
 <span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(train1, nhl_train.df<span class="sc">$</span>SALARY)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>                        ME    RMSE     MAE       MPE     MAPE
 Test set 0.000000004849253 2105508 1592227 -46.79522 72.45567</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Validation Set</span></span>
 <span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">accuracy</span>(valid1, nhl_valid.df<span class="sc">$</span>SALARY)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>              ME    RMSE     MAE       MPE     MAPE
 Test set 39476.6 1975654 1532076 -38.84478 64.69072</code></pre>
@@ -700,11 +811,17 @@ Test set 39476.6 1975654 1532076 -38.84478 64.69072</code></pre>
 </div>
 <p>We got overall measures of predictive accuracy, now for MLR model. RMSE value for validation set (1975654) is also smaller than training set (2105508). Same with MAE, for training set is 1592227, and for validation set is 1532076. Small difference between these numbers can suggest that our model is not overfitting.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2105508</span><span class="sc">/</span><span class="fu">sd</span>(nhl_train.df<span class="sc">$</span>SALARY)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.7052214</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1975654</span><span class="sc">/</span><span class="fu">sd</span>(nhl_train.df<span class="sc">$</span>SALARY)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0.6617279</code></pre>
 </div>

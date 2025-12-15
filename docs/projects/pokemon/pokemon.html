@@ -194,6 +194,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="data-exploration" class="level2">
 <h2 class="anchored" data-anchor-id="data-exploration">Data Exploration</h2>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
@@ -201,25 +203,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggdendro)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>pokemon <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'all_pokemon_data.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-e8e1a471e9166020ac0e" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-e8e1a471e9166020ac0e">{"x":{"filter":"none","vertical":false,"caption":"<caption>Preview of Pokémon Dataset<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],["bulbasaur","ivysaur","venusaur","venusaur-mega","charmander","charmeleon","charizard","charizard-mega-x","charizard-mega-y","squirtle","wartortle","blastoise","blastoise-mega","caterpie","metapod","butterfree","weedle","kakuna","beedrill","beedrill-mega"],[1,2,3,3,4,5,6,6,6,7,8,9,9,10,11,12,13,14,15,15],["grass","grass","grass","grass","fire","fire","fire","fire","fire","water","water","water","water","bug","bug","bug","bug","bug","bug","bug"],["poison","poison","poison","poison","","","flying","dragon","flying","","","","","","","flying","poison","poison","poison","poison"],["True","True","True","True","False","False","True","True","True","False","False","False","False","False","False","True","True","True","True","True"],["generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i"],["False","False","False","True","False","False","False","True","True","False","False","False","True","False","False","False","False","False","False","True"],["Base","Base","Base","Mega","Base","Base","Base","Mega X","Mega Y","Base","Base","Base","Mega","Base","Base","Base","Base","Base","Base","Mega"],["False","False","False","True","False","False","False","True","True","False","False","False","True","False","False","False","False","False","False","True"],[1,2,3,3,1,2,3,3,3,1,2,3,3,1,2,3,1,2,3,3],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],["green","green","green","green","red","red","red","red","red","blue","blue","blue","blue","green","green","white","brown","yellow","yellow","yellow"],[45,45,45,45,45,45,45,45,45,45,45,45,45,255,120,45,255,120,45,45],[7,10,20,24,6,11,17,17,17,5,10,16,16,3,7,11,3,6,10,14],[69,130,1000,1555,85,190,905,1105,1005,90,225,855,1011,29,99,320,32,100,295,405],[28,39,79,94,24,43,67,67,67,20,39,63,63,12,28,43,12,24,39,55],[15,29,220,343,19,42,200,244,222,20,50,188,223,6,22,71,7,22,65,89],[318,405,525,625,309,405,534,634,634,314,405,530,630,195,205,395,195,205,395,495],[45,60,80,80,39,58,78,78,78,44,59,79,79,45,50,60,40,45,65,65],[49,62,82,100,52,64,84,130,104,48,63,83,103,30,20,45,35,25,90,150],[49,63,83,123,43,58,78,111,78,65,80,100,120,35,55,50,30,50,40,40],[65,80,100,122,60,80,109,130,159,50,65,85,135,20,25,90,20,25,45,15],[65,80,100,120,50,65,85,85,115,64,80,105,115,20,25,80,20,25,80,80],[45,60,80,80,65,80,100,100,100,43,58,78,78,45,30,70,50,35,75,145]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>National.Dex..<\/th>\n      <th>Primary.Typing<\/th>\n      <th>Secondary.Typing<\/th>\n      <th>Secondary.Typing.Flag<\/th>\n      <th>Generation<\/th>\n      <th>Legendary.Status<\/th>\n      <th>Form<\/th>\n      <th>Alt.Form.Flag<\/th>\n      <th>Evolution.Stage<\/th>\n      <th>Number.of.Evolution<\/th>\n      <th>Color.ID<\/th>\n      <th>Catch.Rate<\/th>\n      <th>Height..dm.<\/th>\n      <th>Weight..hg.<\/th>\n      <th>Height..in.<\/th>\n      <th>Weight..lbs.<\/th>\n      <th>Base.Stat.Total<\/th>\n      <th>Health<\/th>\n      <th>Attack<\/th>\n      <th>Defense<\/th>\n      <th>Special.Attack<\/th>\n      <th>Special.Defense<\/th>\n      <th>Speed<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"searching":false,"columnDefs":[{"className":"dt-right","targets":[2,10,11,13,14,15,16,17,18,19,20,21,22,23,24]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Name","targets":1},{"name":"National.Dex..","targets":2},{"name":"Primary.Typing","targets":3},{"name":"Secondary.Typing","targets":4},{"name":"Secondary.Typing.Flag","targets":5},{"name":"Generation","targets":6},{"name":"Legendary.Status","targets":7},{"name":"Form","targets":8},{"name":"Alt.Form.Flag","targets":9},{"name":"Evolution.Stage","targets":10},{"name":"Number.of.Evolution","targets":11},{"name":"Color.ID","targets":12},{"name":"Catch.Rate","targets":13},{"name":"Height..dm.","targets":14},{"name":"Weight..hg.","targets":15},{"name":"Height..in.","targets":16},{"name":"Weight..lbs.","targets":17},{"name":"Base.Stat.Total","targets":18},{"name":"Health","targets":19},{"name":"Attack","targets":20},{"name":"Defense","targets":21},{"name":"Special.Attack","targets":22},{"name":"Special.Defense","targets":23},{"name":"Speed","targets":24}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-049b728580144dfc6443" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-049b728580144dfc6443">{"x":{"filter":"none","vertical":false,"caption":"<caption>Preview of Pokémon Dataset<\/caption>","data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20"],["bulbasaur","ivysaur","venusaur","venusaur-mega","charmander","charmeleon","charizard","charizard-mega-x","charizard-mega-y","squirtle","wartortle","blastoise","blastoise-mega","caterpie","metapod","butterfree","weedle","kakuna","beedrill","beedrill-mega"],[1,2,3,3,4,5,6,6,6,7,8,9,9,10,11,12,13,14,15,15],["grass","grass","grass","grass","fire","fire","fire","fire","fire","water","water","water","water","bug","bug","bug","bug","bug","bug","bug"],["poison","poison","poison","poison","","","flying","dragon","flying","","","","","","","flying","poison","poison","poison","poison"],["True","True","True","True","False","False","True","True","True","False","False","False","False","False","False","True","True","True","True","True"],["generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i","generation-i"],["False","False","False","True","False","False","False","True","True","False","False","False","True","False","False","False","False","False","False","True"],["Base","Base","Base","Mega","Base","Base","Base","Mega X","Mega Y","Base","Base","Base","Mega","Base","Base","Base","Base","Base","Base","Mega"],["False","False","False","True","False","False","False","True","True","False","False","False","True","False","False","False","False","False","False","True"],[1,2,3,3,1,2,3,3,3,1,2,3,3,1,2,3,1,2,3,3],[3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3],["green","green","green","green","red","red","red","red","red","blue","blue","blue","blue","green","green","white","brown","yellow","yellow","yellow"],[45,45,45,45,45,45,45,45,45,45,45,45,45,255,120,45,255,120,45,45],[7,10,20,24,6,11,17,17,17,5,10,16,16,3,7,11,3,6,10,14],[69,130,1000,1555,85,190,905,1105,1005,90,225,855,1011,29,99,320,32,100,295,405],[28,39,79,94,24,43,67,67,67,20,39,63,63,12,28,43,12,24,39,55],[15,29,220,343,19,42,200,244,222,20,50,188,223,6,22,71,7,22,65,89],[318,405,525,625,309,405,534,634,634,314,405,530,630,195,205,395,195,205,395,495],[45,60,80,80,39,58,78,78,78,44,59,79,79,45,50,60,40,45,65,65],[49,62,82,100,52,64,84,130,104,48,63,83,103,30,20,45,35,25,90,150],[49,63,83,123,43,58,78,111,78,65,80,100,120,35,55,50,30,50,40,40],[65,80,100,122,60,80,109,130,159,50,65,85,135,20,25,90,20,25,45,15],[65,80,100,120,50,65,85,85,115,64,80,105,115,20,25,80,20,25,80,80],[45,60,80,80,65,80,100,100,100,43,58,78,78,45,30,70,50,35,75,145]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>National.Dex..<\/th>\n      <th>Primary.Typing<\/th>\n      <th>Secondary.Typing<\/th>\n      <th>Secondary.Typing.Flag<\/th>\n      <th>Generation<\/th>\n      <th>Legendary.Status<\/th>\n      <th>Form<\/th>\n      <th>Alt.Form.Flag<\/th>\n      <th>Evolution.Stage<\/th>\n      <th>Number.of.Evolution<\/th>\n      <th>Color.ID<\/th>\n      <th>Catch.Rate<\/th>\n      <th>Height..dm.<\/th>\n      <th>Weight..hg.<\/th>\n      <th>Height..in.<\/th>\n      <th>Weight..lbs.<\/th>\n      <th>Base.Stat.Total<\/th>\n      <th>Health<\/th>\n      <th>Attack<\/th>\n      <th>Defense<\/th>\n      <th>Special.Attack<\/th>\n      <th>Special.Defense<\/th>\n      <th>Speed<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"scrollX":true,"searching":false,"columnDefs":[{"className":"dt-right","targets":[2,10,11,13,14,15,16,17,18,19,20,21,22,23,24]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Name","targets":1},{"name":"National.Dex..","targets":2},{"name":"Primary.Typing","targets":3},{"name":"Secondary.Typing","targets":4},{"name":"Secondary.Typing.Flag","targets":5},{"name":"Generation","targets":6},{"name":"Legendary.Status","targets":7},{"name":"Form","targets":8},{"name":"Alt.Form.Flag","targets":9},{"name":"Evolution.Stage","targets":10},{"name":"Number.of.Evolution","targets":11},{"name":"Color.ID","targets":12},{"name":"Catch.Rate","targets":13},{"name":"Height..dm.","targets":14},{"name":"Weight..hg.","targets":15},{"name":"Height..in.","targets":16},{"name":"Weight..lbs.","targets":17},{"name":"Base.Stat.Total","targets":18},{"name":"Health","targets":19},{"name":"Attack","targets":20},{"name":"Defense","targets":21},{"name":"Special.Attack","targets":22},{"name":"Special.Defense","targets":23},{"name":"Speed","targets":24}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(pokemon)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1184   24</code></pre>
 </div>
 </div>
 <p>Dataset consists of 1184 rows and 24 columns.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">79</span>)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>random_sample <span class="ot">&lt;-</span> pokemon[<span class="fu">sample</span>(<span class="fu">nrow</span>(pokemon), <span class="dv">20</span>), ]</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(random_sample))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 0</code></pre>
 </div>
@@ -227,12 +236,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>There is no NA values in random chosen sample.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-dc1d378620de2f60d2e2" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-dc1d378620de2f60d2e2">{"x":{"filter":"none","vertical":false,"data":[["703","1155","1048","311","918"],["sawsbuck","wo-chien","calyrex","suicune","minior-violet"],[586,1001,898,245,774],["normal","dark","psychic","water","rock"],["grass","grass","grass","","flying"],["True","True","True","False","True"],["generation-v","generation-ix","generation-viii","generation-ii","generation-vii"],["False","True","True","True","False"],["Base","Base","Base","Base","Violet"],["False","False","False","False","True"],[2,1,1,1,1],[2,1,1,1,1],["brown","brown","green","blue","brown"],[75,6,3,3,30],[19,15,11,20,3],[925,742,77,1870,3],[75,59,43,79,12],[204,164,17,412,1],[475,570,500,580,500],[80,85,100,100,60],[100,85,80,75,100],[70,100,80,115,60],[60,95,80,90,100],[70,135,80,115,60],[95,70,80,85,120]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>National.Dex..<\/th>\n      <th>Primary.Typing<\/th>\n      <th>Secondary.Typing<\/th>\n      <th>Secondary.Typing.Flag<\/th>\n      <th>Generation<\/th>\n      <th>Legendary.Status<\/th>\n      <th>Form<\/th>\n      <th>Alt.Form.Flag<\/th>\n      <th>Evolution.Stage<\/th>\n      <th>Number.of.Evolution<\/th>\n      <th>Color.ID<\/th>\n      <th>Catch.Rate<\/th>\n      <th>Height..dm.<\/th>\n      <th>Weight..hg.<\/th>\n      <th>Height..in.<\/th>\n      <th>Weight..lbs.<\/th>\n      <th>Base.Stat.Total<\/th>\n      <th>Health<\/th>\n      <th>Attack<\/th>\n      <th>Defense<\/th>\n      <th>Special.Attack<\/th>\n      <th>Special.Defense<\/th>\n      <th>Speed<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[2,10,11,13,14,15,16,17,18,19,20,21,22,23,24]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Name","targets":1},{"name":"National.Dex..","targets":2},{"name":"Primary.Typing","targets":3},{"name":"Secondary.Typing","targets":4},{"name":"Secondary.Typing.Flag","targets":5},{"name":"Generation","targets":6},{"name":"Legendary.Status","targets":7},{"name":"Form","targets":8},{"name":"Alt.Form.Flag","targets":9},{"name":"Evolution.Stage","targets":10},{"name":"Number.of.Evolution","targets":11},{"name":"Color.ID","targets":12},{"name":"Catch.Rate","targets":13},{"name":"Height..dm.","targets":14},{"name":"Weight..hg.","targets":15},{"name":"Height..in.","targets":16},{"name":"Weight..lbs.","targets":17},{"name":"Base.Stat.Total","targets":18},{"name":"Health","targets":19},{"name":"Attack","targets":20},{"name":"Defense","targets":21},{"name":"Special.Attack","targets":22},{"name":"Special.Defense","targets":23},{"name":"Speed","targets":24}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e78140bcf121b141b859" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e78140bcf121b141b859">{"x":{"filter":"none","vertical":false,"data":[["703","1155","1048","311","918"],["sawsbuck","wo-chien","calyrex","suicune","minior-violet"],[586,1001,898,245,774],["normal","dark","psychic","water","rock"],["grass","grass","grass","","flying"],["True","True","True","False","True"],["generation-v","generation-ix","generation-viii","generation-ii","generation-vii"],["False","True","True","True","False"],["Base","Base","Base","Base","Violet"],["False","False","False","False","True"],[2,1,1,1,1],[2,1,1,1,1],["brown","brown","green","blue","brown"],[75,6,3,3,30],[19,15,11,20,3],[925,742,77,1870,3],[75,59,43,79,12],[204,164,17,412,1],[475,570,500,580,500],[80,85,100,100,60],[100,85,80,75,100],[70,100,80,115,60],[60,95,80,90,100],[70,135,80,115,60],[95,70,80,85,120]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>National.Dex..<\/th>\n      <th>Primary.Typing<\/th>\n      <th>Secondary.Typing<\/th>\n      <th>Secondary.Typing.Flag<\/th>\n      <th>Generation<\/th>\n      <th>Legendary.Status<\/th>\n      <th>Form<\/th>\n      <th>Alt.Form.Flag<\/th>\n      <th>Evolution.Stage<\/th>\n      <th>Number.of.Evolution<\/th>\n      <th>Color.ID<\/th>\n      <th>Catch.Rate<\/th>\n      <th>Height..dm.<\/th>\n      <th>Weight..hg.<\/th>\n      <th>Height..in.<\/th>\n      <th>Weight..lbs.<\/th>\n      <th>Base.Stat.Total<\/th>\n      <th>Health<\/th>\n      <th>Attack<\/th>\n      <th>Defense<\/th>\n      <th>Special.Attack<\/th>\n      <th>Special.Defense<\/th>\n      <th>Speed<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[2,10,11,13,14,15,16,17,18,19,20,21,22,23,24]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Name","targets":1},{"name":"National.Dex..","targets":2},{"name":"Primary.Typing","targets":3},{"name":"Secondary.Typing","targets":4},{"name":"Secondary.Typing.Flag","targets":5},{"name":"Generation","targets":6},{"name":"Legendary.Status","targets":7},{"name":"Form","targets":8},{"name":"Alt.Form.Flag","targets":9},{"name":"Evolution.Stage","targets":10},{"name":"Number.of.Evolution","targets":11},{"name":"Color.ID","targets":12},{"name":"Catch.Rate","targets":13},{"name":"Height..dm.","targets":14},{"name":"Weight..hg.","targets":15},{"name":"Height..in.","targets":16},{"name":"Weight..lbs.","targets":17},{"name":"Base.Stat.Total","targets":18},{"name":"Health","targets":19},{"name":"Attack","targets":20},{"name":"Defense","targets":21},{"name":"Special.Attack","targets":22},{"name":"Special.Defense","targets":23},{"name":"Speed","targets":24}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(random_sample)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <caption>Data summary</caption>
@@ -625,20 +637,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Categorical: National.Dex, Evolution.Stage<br>
 Numerical: Number.of.Evolution, Catch Rate, Height..dm., Weight..hg., Height..in., Weight..lbs., Base.Stat.Total, Health, Attack, Defense, Special Attack, Special Defense, Speed</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric <span class="ot">&lt;-</span> random_sample <span class="sc">%&gt;%</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span> (Name, Catch.Rate, Special.Defense, Special.Attack, Speed, Health)</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(rand_sp_numeric) <span class="ot">&lt;-</span> rand_sp_numeric<span class="sc">$</span>Name</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-2eb5d3ac1ba62b166a97" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-2eb5d3ac1ba62b166a97">{"x":{"filter":"none","vertical":false,"data":[["sawsbuck","wo-chien","calyrex","suicune","minior-violet","conkeldurr","annihilape","glastrier","ursaring","yanma","masquerain","ralts","castform-sunny","stonjourner","wugtrio","crustle","florges","wigglytuff","primeape","arctovish"],["sawsbuck","wo-chien","calyrex","suicune","minior-violet","conkeldurr","annihilape","glastrier","ursaring","yanma","masquerain","ralts","castform-sunny","stonjourner","wugtrio","crustle","florges","wigglytuff","primeape","arctovish"],[75,6,3,3,30,45,45,3,60,75,75,235,45,60,50,75,45,50,75,45],[70,135,80,115,60,65,90,110,75,45,82,35,70,20,70,75,154,50,70,90],[60,95,80,90,100,55,50,65,75,75,100,45,70,20,50,65,112,85,60,80],[95,70,80,85,120,45,90,30,55,95,80,40,70,70,120,45,75,45,95,55],[80,85,100,100,60,105,110,100,90,65,70,28,70,100,35,70,78,140,65,90]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>Catch.Rate<\/th>\n      <th>Special.Defense<\/th>\n      <th>Special.Attack<\/th>\n      <th>Speed<\/th>\n      <th>Health<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Name","targets":1},{"name":"Catch.Rate","targets":2},{"name":"Special.Defense","targets":3},{"name":"Special.Attack","targets":4},{"name":"Speed","targets":5},{"name":"Health","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-77802087e071d6f8f4b7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-77802087e071d6f8f4b7">{"x":{"filter":"none","vertical":false,"data":[["sawsbuck","wo-chien","calyrex","suicune","minior-violet","conkeldurr","annihilape","glastrier","ursaring","yanma","masquerain","ralts","castform-sunny","stonjourner","wugtrio","crustle","florges","wigglytuff","primeape","arctovish"],["sawsbuck","wo-chien","calyrex","suicune","minior-violet","conkeldurr","annihilape","glastrier","ursaring","yanma","masquerain","ralts","castform-sunny","stonjourner","wugtrio","crustle","florges","wigglytuff","primeape","arctovish"],[75,6,3,3,30,45,45,3,60,75,75,235,45,60,50,75,45,50,75,45],[70,135,80,115,60,65,90,110,75,45,82,35,70,20,70,75,154,50,70,90],[60,95,80,90,100,55,50,65,75,75,100,45,70,20,50,65,112,85,60,80],[95,70,80,85,120,45,90,30,55,95,80,40,70,70,120,45,75,45,95,55],[80,85,100,100,60,105,110,100,90,65,70,28,70,100,35,70,78,140,65,90]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Name<\/th>\n      <th>Catch.Rate<\/th>\n      <th>Special.Defense<\/th>\n      <th>Special.Attack<\/th>\n      <th>Speed<\/th>\n      <th>Health<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Name","targets":1},{"name":"Catch.Rate","targets":2},{"name":"Special.Defense","targets":3},{"name":"Special.Attack","targets":4},{"name":"Speed","targets":5},{"name":"Health","targets":6}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric <span class="ot">&lt;-</span> rand_sp_numeric <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>Name)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Performance indicators can be good options for clustering. Since Base Stat Total already covers other stats, keeping it can cause multicolinerity between variables. Therefore, I excluded Base Stat Total and instead selected a focused set of variables: Speed, Catch Rate, Health, Special Attack, Special Defense. I want to cluster pokemons based on magic-based powerhouses, because of that I chose Special variables. Speed, health, and catch rate help show how fast, tough, or easy to catch a Pokémon is—things that also reflect their overall performance.</p>
 <div class="cell">
@@ -781,35 +799,44 @@ Numerical: Number.of.Evolution, Catch Rate, Height..dm., Weight..hg., Height..in
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(rand_sp_numeric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-461b521b663cc9825df7" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-461b521b663cc9825df7">{"x":{"filter":"none","vertical":false,"data":[["sawsbuck","wo-chien","calyrex","suicune","minior-violet","conkeldurr"],[75,6,3,3,30,45],[70,135,80,115,60,65],[60,95,80,90,100,55],[95,70,80,85,120,45],[80,85,100,100,60,105]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Catch.Rate<\/th>\n      <th>Special.Defense<\/th>\n      <th>Special.Attack<\/th>\n      <th>Speed<\/th>\n      <th>Health<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Catch.Rate","targets":1},{"name":"Special.Defense","targets":2},{"name":"Special.Attack","targets":3},{"name":"Speed","targets":4},{"name":"Health","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-664d72696ce45955a3a1" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-664d72696ce45955a3a1">{"x":{"filter":"none","vertical":false,"data":[["sawsbuck","wo-chien","calyrex","suicune","minior-violet","conkeldurr"],[75,6,3,3,30,45],[70,135,80,115,60,65],[60,95,80,90,100,55],[95,70,80,85,120,45],[80,85,100,100,60,105]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Catch.Rate<\/th>\n      <th>Special.Defense<\/th>\n      <th>Special.Attack<\/th>\n      <th>Speed<\/th>\n      <th>Health<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Catch.Rate","targets":1},{"name":"Special.Defense","targets":2},{"name":"Special.Attack","targets":3},{"name":"Speed","targets":4},{"name":"Health","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>The data needs to be normalized because each column has a different range of values. This makes sure that all variables have equal weight in clustering. Otherwise, the column with higher magnitude - Catch Rate will have higher influence.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>norm <span class="ot">&lt;-</span> <span class="fu">preProcess</span>(rand_sp_numeric, <span class="at">method =</span> <span class="fu">c</span>(<span class="st">"center"</span>, <span class="st">"scale"</span>))</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>random_sample_norm <span class="ot">&lt;-</span> <span class="fu">predict</span>(norm, rand_sp_numeric)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>random_sample_norm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-759c70d6c4a7776484cb" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-759c70d6c4a7776484cb">{"x":{"filter":"none","vertical":false,"data":[["sawsbuck","wo-chien","calyrex","suicune","minior-violet","conkeldurr","annihilape","glastrier","ursaring","yanma","masquerain","ralts","castform-sunny","stonjourner","wugtrio","crustle","florges","wigglytuff","primeape","arctovish"],[0.4058610866287005,-0.9943596622403162,-1.055238825234621,-1.055238825234621,-0.5073263582858757,-0.2029305433143503,-0.2029305433143503,-1.055238825234621,0.1014652716571751,0.4058610866287005,0.4058610866287005,3.652749779658305,-0.2029305433143503,0.1014652716571751,-0.1014652716571751,0.4058610866287005,-0.2029305433143503,-0.1014652716571751,0.4058610866287005,-0.2029305433143503],[-0.2507713871049737,1.774090744798541,0.06074586395710553,1.151056242674383,-0.5622886381670529,-0.4065300126360132,0.3722631150191847,0.9952976171433431,-0.09501276157393405,-1.029564514760172,0.1230493141695214,-1.341081765822251,-0.2507713871049737,-1.80835764241537,-0.2507713871049737,-0.09501276157393405,2.365973521816491,-0.873805889229132,-0.2507713871049737,0.3722631150191847],[-0.5211651586172262,1.051315923417509,0.3773954596883367,0.8266757688411182,1.2759560779939,-0.745805313193617,-0.9704454677700077,-0.2965250040408355,0.152755305111946,0.152755305111946,1.2759560779939,-1.195085622346398,-0.07188484946444477,-2.318286395228352,-0.9704454677700077,-0.2965250040408355,1.815092448977237,0.6020356142647274,-0.5211651586172262,0.3773954596883367],[0.8622131287481131,-0.1175745175565609,0.2743405409653087,0.4702980702262435,1.842000775052787,-1.097362163861235,0.6662555994871783,-1.685234751644039,-0.7054471053393653,0.8622131287481131,0.2743405409653087,-1.29331969312217,-0.1175745175565609,-0.1175745175565609,1.842000775052787,-1.097362163861235,0.07838301170437392,-1.097362163861235,0.8622131287481131,-0.7054471053393653],[-0.07913952742729137,0.1138837102002488,0.6929534230828694,0.6929534230828694,-0.8512324779374522,0.8859766607104096,1.07899989833795,0.6929534230828694,0.306906947827789,-0.658209240309912,-0.4651860026823718,-2.086581198753709,-0.4651860026823718,0.6929534230828694,-1.816348666075153,-0.4651860026823718,-0.1563488224783074,2.237139324103191,-0.658209240309912,0.306906947827789]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Catch.Rate<\/th>\n      <th>Special.Defense<\/th>\n      <th>Special.Attack<\/th>\n      <th>Speed<\/th>\n      <th>Health<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Catch.Rate","targets":1},{"name":"Special.Defense","targets":2},{"name":"Special.Attack","targets":3},{"name":"Speed","targets":4},{"name":"Health","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-0e3ac9dd9f07f788d384" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-0e3ac9dd9f07f788d384">{"x":{"filter":"none","vertical":false,"data":[["sawsbuck","wo-chien","calyrex","suicune","minior-violet","conkeldurr","annihilape","glastrier","ursaring","yanma","masquerain","ralts","castform-sunny","stonjourner","wugtrio","crustle","florges","wigglytuff","primeape","arctovish"],[0.4058610866287005,-0.9943596622403162,-1.055238825234621,-1.055238825234621,-0.5073263582858757,-0.2029305433143503,-0.2029305433143503,-1.055238825234621,0.1014652716571751,0.4058610866287005,0.4058610866287005,3.652749779658305,-0.2029305433143503,0.1014652716571751,-0.1014652716571751,0.4058610866287005,-0.2029305433143503,-0.1014652716571751,0.4058610866287005,-0.2029305433143503],[-0.2507713871049737,1.774090744798541,0.06074586395710553,1.151056242674383,-0.5622886381670529,-0.4065300126360132,0.3722631150191847,0.9952976171433431,-0.09501276157393405,-1.029564514760172,0.1230493141695214,-1.341081765822251,-0.2507713871049737,-1.80835764241537,-0.2507713871049737,-0.09501276157393405,2.365973521816491,-0.873805889229132,-0.2507713871049737,0.3722631150191847],[-0.5211651586172262,1.051315923417509,0.3773954596883367,0.8266757688411182,1.2759560779939,-0.745805313193617,-0.9704454677700077,-0.2965250040408355,0.152755305111946,0.152755305111946,1.2759560779939,-1.195085622346398,-0.07188484946444477,-2.318286395228352,-0.9704454677700077,-0.2965250040408355,1.815092448977237,0.6020356142647274,-0.5211651586172262,0.3773954596883367],[0.8622131287481131,-0.1175745175565609,0.2743405409653087,0.4702980702262435,1.842000775052787,-1.097362163861235,0.6662555994871783,-1.685234751644039,-0.7054471053393653,0.8622131287481131,0.2743405409653087,-1.29331969312217,-0.1175745175565609,-0.1175745175565609,1.842000775052787,-1.097362163861235,0.07838301170437392,-1.097362163861235,0.8622131287481131,-0.7054471053393653],[-0.07913952742729137,0.1138837102002488,0.6929534230828694,0.6929534230828694,-0.8512324779374522,0.8859766607104096,1.07899989833795,0.6929534230828694,0.306906947827789,-0.658209240309912,-0.4651860026823718,-2.086581198753709,-0.4651860026823718,0.6929534230828694,-1.816348666075153,-0.4651860026823718,-0.1563488224783074,2.237139324103191,-0.658209240309912,0.306906947827789]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Catch.Rate<\/th>\n      <th>Special.Defense<\/th>\n      <th>Special.Attack<\/th>\n      <th>Speed<\/th>\n      <th>Health<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"Catch.Rate","targets":1},{"name":"Special.Defense","targets":2},{"name":"Special.Attack","targets":3},{"name":"Speed","targets":4},{"name":"Health","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
 <section id="hierarchical-clustering" class="level2">
 <h2 class="anchored" data-anchor-id="hierarchical-clustering">Hierarchical Clustering</h2>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>d.norm <span class="ot">&lt;-</span> <span class="fu">dist</span>(random_sample_norm, <span class="at">method=</span><span class="st">"euclidean"</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># d.norm</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>hc <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d.norm, <span class="at">method=</span><span class="st">"average"</span>)</span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdendrogram</span>(hc) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -817,8 +844,11 @@ Numerical: Number.of.Evolution, Catch Rate, Height..dm., Weight..hg., Height..in
 </figure>
 </div>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdendrogram</span>(hc) <span class="sc">+</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">3</span>, <span class="at">color =</span> <span class="st">"red"</span>, <span class="at">linetype =</span> <span class="st">"dashed"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -829,8 +859,11 @@ Numerical: Number.of.Evolution, Catch Rate, Height..dm., Weight..hg., Height..in
 </div>
 <p>The number of clusters can vary depending on how we interpret the data. If we look for very distinct groups, we can see that the leftmost cluster is clearly separate from the others. Let’s draw a line with cut point=3, and group characters based on that. As a result we get 5 groups: {ralts}, {stonjourner}, {minior-violet and wugtrio}, {wigglytuff}, {others}.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>clusters <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hc, <span class="at">k =</span> <span class="dv">5</span>)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>clusters</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>      sawsbuck       wo-chien        calyrex        suicune  minior-violet 
              1              1              1              1              2 
@@ -843,11 +876,14 @@ Numerical: Number.of.Evolution, Catch Rate, Height..dm., Weight..hg., Height..in
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric<span class="sc">$</span>cluster <span class="ot">&lt;-</span> clusters</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>cluster_mean <span class="ot">&lt;-</span> rand_sp_numeric <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span> </span>
 <span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(mean)</span>
 <span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>cluster_mean</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 6
   cluster Catch.Rate Special.Defense Special.Attack Speed Health
@@ -871,10 +907,13 @@ Numerical: Number.of.Evolution, Catch Rate, Height..dm., Weight..hg., Height..in
 <section id="data-visualization" class="level2">
 <h2 class="anchored" data-anchor-id="data-visualization">Data Visualization</h2>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric<span class="sc">$</span>cluster <span class="ot">&lt;-</span> <span class="fu">factor</span>(rand_sp_numeric<span class="sc">$</span>cluster)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rand_sp_numeric, <span class="fu">aes</span>(<span class="at">x=</span>Speed, <span class="at">y=</span>Catch.Rate, <span class="at">color=</span>cluster)) <span class="sc">+</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -885,8 +924,11 @@ Numerical: Number.of.Evolution, Catch Rate, Height..dm., Weight..hg., Height..in
 </div>
 <p>The scatter plot above shows relationship between Speed and Catch Rate across clusters. We can see one Pokemon in Cluster 3 with the highest Catch rate. Although there are two members in CLuster 2 with the highest Speed values.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rand_sp_numeric, <span class="fu">aes</span>(<span class="at">x=</span>Special.Attack, <span class="at">y=</span>Health, <span class="at">color=</span>cluster)) <span class="sc">+</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -897,8 +939,11 @@ Numerical: Number.of.Evolution, Catch Rate, Height..dm., Weight..hg., Height..in
 </div>
 <p>The scatter plot shows the relationship between Health and Special Attack across clusters. We can see that Cluster 1 members have average health and higher special attack, Cluster 4 have one member with lowest special attack and moderate health value. CLuster 5 groups Pokemon with high health and special attack, and Cluster 3 contains Pokemon with lowest health and moderate attack, likely focusing more on offense. Although, Cluster 2 consists of two Pokemon: one with lowest health and moderate attack, another with high attack and moderate health.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(rand_sp_numeric, <span class="fu">aes</span>(<span class="at">x=</span>cluster, <span class="at">y=</span>Speed)) <span class="sc">+</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -909,12 +954,18 @@ Numerical: Number.of.Evolution, Catch Rate, Height..dm., Weight..hg., Height..in
 </div>
 <p>The boxplot above shows distribution of Speed values across clusters. Cluster 1 has a large number of Pokemon, with a broader range of Speed values, while other clusters contains only 1 or 2 Pokemon. When comparing the median Speed values, Cluster 2 has the highest median Speed, indicating that these Pokemon are the fastest. Clusters 3 and 4 have lower median Speed values, meaning that these are slowest ones.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric[<span class="dv">5</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>              Catch.Rate Special.Defense Special.Attack Speed Health cluster
 minior-violet         30              60            100   120     60       2</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric <span class="sc">%&gt;%</span> <span class="fu">filter</span>(cluster<span class="sc">==</span><span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>              Catch.Rate Special.Defense Special.Attack Speed Health cluster
 minior-violet         30              60            100   120     60       2
@@ -927,6 +978,8 @@ wugtrio               50              70             50   120     35       2</co
 <h2 class="anchored" data-anchor-id="custom-weighting">Custom Weighting</h2>
 <p>Equal weighting can be problematic if some parameters are more important than others. If we want the clustering to depend more on certain variables and less on others, giving all features the same weight might not reflect what we’re really trying to group. For example, in this case, I’m more interested in clustering based on special or magical attributes, so those variables should carry more influence.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>random_sample.weighted <span class="ot">&lt;-</span> random_sample_norm</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>random_sample.weighted<span class="sc">$</span>Special.Attack <span class="ot">&lt;-</span> random_sample.weighted<span class="sc">$</span>Special.Attack<span class="sc">*</span><span class="dv">30</span></span>
@@ -934,13 +987,17 @@ wugtrio               50              70             50   120     35       2</co
 <span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>random_sample.weighted<span class="sc">$</span>Speed <span class="ot">&lt;-</span> random_sample.weighted<span class="sc">$</span>Speed<span class="sc">*</span><span class="dv">20</span></span>
 <span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>random_sample.weighted<span class="sc">$</span>Health <span class="ot">&lt;-</span> random_sample.weighted<span class="sc">$</span>Health<span class="sc">*</span><span class="dv">10</span></span>
 <span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>random_sample.weighted<span class="sc">$</span>Catch.Rate <span class="ot">&lt;-</span> random_sample.weighted<span class="sc">$</span>Catch.Rate<span class="sc">*</span><span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 <p>Since I want to cluster based on special, magic-based parameters, I assigned weights to the variables accordingly: Special attack is the most important, so it gets a weight of 30. Special defense supports magical resistance, and gets a weight of 25. Speed is useful for overall performance, so I gave it a weight of 20. Health is still important, just less critical here, with a weight of 10. Catch rate has the least impact on magical strength, so it gets a weight of 5.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>d.norm2 <span class="ot">&lt;-</span> <span class="fu">dist</span>(random_sample.weighted, <span class="at">method=</span><span class="st">"euclidean"</span>)</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>hc2 <span class="ot">&lt;-</span> <span class="fu">hclust</span>(d.norm2, <span class="at">method=</span><span class="st">"average"</span>)</span>
 <span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggdendrogram</span>(hc2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -951,8 +1008,11 @@ wugtrio               50              70             50   120     35       2</co
 </div>
 <p>In new dendrogram, the y-axis now ranges from 0 to 75, compared to the previous range of 0 to 4. This shows a wider range of dissimilarity within clusters. Also, there are no singletons in this version — all items are connected to small groups. The way the items cluster together, and the distances at which these groupings happen, are also noticeably different compared to the unweighted version. For instance, before applying weight Pokemon Ralts didn’t belong to any clear group — it was directly connected to all the remaining ones. After applying the weights, Ralts is now grouped with Stonjourner, and together they are then connected to the rest.</p>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>clusters2 <span class="ot">&lt;-</span> <span class="fu">cutree</span>(hc2, <span class="at">k =</span> <span class="dv">4</span>)</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>clusters2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>      sawsbuck       wo-chien        calyrex        suicune  minior-violet 
              1              2              1              2              3 
@@ -965,10 +1025,13 @@ wugtrio               50              70             50   120     35       2</co
 </div>
 </div>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric<span class="sc">$</span>cluster <span class="ot">&lt;-</span> clusters2</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(cluster) <span class="sc">%&gt;%</span> </span>
 <span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise_all</span>(mean)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 4 × 6
   cluster Catch.Rate Special.Defense Special.Attack Speed Health
@@ -987,12 +1050,18 @@ wugtrio               50              70             50   120     35       2</co
 <li><p>Cluster 4: highest catch rate, with other values low. These are easiest to catch, and tend to be less competitive in battle.</p></li>
 </ul>
 <div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric[<span class="dv">5</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>              Catch.Rate Special.Defense Special.Attack Speed Health cluster
 minior-violet         30              60            100   120     60       3</code></pre>
 </div>
+<details class="code-fold">
+<summary>Code</summary>
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>rand_sp_numeric <span class="sc">%&gt;%</span> <span class="fu">filter</span>(cluster<span class="sc">==</span><span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 <div class="cell-output cell-output-stdout">
 <pre><code>              Catch.Rate Special.Defense Special.Attack Speed Health cluster
 minior-violet         30              60            100   120     60       3
