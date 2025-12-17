@@ -1,148 +1,377 @@
-.image-hover-container {
+/* =========================================================
+   THEME VARIABLES (GitHub-like)
+========================================================= */
+:root{
+  --gh-bg: #f6f8fa;
+  --gh-card: #ffffff;
+  --gh-text: #1f2328;
+  --gh-muted: #57606a;
+  --gh-border: #d0d7de;
+  --gh-link: #0969da;
+}
+
+/* =========================================================
+   GLOBAL TYPOGRAPHY
+========================================================= */
+html{
+  font-size: 16px;
+}
+
+body{
+  background: var(--gh-bg);
+  color: var(--gh-text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+p{ margin: 0.6em 0; }
+
+a{
+  color: var(--gh-link);
+  text-decoration: none;
+}
+a:hover{ text-decoration: underline; }
+
+ul, ol{ padding-left: 1.2em; }
+
+/* Headings */
+h1, h2, h3, h4, h5, h6{
+  font-weight: 700;
+  line-height: 1.25;
+  /* margin-top: 1.6em; */
+  margin-bottom: 0.6em;
+}
+h1{ font-size: 32px; margin-top: 0; }
+h2{ font-size: 24px;}
+h3{ font-size: 18px; }
+h4{ font-size: 16px; }
+h5, h6{ font-size: 14px; color: var(--gh-muted); }
+
+#intro h2{
+  margin-top: 0;
+}
+/* =========================================================
+   QUARTO OVERRIDES
+========================================================= */
+#quarto-content,
+.quarto-container,
+.page-columns,
+.content,
+main.content{
+  max-width: none !important;
+}
+
+#quarto-content{
+  padding-top: 18px;
+}
+
+/* =========================================================
+   LAYOUT (3 columns)
+========================================================= */
+.gh-layout{
+  width: min(1200px, 100%);
+  margin: 0 auto;
+  padding: 18px 16px;
+
   display: grid;
-  grid-template-columns: auto auto auto; /* Creates three equal-width columns */
-  padding: 10px;
-  gap: 10px; /* Optional gap between images */
+  grid-template-columns: 260px minmax(0, 1fr) 260px;
+  gap: 16px;
+  align-items: start;
 }
 
-.image-hover-wrapper {
-  position: relative; /* For positioning the hover text */
-  overflow: hidden; /* Clip the hover text if it extends beyond */
+.gh-left,
+.gh-main,
+.gh-right{
+  min-width: 0;
 }
 
-.hover-image {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  transition: opacity 0.3s ease-in-out; /* Optional fade effect */
+.gh-left,
+.gh-right{
+  position: sticky;
+  top: 16px;
+  align-self: start;
 }
 
-.image-hover-wrapper:hover .hover-image {
-  opacity: 0.7; /* Optional dimming on hover */
+/* readable center column */
+.gh-main{
+  max-width: 900px;
 }
 
-.image-hover-wrapper::before {
-  content: attr(aria-label); /* Get text from the alt attribute */
-  position: absolute;
-  top: 0;
-  left: 0;
+.gh-project-card{
+  margin: 18px 0;
+}
+
+/* Responsive */
+@media (max-width: 1100px){
+  .gh-layout{
+    grid-template-columns: 260px minmax(0, 1fr);
+  }
+  .gh-right{ display:none; }
+}
+@media (max-width: 780px){
+  .gh-layout{
+    grid-template-columns: 1fr;
+  }
+  .gh-left,
+  .gh-right{
+    position: static;
+  }
+  .gh-main{
+    max-width: none;
+  }
+}
+
+/* =========================================================
+   CARDS & SIDEBAR
+========================================================= */
+.gh-card{
+  background: var(--gh-card);
+  border: 1px solid var(--gh-border);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 1px 0 rgba(27,31,36,0.04);
+}
+
+.gh-side-title{
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--gh-muted);
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+.gh-profile{
+  text-align: center;
+}
+
+.gh-avatar{
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid var(--gh-border);
+  margin-bottom: 10px;
+}
+
+.gh-name{
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.gh-role{
+  font-size: 13px;
+  color: var(--gh-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+.gh-mini{
+  font-size: 12.5px;
+  color: var(--gh-muted);
+  margin-top: 10px;
+  line-height: 1.45;
+}
+
+.gh-links{
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.gh-links a{
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+.gh-search{
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-  color: white;
+  border: 1px solid var(--gh-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  outline: none;
+  font-size: 14px;
+}
+.gh-search:focus{
+  border-color: var(--gh-link);
+  box-shadow: 0 0 0 3px rgba(9,105,218,0.15);
+}
+
+/* =========================================================
+   TAG COLORS
+========================================================= */
+.tag-python{ --tag-color:#2f81f7; }
+.tag-r{ --tag-color:#d29922; }
+.tag-sql{ --tag-color:#3fb950; }
+.tag-plotly{ --tag-color:#ff7b72; }
+
+.tag-ml{ --tag-color:#7ee787; }
+.tag-nlp{ --tag-color:#58a6ff; }
+.tag-eda{ --tag-color:#f2cc60; }
+
+.tag-regression{ --tag-color:#a371f7; }
+.tag-classification{ --tag-color:#d2a8ff; }
+.tag-clustering{ --tag-color:#ffa657; }
+.tag-hackathon{ --tag-color:#ff9bce; }
+
+/* =========================================================
+   PILLS & TAG BUTTONS
+========================================================= */
+.gh-pills{
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gh-pill{
+  border: 1px solid var(--gh-border);
+  background: #fff;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.gh-pill:hover{
+  background: #f3f4f6;
+}
+
+/* Reset as text */
+.gh-pill-reset{
+  border: none !important;
+  background: transparent !important;
+  padding: 7px 0 !important;
+  color: var(--gh-muted) !important;
+  font-weight: 600;
+}
+.gh-pill-reset:hover{
+  color: var(--gh-link) !important;
+  text-decoration: underline;
+}
+.gh-pill-reset.is-active{
+  box-shadow: none !important;
+}
+
+/* Card tag buttons */
+.gh-tag{
+  border: 1px solid var(--gh-border);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+
+  display: inline-flex;
   align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  text-align: center;
-  padding: 10px;
-  box-sizing: border-box; /* Ensure padding doesn't increase size */
+  gap: 6px;
+  color: var(--gh-text);
 }
 
-.image-hover-wrapper:hover::before {
-  opacity: 1;
+.gh-tag:hover{
+  background: #f3f4f6;
 }
 
-/* .image-hover-container {
+/* Dots */
+.gh-tag-dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #8c959f;
+}
+
+.tag-python .gh-tag-dot,
+.tag-r .gh-tag-dot,
+.tag-sql .gh-tag-dot,
+.tag-plotly .gh-tag-dot,
+.tag-ml .gh-tag-dot,
+.tag-nlp .gh-tag-dot,
+.tag-eda .gh-tag-dot,
+.tag-regression .gh-tag-dot,
+.tag-classification .gh-tag-dot,
+.tag-clustering .gh-tag-dot,
+.tag-hackathon .gh-tag-dot{
+  background: var(--tag-color);
+}
+
+/* Active highlight */
+.gh-pill.is-active,
+.gh-tag.is-active{
+  border-color: var(--tag-color, var(--gh-link));
+  box-shadow: 0 0 0 3px rgba(9,105,218,0.12);
+}
+
+/* =========================================================
+   PROJECT CARDS
+========================================================= */
+.gh-project-card{
+  background: var(--gh-card);
+  border: 1px solid var(--gh-border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(27,31,36,0.04);
+  margin: 14px 0;
+}
+
+.gh-project-top{
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.gh-project-icon{
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  border: 1px solid var(--gh-border);
+  background: #fff;
   display: grid;
-  grid-template-columns: auto auto auto;
-  padding: 10px;
-  gap: 10px;
+  place-items: center;
+  flex: 0 0 auto;
+  box-shadow: 0 6px 18px rgba(27,31,36,0.06);
 }
 
-.image-hover-container a {
-  display: block;
+.gh-project-icon span{
+  font-size: 22px;
+  line-height: 1;
 }
 
-.hover-image {
-  max-width: 100%;
-  height: auto;
-  display: block;
-} */
+.gh-project-title{
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
 
+.gh-project-desc{
+  margin-top: 6px;
+  color: var(--gh-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
 
-
-/* .hover-text { */
-  /* position: absolute; */
-  /* top: 0; */
-  /* left: 0; */
-  /* width: 100%; */
-  /* height: 100%; */
-  /* color: white;
-  background-color: rgba(0, 0, 0, 0.6);
+.gh-project-tags{
   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.4s ease;
-  text-align: center;
-  padding: 1rem;
-  border-radius: 8px;
-  font-weight: 600; */
-/* } */
-/* .image-hover-container {
-    position: relative;
-    display: flex;
-    width: 60%;
-  }
-  
-  .hover-image {
-    width: 100%;
-    display: block;
-    border-radius: 8px;
-  }
-  
-  .hover-text {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    text-align: center;
-    padding: 1rem;
-    border-radius: 8px;
-    font-weight: 600;
-  }
-  
-  .image-hover-container:hover .hover-text {
-    opacity: 1;
-  }
-   */
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
 
-   /* .image-hover-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  } */
-
-  /* .hover-image {
-    width: 100%;
-    height: auto;
-  } */
-
-  /* .hover-text {
-    display: none;
-  } */
-/* 
-  .image-hover-container a:hover .hover-text {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 10px;
-    text-align: center;
-  } */
-
+/* =========================================================
+   PLOTLY
+========================================================= */
+.plotly,
+.html-widget,
+.plotly-graph-div{
+  width: 100% !important;
+}

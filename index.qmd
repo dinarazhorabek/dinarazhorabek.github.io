@@ -1,296 +1,357 @@
 ---
-title: "Dinara Zhorabek"
+title: ""
+format:
+  html:
+    toc: true
+    toc-location: body
+    toc-depth: 2
+    page-layout: full
 ---
-<style>
-    .title{
-        display: none;
-    }
-    body .page-columns {
-        display: flex!important;
-        justify-content: center;
-        /* width: 70%; */
-        /* margin: 0 auto; */
-    }
-    .htitle, .home-intro {
-        width: 70%;
-        margin: 0 auto;
-    }
-    .htitle{
-        text-align: center;
-        padding: 2em 3em;
-    }
-    ul.social-buttons li a {
-        font-size: 20px;
-        line-height: 40px;
-        display: block;
-        width: 40px;
-        height: 40px;
-        -webkit-transition: all 0.3s;
-        -moz-transition: all 0.3s;
-        transition: all 0.3s;
-        color: white;
-        border-radius: 100%;
-        outline: none;
-        background-color: #212529;
-    }
-    ul.social-buttons li a:hover{
-        background-color: #69b3a2;
-    }
-    ul.social-buttons li a i{
-        color: white;
-    }
 
-    .home-intro{
-        display: flex;
-        justify-content: space-between;
-    }
-    .row {
-        display: flex;
-        flex-wrap: wrap;
-        margin-right: -15px;
-        margin-left: -15px;
-        align-items: center;
-        justify-content: center;
-    }   
-    #projects div{
-        /* margin: 0 auto; */
-        text-align: center;
-    }
-    .projects-subheading{
-        font-size: 16px;
-        font-weight: 400;
-        font-style: italic;
-        margin-bottom: 45px;
-    }
-    /* .portfolio-item{
-        margin: 20px auto!important;
-    } */
-    .portfolio-item .portfolio-link {
-        position: relative;
-        display: block;
-        margin: 0 auto;
-        cursor: pointer;
-        border-radius: 2%;
-    }
-    .portfolio-item .portfolio-link .portfolio-hover {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        -webkit-transition: all ease 1s;
-        -moz-transition: all ease 1s;
-        transition: all ease 1s;
-        opacity: 0;
-        background: rgba(88, 170, 151, 0.7);
-        border-radius: 2%;
-        background-color: #69b3a2 !important;
-    }
-    .portfolio-item .portfolio-link .portfolio-hover:hover{
-        opacity: 1;
-    }
-    .portfolio-item .portfolio-link .portfolio-hover .portfolio-hover-content {
-        font-size: 22px;
-        position: absolute;
-        top: 20%;
-        width: 100%;
-        height: 20px;
-        margin-top: -12px;
-        text-align: center;
-        color: white;
-        padding: 0 20px;
-    }
-    .img-fluid{
-        width: 100%;
-        height: auto;
-        border-radius: 2%;
-    }
-    @media (min-width: 768px) {
-    .portfolio-item {
-        max-width: 20%;
-        margin: 1% 2%;
-        }
-    }
-    @media (max-width: 768px) {
-    .portfolio-item {max-width: 45%;}
-    }
-</style>
+<div class="gh-layout">
 
-<div class="htitle">
-<p style="display:inline; font-size: 35px;">Dinara Zhorabek</p>
-<p style="margin: 2% 0;"><b>Business & Data Analyst | Full Stack Software Engineer</b></p>
-<hr style="width: 100px; height: 1px; border:none;color:#333;background-color:#333; margin:3% auto;"/>
-<ul class="list-inline social-buttons">
-<li class="list-inline-item social-buttons">
-[{{< fa brands github >}}](https://github.com/kalizhaankyzy)
-</li>
-<li class="list-inline-item social-buttons">
-[{{< fa brands linkedin >}}](https://www.linkedin.com/in/dinarazhorabek/)
-</li>
-</ul><br>
+<!-- LEFT SIDEBAR -->
+<div class="gh-left">
+<div class="gh-card gh-profile">
+<img class="gh-avatar" src="./images/main.jpg" alt="Dinara Zhorabek">
+<div class="gh-name">Dinara Zhorabek</div>
+<div class="gh-role">Data Analyst · Data Scientist · Full Stack Software Engineer</div>
+
+<div class="gh-links">
+<a href="https://github.com/kalizhaankyzy" target="_blank" rel="noopener">GitHub</a>
+<a href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a>
+</div>
+
+<div class="gh-mini">
+MS Applied Business Analytics · Boston University<br>
+Python · R · SQL · Plotly · Tableau · Power BI
+</div>
+</div>
 
 </div>
 
-<div style="background-color: #f8f9fa; padding: 100px 0;">
+<!-- CENTER CONTENT -->
+<div class="gh-main">
+<div id="intro">
 
-::: {.home-intro}
-<div style="max-width:33.3%;">
-![](./images/main.jpg){.home-image}
-</div>
-<div style="max-width:66.7%; padding: 15px;">
-Hi, I'm Dinara.
+## Hi, I’m Dinara.
 
-An aspiring business & data analyst and middle software engineer, avid traveler, passionate about continuous learning, problem-solving, and empowering others through data-driven solutions.
+An aspiring data analyst and data scientist, software engineer, avid traveler, passionate about continuous learning, problem-solving, and empowering others through data-driven solutions.
 
-I am pursuing a Master's degree in Applied Business Analytics at [Boston University](https://www.bu.edu/) and received a B.S. in Information and Communication Technology from [Kazakh-British Technical University](https://kbtu.edu.kz/en/). 
+I am pursuing a Master’s degree in Applied Business Analytics at [Boston University](https://www.bu.edu/) and received a B.S. in Information and Communication Technology from [Kazakh-British Technical University](https://kbtu.edu.kz/en/).
 
 I’m skilled in Python, R, SQL, Tableau and Power BI, and I am deeply committed to using data and technology to solve business challenges.
+</div>
+
+<div id="projects"></div>
+
+## Projects
+
+
+<!-- Airbnb -->
+<div class="gh-project-card" data-tags="python plotly eda geospatial">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>🗺️</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/airbnb/airbnb-copenhagen.html">Words, Locations, and Prices</a>
+</h3>
+<div class="gh-project-desc">
+Airbnb analysis in Copenhagen exploring neighborhood patterns, listing language, and pricing signals with interactive visuals.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-plotly" data-filter="plotly"><span class="gh-tag-dot"></span>Plotly</button>
+<button class="gh-tag tag-eda" data-filter="eda"><span class="gh-tag-dot"></span>EDA</button>
+<button class="gh-tag tag-geospatial" data-filter="geospatial"><span class="gh-tag-dot"></span>Geospatial</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Vortex -->
+<div class="gh-project-card" data-tags="python hackathon time-series finance">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>⚡</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/vortex/main.html">Vortex Sentiment Adaptive Volatility (VSAV)</a>
+</h3>
+<div class="gh-project-desc">
+Hackathon project building a sentiment-aware volatility strategy with backtests and interactive reporting.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-hackathon" data-filter="hackathon"><span class="gh-tag-dot"></span>Hackathon</button>
+<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-time-series" data-filter="time-series"><span class="gh-tag-dot"></span>Time Series</button>
+<button class="gh-tag tag-finance" data-filter="finance"><span class="gh-tag-dot"></span>Finance</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Spotify -->
+<div class="gh-project-card" data-tags="python ml classification">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>🎧</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/spotify/analysis.html">You Like This Song…But Will George Like It?</a>
+</h3>
+<div class="gh-project-desc">
+User behavior classification with Spotify streaming data to predict preference patterns and key drivers.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-ml" data-filter="ml"><span class="gh-tag-dot"></span>ML</button>
+<button class="gh-tag tag-classification" data-filter="classification"><span class="gh-tag-dot"></span>Classification</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Pokémon -->
+<div class="gh-project-card" data-tags="python clustering">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>🧩</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/pokemon/pokemon.html">Clustering Pokémon</a>
+</h3>
+<div class="gh-project-desc">
+A hierarchical approach to character grouping using clustering methods and similarity analysis.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-clustering" data-filter="clustering"><span class="gh-tag-dot"></span>Clustering</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Breaking Bad -->
+<div class="gh-project-card" data-tags="r nlp text-mining">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>🗣️</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/text_mining/breaking_bad.html">Say My Name</a>
+</h3>
+<div class="gh-project-desc">
+Unpacking emotion and language in Breaking Bad using R text mining and sentiment analysis.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-r" data-filter="r"><span class="gh-tag-dot"></span>R</button>
+<button class="gh-tag tag-nlp" data-filter="nlp"><span class="gh-tag-dot"></span>NLP</button>
+<button class="gh-tag tag-text-mining" data-filter="text-mining"><span class="gh-tag-dot"></span>Text Mining</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Complaint Classifier -->
+<div class="gh-project-card" data-tags="python ml classification nlp">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>📨</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/consumer_complaints/naive_bayes.html">Complaint Classifier</a>
+</h3>
+<div class="gh-project-desc">
+Naïve Bayes model to classify consumer complaints and predict dispute outcomes.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-ml" data-filter="ml"><span class="gh-tag-dot"></span>ML</button>
+<button class="gh-tag tag-classification" data-filter="classification"><span class="gh-tag-dot"></span>Classification</button>
+<button class="gh-tag tag-nlp" data-filter="nlp"><span class="gh-tag-dot"></span>NLP</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Groceries -->
+<div class="gh-project-card" data-tags="r association-rules">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>🧺</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/groceries/arules.html">Market Basket Insights</a>
+</h3>
+<div class="gh-project-desc">
+Association rule mining to discover product co-purchase patterns and actionable bundles.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-r" data-filter="r"><span class="gh-tag-dot"></span>R</button>
+<button class="gh-tag tag-association-rules" data-filter="association-rules"><span class="gh-tag-dot"></span>Association Rules</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- NHL -->
+<div class="gh-project-card" data-tags="python ml regression">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>🏒</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/nhl_players/nhl_players_analysis.html">Skating through Data</a>
+</h3>
+<div class="gh-project-desc">
+Forecasting hockey player salaries using statistical analysis and machine learning methods.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-ml" data-filter="ml"><span class="gh-tag-dot"></span>ML</button>
+<button class="gh-tag tag-regression" data-filter="regression"><span class="gh-tag-dot"></span>Regression</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Video Games -->
+<div class="gh-project-card" data-tags="python ml classification">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>🎮</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/video_games/classification.html">Console to Category</a>
+</h3>
+<div class="gh-project-desc">
+Predicting video game sales outcomes using classification trees and model comparison.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-ml" data-filter="ml"><span class="gh-tag-dot"></span>ML</button>
+<button class="gh-tag tag-classification" data-filter="classification"><span class="gh-tag-dot"></span>Classification</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Vancouver 311 -->
+<div class="gh-project-card" data-tags="python plotly eda">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>🏙️</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/vancouver_311/vancouver_311.html">Voices of the City</a>
+</h3>
+<div class="gh-project-desc">
+Analyzing Vancouver’s 311 service requests to uncover trends, hotspots, and operational insights.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-plotly" data-filter="plotly"><span class="gh-tag-dot"></span>Plotly</button>
+<button class="gh-tag tag-eda" data-filter="eda"><span class="gh-tag-dot"></span>EDA</button>
+</div>
+</div>
+</div>
+</div>
 
 </div>
 
-:::
+<!-- RIGHT SIDEBAR -->
+<div class="gh-right">
+
+<div class="gh-card">
+<div class="gh-side-title">Search</div>
+<input id="siteSearch" class="gh-search" type="search" placeholder="Type something…">
+<div style="margin-top:8px; color:var(--gh-muted); font-size:12px;">
+Filters projects as you type.
+</div>
+</div>
+
+<div class="gh-card" style="margin-top:12px;">
+<div class="gh-side-title">Tags</div>
+
+<div class="gh-pills" id="tagPills">
+<button class="gh-pill tag-python" data-filter="python">Python</button>
+<button class="gh-pill tag-r" data-filter="r">R</button>
+<button class="gh-pill tag-sql" data-filter="sql">SQL</button>
+<button class="gh-pill tag-plotly" data-filter="plotly">Plotly</button>
+
+<button class="gh-pill tag-ml" data-filter="ml">ML</button>
+<button class="gh-pill tag-nlp" data-filter="nlp">NLP</button>
+<button class="gh-pill tag-eda" data-filter="eda">EDA</button>
+
+<button class="gh-pill tag-regression" data-filter="regression">Regression</button>
+<button class="gh-pill tag-classification" data-filter="classification">Classification</button>
+<button class="gh-pill tag-clustering" data-filter="clustering">Clustering</button>
+
+<button class="gh-pill tag-hackathon" data-filter="hackathon">Hackathon</button>
+
+<button class="gh-pill gh-pill-reset" data-filter="all">Reset</button>
+</div>
+</div>
 
 </div>
 
-
-
-<!-- ::: {#projects} -->
-<div id="projects">
-<div>
-<h2 class="text-uppercase" style="font-weight:10;font-size: 40px;">Portfolio</h2>
-<h3 class="projects-subheading">A glimpse of the projects I've been working on</h3>
-</div>
-<!-- <div id="portfolio-button-container">
-<button class="btn btn-secondary active" data-portfolio-section="all">Show all</button>
-<button class="btn btn-secondary" data-portfolio-section="mining">R</button>
-<button class="btn btn-secondary" data-portfolio-section="mining">Python</button>
-<button class="btn btn-secondary" data-portfolio-section="dataviz">Hackathon>
-<button class="btn btn-secondary" data-portfolio-section="dashboard">SQL|MySQL</button>
-</div> -->
-<!-- <br> -->
-
-
-<div id="portfolio-items" class="row">
-
-<div class="portfolio-item">
-<a class="portfolio-link" data-toggle="modal" href="./projects/airbnb/airbnb-copenhagen.html">
-<div class="portfolio-hover">
-<div class="portfolio-hover-content">
-<p>Words, Locations, and Prices</p>
-<hr>
-<p class="explanation_portfolio">Airbnb Analysis in Copenhagen.<br></p>
-</div>
-</div>
-<img class="img-fluid" src="images/copenhagen-main.jpg"></a>
 </div>
 
-<div class="portfolio-item">
-<a class="portfolio-link" data-toggle="modal" href="./projects/vortex/main.html">
-<div class="portfolio-hover">
-<div class="portfolio-hover-content">
-<p>MET ABA Hackathon 2025</p><hr>
-<p class="explanation_portfolio">Vortex Sentiment Adaptive Volatility (VSAV) Strategy.<br></p>
-</div>
-</div>
-<img class="img-fluid" src="images/vortex.png">
-</a>
-</div>
+<script>
+(function () {
+const MATCH_MODE = "OR"; // OR / AND
+const active = new Set();
 
-<div class="portfolio-item">
-<a class="portfolio-link" data-toggle="modal" href="./projects/spotify/analysis.html">
-<div class="portfolio-hover">
-<div class="portfolio-hover-content">
-<p>You Like This Song…But Will George Like It?</p>
-<hr>
-<p class="explanation_portfolio">User Behavior Classification with Spotify Streaming Data.<br></p>
-</div>
-</div>
-<img class="img-fluid" src="images/spot.jpeg"></a>
-</div>
+function getTokens(el) {
+const raw = (el.getAttribute("data-tags") || "").toLowerCase().trim();
+return new Set(raw.split(/\s+/).filter(Boolean));
+}
 
-<div class="portfolio-item">
-<a class="portfolio-link" data-toggle="modal" href="./projects/pokemon/pokemon.html">
-<div class="portfolio-hover">
-<div class="portfolio-hover-content">
-<p>Clustering Pokémon</p><hr>
-<p class="explanation_portfolio">A Hierarchical Approach to Character Grouping.<br></p>
-</div>
-</div>
-<img class="img-fluid" src="images/pokemon-main.jpg">
-</a>
-</div>
+function applyFilters() {
+const q = (document.getElementById("siteSearch")?.value || "").trim().toLowerCase();
 
-<div class="portfolio-item">
-<a class="portfolio-link" data-toggle="modal" href="./projects/text_mining/breaking_bad.html">
-<div class="portfolio-hover">
-<div class="portfolio-hover-content">
-<p>Say My Name</p><hr>
-<p class="explanation_portfolio">Unpacking Emotion and Language in Breaking Bad Using R.<br></p>
-</div>
-</div>
-<img class="img-fluid" src="images/breaking_bad.jpg">
-</a>
-</div>
+document.querySelectorAll(".gh-project-card").forEach(el => {
+const tokens = getTokens(el);
 
-<div class="portfolio-item">
-<a class="portfolio-link" data-toggle="modal" href="./projects/consumer_complaints/naive_bayes.html">
-<div class="portfolio-hover">
-<div class="portfolio-hover-content">
-<p>Complaint Classifier</p>
-<hr>
-<p class="explanation_portfolio">Utilized the Naïve Bayes algorithm to classify and predict consumer disputes.<br></p>
-</div>
-</div>
-<img class="img-fluid" src="images/complaints.webp">
-</a>
-</div>
+let showByTags = true;
+if (active.size > 0) {
+showByTags = (MATCH_MODE === "AND")
+? [...active].every(t => tokens.has(t))
+: [...active].some(t => tokens.has(t));
+}
 
-<div class="portfolio-item">
-<a class="portfolio-link" data-toggle="modal" href="./projects/groceries/arules.html">
-<div class="portfolio-hover">
-<div class="portfolio-hover-content">
-<p>Market Basket Insights</p><hr>
-<p class="explanation_portfolio">Association rule mining.<br></p>
-</div>
-</div>
-<img class="img-fluid" src="images/basket.jpeg">
-</a>
-</div>
+let showBySearch = true;
+if (q) {
+showBySearch = el.innerText.toLowerCase().includes(q);
+}
 
-<div class="portfolio-item">
-<a class="portfolio-link" data-toggle="modal" href="./projects/nhl_players/nhl_players_analysis.html">
-<div class="portfolio-hover">
-<div class="portfolio-hover-content">
-<p>Skating through Data</p><hr>
-<p class="explanation_portfolio">Forecasting hockey player salaries by utilizing statistical analysis and machine learning methods.<br></p>
-</div>
-</div>
-<img class="img-fluid" src="images/hockey.jpeg">
-</a>
-</div>
+el.style.display = (showByTags && showBySearch) ? "" : "none";
+});
 
-<div class="portfolio-item">
-<a class="portfolio-link" data-toggle="modal" href="./projects/video_games/classification.html">
-<div class="portfolio-hover">
-<div class="portfolio-hover-content">
-<p>Console to Category</p><hr>
-<p class="explanation_portfolio">Predicting Video Game Sales Using Classification Trees.<br></p>
-</div>
-</div>
-<img class="img-fluid" src="images/vgames.jpeg">
-</a>
-</div>
+highlightActive();
+}
 
-<div class="portfolio-item">
-<a class="portfolio-link" data-toggle="modal" href="./projects/vancouver_311/vancouver_311.html">
-<div class="portfolio-hover">
-<div class="portfolio-hover-content">
-<p>Voices of the City</p><hr>
-<p class="explanation_portfolio">Analyzing Vancouver’s Service Request Patterns.<br></p>
-</div>
-</div>
-<img class="img-fluid" src="./images/vancouver.jpeg">
-</a>
-</div>
+function highlightActive() {
+document.querySelectorAll(".gh-pill[data-filter], .gh-tag[data-filter]").forEach(btn => {
+const tag = btn.dataset.filter.toLowerCase();
+if (tag === "all") {
+btn.classList.toggle("is-active", active.size === 0);
+} else {
+btn.classList.toggle("is-active", active.has(tag));
+}
+});
+}
 
+function toggle(tag) {
+tag = tag.toLowerCase();
+if (tag === "all") {
+active.clear();
+} else {
+active.has(tag) ? active.delete(tag) : active.add(tag);
+}
+applyFilters();
+}
 
-</div>
-</div>
+document.addEventListener("click", (e) => {
+const btn = e.target.closest(".gh-pill[data-filter], .gh-tag[data-filter]");
+if (!btn) return;
+toggle(btn.dataset.filter);
+});
+
+document.getElementById("siteSearch")?.addEventListener("input", applyFilters);
+
+applyFilters();
+})();
+</script>

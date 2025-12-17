@@ -1,25 +1,28 @@
 project:
   type: website
-  output-dir: docs
+  # output-dir: docs
 
 website:
   title: "Dinara Zhorabek"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - text: Intro
-        href: index.qmd#intro
-      - text: Portfolio
-        href: index.qmd#projects
+  navbar: false
+    # left:
+    #   - href: index.qmd
+    #     text: Home
+    #   - text: Intro
+    #     href: index.qmd#intro
+    #   - text: Portfolio
+    #     href: index.qmd#projects
 
 format:
   html:
-    theme:
-      - minty
-      - brand
-    css: styles.css
+    # theme:
+    #   - minty
+    #   - brand
     toc: true
+    toc-location: body
+    toc-depth: 2
+    page-layout: full
+    css: styles.css
     code-fold: true
 
 execute: 
