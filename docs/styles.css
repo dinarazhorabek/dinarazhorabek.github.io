@@ -1,148 +1,506 @@
-.image-hover-container {
-  display: grid;
-  grid-template-columns: auto auto auto; /* Creates three equal-width columns */
-  padding: 10px;
-  gap: 10px; /* Optional gap between images */
+/* =========================================================
+   THEME VARIABLES (GitHub-like)
+========================================================= */
+:root{
+  --gh-bg: #f6f8fa;
+  --gh-card: #ffffff;
+  --gh-text: #1f2328;
+  --gh-muted: #57606a;
+  --gh-border: #d0d7de;
+  --gh-link: #0969da;
 }
 
-.image-hover-wrapper {
-  position: relative; /* For positioning the hover text */
-  overflow: hidden; /* Clip the hover text if it extends beyond */
+/* =========================================================
+   GLOBAL TYPOGRAPHY
+========================================================= */
+html{
+  font-size: 16px;
 }
 
-.hover-image {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  transition: opacity 0.3s ease-in-out; /* Optional fade effect */
+body{
+  background: var(--gh-bg);
+  color: var(--gh-text);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont,
+               "Segoe UI", Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
 }
 
-.image-hover-wrapper:hover .hover-image {
-  opacity: 0.7; /* Optional dimming on hover */
-}
+p{ margin: 0.6em 0; }
 
-.image-hover-wrapper::before {
-  content: attr(aria-label); /* Get text from the alt attribute */
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-  color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.3s ease-in-out;
-  text-align: center;
-  padding: 10px;
-  box-sizing: border-box; /* Ensure padding doesn't increase size */
+a{
+  color: var(--gh-link);
+  text-decoration: none;
 }
+a:hover{ text-decoration: underline; }
 
-.image-hover-wrapper:hover::before {
-  opacity: 1;
+ul, ol{ padding-left: 1.2em; }
+
+/* Headings */
+h1, h2, h3, h4, h5, h6{
+  font-weight: 700;
+  line-height: 1.25;
+  margin-bottom: 0.6em;
 }
+h1{ font-size: 32px; margin-top: 0; }
+h2{ font-size: 24px; }
+h3{ font-size: 18px; }
+h4{ font-size: 16px; }
+h5, h6{ font-size: 14px; color: var(--gh-muted); }
 
-/* .image-hover-container {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  padding: 10px;
-  gap: 10px;
-}
+#intro h2{ margin-top: 0; }
 
-.image-hover-container a {
-  display: block;
-}
-
-.hover-image {
-  max-width: 100%;
-  height: auto;
-  display: block;
+/* =========================================================
+   QUARTO OVERRIDES (FULL WIDTH + REMOVE CONTENT CAP)
+========================================================= */
+/* #quarto-content,
+.quarto-container,
+.page-columns{
+  max-width: none !important;
 } */
 
+/* This is the important parent that was capping you (~897px) */
+/* main#quarto-document-content{
+  max-width: none !important;
+  width: 100% !important;
+} */
+
+/* Remove side padding that can keep things visually narrow */
+main#quarto-document-content.content{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+#quarto-content{
+  padding-top: 18px;
+}
+
+/* =========================================================
+   LAYOUT (3 columns)
+========================================================= */
+.gh-layout{
+  width: min(1500px, 100%);
+  margin: 0 auto;
+  padding: 18px 24px;
+
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1.8fr) 300px;
+  column-gap: 40px;   /* horizontal space between columns */
+  row-gap: 20px;
+  align-items: start;
+}
 
 
-/* .hover-text { */
-  /* position: absolute; */
-  /* top: 0; */
-  /* left: 0; */
-  /* width: 100%; */
-  /* height: 100%; */
-  /* color: white;
-  background-color: rgba(0, 0, 0, 0.6);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  opacity: 0;
-  transition: opacity 0.4s ease;
+/* Allow center to actually expand */
+.gh-main{
+  max-width: none;
+}
+
+.gh-left,
+.gh-main,
+.gh-right{
+  min-width: 0;
+}
+
+.gh-left,
+.gh-right{
+  position: sticky;
+  top: 16px;
+  align-self: start;
+}
+
+.gh-project-card{
+  margin: 18px 0;
+}
+
+/* Responsive */
+@media (max-width: 1100px){
+  .gh-layout{
+    grid-template-columns: 260px minmax(0, 1fr);
+    padding: 18px 16px;
+  }
+  .gh-right{ display: none; }
+}
+@media (max-width: 780px){
+  .gh-layout{
+    grid-template-columns: 1fr;
+    padding: 16px 14px;
+  }
+  .gh-left,
+  .gh-right{
+    position: static;
+  }
+  .gh-main{
+    max-width: none;
+  }
+}
+
+/* =========================================================
+   CARDS & SIDEBAR
+========================================================= */
+.gh-card{
+  background: var(--gh-card);
+  border: 1px solid var(--gh-border);
+  border-radius: 12px;
+  padding: 14px;
+  box-shadow: 0 1px 0 rgba(27,31,36,0.04);
+}
+
+.gh-side-title{
+  font-weight: 700;
+  font-size: 12px;
+  color: var(--gh-muted);
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   PROFILE
+========================================================= */
+.gh-profile{
   text-align: center;
-  padding: 1rem;
-  border-radius: 8px;
-  font-weight: 600; */
-/* } */
-/* .image-hover-container {
-    position: relative;
-    display: flex;
-    width: 60%;
-  }
-  
-  .hover-image {
-    width: 100%;
-    display: block;
-    border-radius: 8px;
-  }
-  
-  .hover-text {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    text-align: center;
-    padding: 1rem;
-    border-radius: 8px;
-    font-weight: 600;
-  }
-  
-  .image-hover-container:hover .hover-text {
-    opacity: 1;
-  }
-   */
+}
 
-   /* .image-hover-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  } */
+.gh-avatar{
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  object-fit: cover;
+  border: 1px solid var(--gh-border);
+  margin-bottom: 10px;
+}
 
-  /* .hover-image {
-    width: 100%;
-    height: auto;
-  } */
+.gh-name{
+  font-size: 18px;
+  font-weight: 700;
+}
 
-  /* .hover-text {
-    display: none;
-  } */
-/* 
-  .image-hover-container a:hover .hover-text {
-    display: block;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: white;
-    padding: 10px;
-    text-align: center;
-  } */
+.gh-role{
+  font-size: 13px;
+  color: var(--gh-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
 
+.gh-mini{
+  font-size: 12.5px;
+  color: var(--gh-muted);
+  margin-top: 10px;
+  line-height: 1.45;
+}
+
+.gh-links{
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+.gh-links a{
+  font-weight: 600;
+  font-size: 13px;
+}
+
+/* =========================================================
+   SEARCH
+========================================================= */
+.gh-search{
+  width: 100%;
+  border: 1px solid var(--gh-border);
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fff;
+  outline: none;
+  font-size: 14px;
+}
+.gh-search:focus{
+  border-color: var(--gh-link);
+  box-shadow: 0 0 0 3px rgba(9,105,218,0.15);
+}
+
+/* =========================================================
+   TAG COLORS (Grouped palette)
+   - Languages: blues
+   - Visualization: pinks / reds
+   - Data / EDA: amber / yellow
+   - ML core: greens
+   - NLP: purples
+   - Tools / Apps: teals
+   - Methods: oranges
+========================================================= */
+
+/* Languages */
+.tag-python{ --tag-color:#2563eb; }     /* blue */
+.tag-r{ --tag-color:#1d4ed8; }          /* deeper blue */
+.tag-sql{ --tag-color:#0ea5e9; }        /* cyan-blue */
+
+/* Visualization */
+.tag-plotly{ --tag-color:#e11d48; }     /* rose */
+.tag-ggplot2{ --tag-color:#be123c; }    /* deeper rose */
+
+/* Mapping / Geo / Spatial */
+.tag-leaflet{ --tag-color:#06b6d4; }    /* teal-cyan */
+.tag-geospatial{ --tag-color:#14b8a6; } /* teal */
+
+/* Apps / Dashboards */
+.tag-streamlit{ --tag-color:#f97316; }  /* orange */
+
+/* EDA / Data work */
+.tag-eda{ --tag-color:#f59e0b; }        /* amber */
+.tag-text-mining{ --tag-color:#fbbf24; }/* yellow-amber */
+
+/* ML core */
+.tag-ml{ --tag-color:#16a34a; }         /* green */
+.tag-trees{ --tag-color:#22c55e; }      /* lighter green */
+
+/* NLP */
+.tag-nlp{ --tag-color:#7c3aed; }        /* purple */
+
+/* Modeling / Methods */
+.tag-regression{ --tag-color:#fb7185; }     /* light rose */
+.tag-classification{ --tag-color:#a855f7; } /* violet */
+.tag-clustering{ --tag-color:#f97316; }     /* orange */
+
+/* Misc project types */
+.tag-hackathon{ --tag-color:#ec4899; }  /* pink */
+.tag-time-series{ --tag-color:#f43f5e; }/* red-rose */
+.tag-finance{ --tag-color:#10b981; }    /* emerald */
+
+/* Association rules */
+.tag-association-rules{ --tag-color:#c084fc; } /* soft purple */
+
+/* =========================================================
+   PILLS & TAG BUTTONS
+========================================================= */
+.gh-pills{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gh-pill{
+  border: 1px solid var(--gh-border);
+  background: #fff;
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.gh-pill:hover{
+  background: #f3f4f6;
+}
+
+/* Reset as text */
+.gh-pill-reset{
+  border: none !important;
+  background: transparent !important;
+  padding: 7px 0 !important;
+  color: var(--gh-muted) !important;
+  font-weight: 600;
+}
+.gh-pill-reset:hover{
+  color: var(--gh-link) !important;
+  text-decoration: underline;
+}
+.gh-pill-reset.is-active{
+  box-shadow: none !important;
+}
+
+/* Card tag buttons */
+.gh-tag{
+  border: 1px solid var(--gh-border);
+  background: #fff;
+  border-radius: 999px;
+  padding: 6px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--gh-text);
+}
+
+.gh-tag:hover{
+  background: #f3f4f6;
+}
+
+/* Dots */
+.gh-tag-dot{
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #8c959f;
+}
+
+/* Dots use the tag color */
+.tag-python .gh-tag-dot,
+.tag-r .gh-tag-dot,
+.tag-sql .gh-tag-dot,
+.tag-plotly .gh-tag-dot,
+.tag-ggplot2 .gh-tag-dot,
+.tag-leaflet .gh-tag-dot,
+.tag-geospatial .gh-tag-dot,
+.tag-streamlit .gh-tag-dot,
+.tag-ml .gh-tag-dot,
+.tag-nlp .gh-tag-dot,
+.tag-eda .gh-tag-dot,
+.tag-text-mining .gh-tag-dot,
+.tag-regression .gh-tag-dot,
+.tag-classification .gh-tag-dot,
+.tag-clustering .gh-tag-dot,
+.tag-trees .gh-tag-dot,
+.tag-hackathon .gh-tag-dot,
+.tag-time-series .gh-tag-dot,
+.tag-finance .gh-tag-dot,
+.tag-association-rules .gh-tag-dot{
+  background: var(--tag-color);
+}
+
+/* Active highlight: color-only, subtle */
+.gh-pill.is-active,
+.gh-tag.is-active{
+  border-color: var(--tag-color, var(--gh-link));
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--tag-color, #0969da) 35%, transparent);
+}
+
+/* Slight tint background for active pills (optional, looks nice) */
+.gh-pill.is-active{
+  background: color-mix(in srgb, var(--tag-color, #0969da) 10%, white);
+}
+
+/* =========================================================
+   PROJECT CARDS
+========================================================= */
+.gh-project-card{
+  background: var(--gh-card);
+  border: 1px solid var(--gh-border);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 1px 0 rgba(27,31,36,0.04);
+  margin: 14px 0;
+}
+
+.gh-project-top{
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+
+.gh-project-icon{
+  width: 54px;
+  height: 54px;
+  border-radius: 999px;
+  border: 1px solid var(--gh-border);
+  background: #fff;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  box-shadow: 0 6px 18px rgba(27,31,36,0.06);
+}
+
+.gh-project-icon span{
+  font-size: 22px;
+  line-height: 1;
+}
+
+.gh-project-title{
+  font-size: 20px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.gh-project-desc{
+  margin-top: 6px;
+  color: var(--gh-muted);
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.gh-project-tags{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+/* =========================================================
+   PLOTLY / WIDGETS
+========================================================= */
+.plotly,
+.html-widget,
+.plotly-graph-div{
+  width: 100% !important;
+}
+
+/* =========================================================
+   HARD OVERRIDE: remove Quarto page-columns width constraint
+   (lets our .gh-layout control the real width)
+========================================================= */
+
+/* Make Quarto's outer layout a simple 1-column grid */
+#quarto-content.page-columns{
+  grid-template-columns: [screen-start] 1fr [screen-end] !important;
+  column-gap: 0 !important;
+}
+
+/* Force Quarto's main content area to span full width */
+main#quarto-document-content{
+  grid-column: screen-start / screen-end !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* Also force any direct children of #quarto-content to span full width
+   (helps when Quarto inserts wrappers) */
+#quarto-content.page-columns > *{
+  grid-column: screen-start / screen-end !important;
+}
+
+/* Optional: kill any leftover side padding that makes it look narrow */
+main#quarto-document-content.content{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* =========================================================
+   Quarto TOC in our RIGHT column (keep native look)
+========================================================= */
+
+/* Remove any card-like look if inherited */
+.gh-right nav#TOC{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Quarto sometimes renders a title inside the TOC */
+.gh-right nav#TOC .title{
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gh-muted);
+  margin: 0 0 10px 0;
+}
+
+/* Keep Quarto highlight behavior (active section) */
+.gh-right nav#TOC a.active,
+.gh-right nav#TOC .active > a{
+  font-weight: 600;
+}
+
+/* Slightly nicer spacing like Quarto default */
+.gh-right nav#TOC ul{
+  margin: 0;
+  padding-left: 0.9rem;
+}
+.gh-right nav#TOC li{
+  margin: 6px 0;
+}
