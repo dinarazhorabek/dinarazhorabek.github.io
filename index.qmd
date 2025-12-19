@@ -13,7 +13,7 @@ format: html-home
 <div class="gh-role">Data Analyst · Data Scientist · Full Stack Software Engineer</div>
 
 <div class="gh-links">
-<a href="https://github.com/kalizhaankyzy" target="_blank" rel="noopener">GitHub</a>
+<a href="https://github.com/dinarazhorabek" target="_blank" rel="noopener">GitHub</a>
 <a href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a>
 </div>
 
@@ -278,8 +278,8 @@ Filters projects as you type.
 <div class="gh-pills" id="tagPills">
 <button class="gh-pill tag-python" data-filter="python">Python</button>
 <button class="gh-pill tag-r" data-filter="r">R</button>
-<button class="gh-pill tag-plotly" data-filter="plotly">plotly</button>
-<button class="gh-tag tag-streamlit" data-filter="streamlit">streamlit</button>
+<button class="gh-pill tag-plotly" data-filter="plotly">Plotly</button>
+<button class="gh-tag tag-streamlit" data-filter="streamlit">Streamlit</button>
 <button class="gh-pill tag-ggplot2" data-filter="ggplot2">ggplot2</button>
 <button class="gh-tag tag-leaflet" data-filter="leaflet">leaflet</button>
 
