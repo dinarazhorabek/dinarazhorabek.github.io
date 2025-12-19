@@ -219,21 +219,55 @@ main#quarto-document-content.content{
 }
 
 /* =========================================================
-   TAG COLORS
+   TAG COLORS (Grouped palette)
+   - Languages: blues
+   - Visualization: pinks / reds
+   - Data / EDA: amber / yellow
+   - ML core: greens
+   - NLP: purples
+   - Tools / Apps: teals
+   - Methods: oranges
 ========================================================= */
-.tag-python{ --tag-color:#2f81f7; }
-.tag-r{ --tag-color:#d29922; }
-.tag-sql{ --tag-color:#3fb950; }
-.tag-plotly{ --tag-color:#ff7b72; }
 
-.tag-ml{ --tag-color:#7ee787; }
-.tag-nlp{ --tag-color:#58a6ff; }
-.tag-eda{ --tag-color:#f2cc60; }
+/* Languages */
+.tag-python{ --tag-color:#2563eb; }     /* blue */
+.tag-r{ --tag-color:#1d4ed8; }          /* deeper blue */
+.tag-sql{ --tag-color:#0ea5e9; }        /* cyan-blue */
 
-.tag-regression{ --tag-color:#a371f7; }
-.tag-classification{ --tag-color:#d2a8ff; }
-.tag-clustering{ --tag-color:#ffa657; }
-.tag-hackathon{ --tag-color:#ff9bce; }
+/* Visualization */
+.tag-plotly{ --tag-color:#e11d48; }     /* rose */
+.tag-ggplot2{ --tag-color:#be123c; }    /* deeper rose */
+
+/* Mapping / Geo / Spatial */
+.tag-leaflet{ --tag-color:#06b6d4; }    /* teal-cyan */
+.tag-geospatial{ --tag-color:#14b8a6; } /* teal */
+
+/* Apps / Dashboards */
+.tag-streamlit{ --tag-color:#f97316; }  /* orange */
+
+/* EDA / Data work */
+.tag-eda{ --tag-color:#f59e0b; }        /* amber */
+.tag-text-mining{ --tag-color:#fbbf24; }/* yellow-amber */
+
+/* ML core */
+.tag-ml{ --tag-color:#16a34a; }         /* green */
+.tag-trees{ --tag-color:#22c55e; }      /* lighter green */
+
+/* NLP */
+.tag-nlp{ --tag-color:#7c3aed; }        /* purple */
+
+/* Modeling / Methods */
+.tag-regression{ --tag-color:#fb7185; }     /* light rose */
+.tag-classification{ --tag-color:#a855f7; } /* violet */
+.tag-clustering{ --tag-color:#f97316; }     /* orange */
+
+/* Misc project types */
+.tag-hackathon{ --tag-color:#ec4899; }  /* pink */
+.tag-time-series{ --tag-color:#f43f5e; }/* red-rose */
+.tag-finance{ --tag-color:#10b981; }    /* emerald */
+
+/* Association rules */
+.tag-association-rules{ --tag-color:#c084fc; } /* soft purple */
 
 /* =========================================================
    PILLS & TAG BUTTONS
@@ -303,25 +337,40 @@ main#quarto-document-content.content{
   background: #8c959f;
 }
 
+/* Dots use the tag color */
 .tag-python .gh-tag-dot,
 .tag-r .gh-tag-dot,
 .tag-sql .gh-tag-dot,
 .tag-plotly .gh-tag-dot,
+.tag-ggplot2 .gh-tag-dot,
+.tag-leaflet .gh-tag-dot,
+.tag-geospatial .gh-tag-dot,
+.tag-streamlit .gh-tag-dot,
 .tag-ml .gh-tag-dot,
 .tag-nlp .gh-tag-dot,
 .tag-eda .gh-tag-dot,
+.tag-text-mining .gh-tag-dot,
 .tag-regression .gh-tag-dot,
 .tag-classification .gh-tag-dot,
 .tag-clustering .gh-tag-dot,
-.tag-hackathon .gh-tag-dot{
+.tag-trees .gh-tag-dot,
+.tag-hackathon .gh-tag-dot,
+.tag-time-series .gh-tag-dot,
+.tag-finance .gh-tag-dot,
+.tag-association-rules .gh-tag-dot{
   background: var(--tag-color);
 }
 
-/* Active highlight */
+/* Active highlight: color-only, subtle */
 .gh-pill.is-active,
 .gh-tag.is-active{
   border-color: var(--tag-color, var(--gh-link));
-  box-shadow: 0 0 0 3px rgba(9,105,218,0.12);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--tag-color, #0969da) 35%, transparent);
+}
+
+/* Slight tint background for active pills (optional, looks nice) */
+.gh-pill.is-active{
+  background: color-mix(in srgb, var(--tag-color, #0969da) 10%, white);
 }
 
 /* =========================================================
