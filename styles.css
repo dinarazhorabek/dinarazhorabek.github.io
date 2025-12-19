@@ -40,27 +40,35 @@ ul, ol{ padding-left: 1.2em; }
 h1, h2, h3, h4, h5, h6{
   font-weight: 700;
   line-height: 1.25;
-  /* margin-top: 1.6em; */
   margin-bottom: 0.6em;
 }
 h1{ font-size: 32px; margin-top: 0; }
-h2{ font-size: 24px;}
+h2{ font-size: 24px; }
 h3{ font-size: 18px; }
 h4{ font-size: 16px; }
 h5, h6{ font-size: 14px; color: var(--gh-muted); }
 
-#intro h2{
-  margin-top: 0;
-}
+#intro h2{ margin-top: 0; }
+
 /* =========================================================
-   QUARTO OVERRIDES
+   QUARTO OVERRIDES (FULL WIDTH + REMOVE CONTENT CAP)
 ========================================================= */
-#quarto-content,
+/* #quarto-content,
 .quarto-container,
-.page-columns,
-.content,
-main.content{
+.page-columns{
   max-width: none !important;
+} */
+
+/* This is the important parent that was capping you (~897px) */
+/* main#quarto-document-content{
+  max-width: none !important;
+  width: 100% !important;
+} */
+
+/* Remove side padding that can keep things visually narrow */
+main#quarto-document-content.content{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
 #quarto-content{
@@ -71,14 +79,21 @@ main.content{
    LAYOUT (3 columns)
 ========================================================= */
 .gh-layout{
-  width: min(1200px, 100%);
+  width: min(1500px, 100%);
   margin: 0 auto;
-  padding: 18px 16px;
+  padding: 18px 24px;
 
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr) 260px;
-  gap: 16px;
+  grid-template-columns: 280px minmax(0, 1.8fr) 300px;
+  column-gap: 40px;   /* horizontal space between columns */
+  row-gap: 20px;
   align-items: start;
+}
+
+
+/* Allow center to actually expand */
+.gh-main{
+  max-width: none;
 }
 
 .gh-left,
@@ -94,11 +109,6 @@ main.content{
   align-self: start;
 }
 
-/* readable center column */
-.gh-main{
-  max-width: 900px;
-}
-
 .gh-project-card{
   margin: 18px 0;
 }
@@ -107,12 +117,14 @@ main.content{
 @media (max-width: 1100px){
   .gh-layout{
     grid-template-columns: 260px minmax(0, 1fr);
+    padding: 18px 16px;
   }
-  .gh-right{ display:none; }
+  .gh-right{ display: none; }
 }
 @media (max-width: 780px){
   .gh-layout{
     grid-template-columns: 1fr;
+    padding: 16px 14px;
   }
   .gh-left,
   .gh-right{
@@ -368,10 +380,78 @@ main.content{
 }
 
 /* =========================================================
-   PLOTLY
+   PLOTLY / WIDGETS
 ========================================================= */
 .plotly,
 .html-widget,
 .plotly-graph-div{
   width: 100% !important;
+}
+
+/* =========================================================
+   HARD OVERRIDE: remove Quarto page-columns width constraint
+   (lets our .gh-layout control the real width)
+========================================================= */
+
+/* Make Quarto's outer layout a simple 1-column grid */
+#quarto-content.page-columns{
+  grid-template-columns: [screen-start] 1fr [screen-end] !important;
+  column-gap: 0 !important;
+}
+
+/* Force Quarto's main content area to span full width */
+main#quarto-document-content{
+  grid-column: screen-start / screen-end !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+/* Also force any direct children of #quarto-content to span full width
+   (helps when Quarto inserts wrappers) */
+#quarto-content.page-columns > *{
+  grid-column: screen-start / screen-end !important;
+}
+
+/* Optional: kill any leftover side padding that makes it look narrow */
+main#quarto-document-content.content{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* =========================================================
+   Quarto TOC in our RIGHT column (keep native look)
+========================================================= */
+
+/* Remove any card-like look if inherited */
+.gh-right nav#TOC{
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Quarto sometimes renders a title inside the TOC */
+.gh-right nav#TOC .title{
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--gh-muted);
+  margin: 0 0 10px 0;
+}
+
+/* Keep Quarto highlight behavior (active section) */
+.gh-right nav#TOC a.active,
+.gh-right nav#TOC .active > a{
+  font-weight: 600;
+}
+
+/* Slightly nicer spacing like Quarto default */
+.gh-right nav#TOC ul{
+  margin: 0;
+  padding-left: 0.9rem;
+}
+.gh-right nav#TOC li{
+  margin: 6px 0;
 }

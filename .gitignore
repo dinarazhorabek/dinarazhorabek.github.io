@@ -6,4 +6,4 @@ projects/vancouver_311/vancouver_311_requests.csv
 projects/spotify/spotify-2023.csv
 projects/spotify/spotify.csv
 .venv/
-_site/
+# _site/

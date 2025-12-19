@@ -1,5 +1,7 @@
 ---
 title: "City service requests made in Vancouver, British Columbia from 2022 to the present."
+format: html
+output-file: vancouver_311.html
 ---
 
 This project focuses on exploring and visualizing data related to city service requests in Vancouver, British Columbia. The dataset is sourced from Vancouver’s Open Data Portal and contains information about service requests made from 2022 to the present.
@@ -14,7 +16,8 @@ library(dplyr)
 library(lubridate)
 library(leaflet)
 
-vancouver_df <- read.csv('./vancouver_311_requests.csv', sep = ';')
+csv_path <- file.path(dirname(knitr::current_input()), "vancouver_311_requests.csv")
+vancouver_df <- read.csv(csv_path, sep = ";")
 ```
 
 ```{r, echo=FALSE, message=FALSE, results='hide'}

@@ -1,7 +1,0 @@
----
-title: "About me"
----
-
-During the final year of my bachelor's studies, I began working full-time as a Full-Stack Software Engineer in the banking industry at VTB Bank Kazakhstan. In this role, I applied my academic knowledge in real-world scenarios and gained significant experience. In this role, I developed web applications from the ground up, enhanced existing ones, and managed databases. My work involved third-party API integrations, performance tuning, and seamless deployment into production environments. I led frontend and backend development using technologies such as Java, Node.js, React, and Oracle APEX, and worked extensively with PostgreSQL and Oracle databases. Additionally, I utilized tools like DBMS Profiler and Query Analyzer to optimize query performance and ensure system reliability.
-
-This experience led me to discover a fascination with data management and analytics — the way data surrounds us and can yield powerful insights into trends, behaviors, and decision-making. This interest inspired me to dive deeper into data analytics through online courses, and ultimately, to pursue a graduate degree in Applied Business Analytics at Boston University. So now, I'm a graduate student:)

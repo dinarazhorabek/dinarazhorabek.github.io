@@ -1,0 +1,23 @@
+<div class="gh-right">
+  <!-- <div class="gh-card"> -->
+    <div id="gh-toc-slot"></div>
+  <!-- </div> -->
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Move gh-right INTO the gh-layout grid (as the 3rd column)
+  const layout = document.querySelector(".gh-layout");
+  const right = document.querySelector(".gh-right");
+  if (layout && right) layout.appendChild(right);
+
+  // Move Quarto TOC into our slot
+  const quartoToc = document.querySelector("#quarto-margin-sidebar nav#TOC");
+  const slot = document.querySelector("#gh-toc-slot");
+  if (quartoToc && slot) slot.appendChild(quartoToc);
+
+  // Hide Quarto margin sidebar container
+  const margin = document.querySelector("#quarto-margin-sidebar");
+  if (margin) margin.style.display = "none";
+});
+</script>

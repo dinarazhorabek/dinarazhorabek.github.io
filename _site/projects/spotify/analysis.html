@@ -1,0 +1,1523 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.43">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>K-Nearest Neighbors: You Like This Song…But Will George Like It? – Dinara Zhorabek</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-d4d76bf8491c20bad77d141916dc28e1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-79108a0fc1995748cbd19a5b0e3e3e7c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<link href="../../site_libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="../../site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="../../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+<script src="../../site_libs/datatables-binding-0.33/datatables.js"></script>
+<script src="../../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<link href="../../site_libs/dt-core-1.13.6/css/jquery.dataTables.min.css" rel="stylesheet">
+<link href="../../site_libs/dt-core-1.13.6/css/jquery.dataTables.extra.css" rel="stylesheet">
+<script src="../../site_libs/dt-core-1.13.6/js/jquery.dataTables.min.js"></script>
+<link href="../../site_libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="../../site_libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body>
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link active" data-scroll-target="#data-exploration">Data Exploration</a></li>
+  <li><a href="#data-partition" id="toc-data-partition" class="nav-link" data-scroll-target="#data-partition">Data Partition</a></li>
+  <li><a href="#normalization" id="toc-normalization" class="nav-link" data-scroll-target="#normalization">Normalization</a></li>
+  <li><a href="#clustering" id="toc-clustering" class="nav-link" data-scroll-target="#clustering">Clustering</a></li>
+  <li><a href="#limitations-of-model" id="toc-limitations-of-model" class="nav-link" data-scroll-target="#limitations-of-model">Limitations of model</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+<div class="gh-layout">
+
+  <!-- LEFT -->
+  <div class="gh-left">
+    <div class="gh-card gh-profile">
+      <img class="gh-avatar" src="../../images/main.jpg" alt="Dinara Zhorabek">
+      <div class="gh-name">Dinara Zhorabek</div>
+      <div class="gh-role">Business &amp; Data Analyst · Full Stack Software Engineer</div>
+
+      <div class="gh-links">
+        <a href="https://github.com/kalizhaankyzy" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+
+      <div class="gh-mini">
+        MS Applied Business Analytics · Boston University<br>
+        Python · R · SQL · Plotly · Tableau · Power BI
+      </div>
+    </div>
+
+    <div class="gh-card" style="margin-top:12px;">
+      <div class="gh-side-title">Back</div>
+      <a href="../../index.html#projects">← All Projects</a>
+    </div>
+  </div>
+
+  <!-- CENTER (page content starts after this include) -->
+  <div class="gh-main">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">K-Nearest Neighbors: You Like This Song…But Will George Like It?</h1>
+</div>
+
+
+
+<div class="quarto-title-meta column-page-left">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In this project, I’ll use k-NN clustering analysis to find out whether George—a fictional character—would vibe with my song or not.</p>
+<p>This work is part of an assignment for the AD699 Data Mining course.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(skimr)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(FNN)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>spotify_2023 <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'spotify-2023.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(spotify_2023)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   953 obs. of  24 variables:
+ $ track_name          : chr  "Seven (feat. Latto) (Explicit Ver.)" "LALA" "vampire" "Cruel Summer" ...
+ $ artist.s._name      : chr  "Latto, Jung Kook" "Myke Towers" "Olivia Rodrigo" "Taylor Swift" ...
+ $ artist_count        : int  2 1 1 1 1 2 2 1 1 2 ...
+ $ released_year       : int  2023 2023 2023 2019 2023 2023 2023 2023 2023 2023 ...
+ $ released_month      : int  7 3 6 8 5 6 3 7 5 3 ...
+ $ released_day        : int  14 23 30 23 18 1 16 7 15 17 ...
+ $ in_spotify_playlists: int  553 1474 1397 7858 3133 2186 3090 714 1096 2953 ...
+ $ in_spotify_charts   : int  147 48 113 100 50 91 50 43 83 44 ...
+ $ streams             : chr  "141381703" "133716286" "140003974" "800840817" ...
+ $ in_apple_playlists  : int  43 48 94 116 84 67 34 25 60 49 ...
+ $ in_apple_charts     : int  263 126 207 207 133 213 222 89 210 110 ...
+ $ in_deezer_playlists : chr  "45" "58" "91" "125" ...
+ $ in_deezer_charts    : int  10 14 14 12 15 17 13 13 11 13 ...
+ $ in_shazam_charts    : chr  "826" "382" "949" "548" ...
+ $ bpm                 : int  125 92 138 170 144 141 148 100 130 170 ...
+ $ key                 : chr  "B" "C#" "F" "A" ...
+ $ mode                : chr  "Major" "Major" "Major" "Major" ...
+ $ danceability_.      : int  80 71 51 55 65 92 67 67 85 81 ...
+ $ valence_.           : int  89 61 32 58 23 66 83 26 22 56 ...
+ $ energy_.            : int  83 74 53 72 80 58 76 71 62 48 ...
+ $ acousticness_.      : int  31 7 17 11 14 19 48 37 12 21 ...
+ $ instrumentalness_.  : int  0 0 0 0 63 0 0 0 0 0 ...
+ $ liveness_.          : int  8 10 31 11 11 8 8 11 28 8 ...
+ $ speechiness_.       : int  4 4 6 15 6 24 3 4 9 33 ...</code></pre>
+</div>
+</div>
+<p>My song is Money Trees - Kendrick Lamar, Jay Rock. I’m a big fan of Kendrick’s music, and especially songs from this album is one of the favorites of mine.</p>
+<p>Here is the values of this song from dataset:<br>
+danceability: 74<br>
+energy: 53<br>
+speechiness: 10<br>
+acousticness: 7<br>
+liveness: 21<br>
+valence: 37<br>
+BPM: 144</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>my_song <span class="ot">&lt;-</span> spotify_2023 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(track_name <span class="sc">==</span> <span class="st">'Money Trees'</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>my_song</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-4c708b822e719217a181" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-4c708b822e719217a181">{"x":{"filter":"none","vertical":false,"data":[["1"],["Money Trees"],["Kendrick Lamar, Jay Rock"],[2],[2012],[1],[1],[26792],[32],["1093605526"],[69],[113],["695"],[0],["458"],[144],["E"],["Minor"],[74],[37],[53],[7],[0],[21],[10]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>track_name<\/th>\n      <th>artist.s._name<\/th>\n      <th>artist_count<\/th>\n      <th>released_year<\/th>\n      <th>released_month<\/th>\n      <th>released_day<\/th>\n      <th>in_spotify_playlists<\/th>\n      <th>in_spotify_charts<\/th>\n      <th>streams<\/th>\n      <th>in_apple_playlists<\/th>\n      <th>in_apple_charts<\/th>\n      <th>in_deezer_playlists<\/th>\n      <th>in_deezer_charts<\/th>\n      <th>in_shazam_charts<\/th>\n      <th>bpm<\/th>\n      <th>key<\/th>\n      <th>mode<\/th>\n      <th>danceability_.<\/th>\n      <th>valence_.<\/th>\n      <th>energy_.<\/th>\n      <th>acousticness_.<\/th>\n      <th>instrumentalness_.<\/th>\n      <th>liveness_.<\/th>\n      <th>speechiness_.<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[3,4,5,6,7,8,10,11,13,15,18,19,20,21,22,23,24]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"track_name","targets":1},{"name":"artist.s._name","targets":2},{"name":"artist_count","targets":3},{"name":"released_year","targets":4},{"name":"released_month","targets":5},{"name":"released_day","targets":6},{"name":"in_spotify_playlists","targets":7},{"name":"in_spotify_charts","targets":8},{"name":"streams","targets":9},{"name":"in_apple_playlists","targets":10},{"name":"in_apple_charts","targets":11},{"name":"in_deezer_playlists","targets":12},{"name":"in_deezer_charts","targets":13},{"name":"in_shazam_charts","targets":14},{"name":"bpm","targets":15},{"name":"key","targets":16},{"name":"mode","targets":17},{"name":"danceability_.","targets":18},{"name":"valence_.","targets":19},{"name":"energy_.","targets":20},{"name":"acousticness_.","targets":21},{"name":"instrumentalness_.","targets":22},{"name":"liveness_.","targets":23},{"name":"speechiness_.","targets":24}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>spotify <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'spotify.csv'</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(spotify)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   2017 obs. of  17 variables:
+ $ X               : int  0 1 2 3 4 5 6 7 8 9 ...
+ $ acousticness    : num  0.0102 0.199 0.0344 0.604 0.18 0.00479 0.0145 0.0202 0.0481 0.00208 ...
+ $ danceability    : num  0.833 0.743 0.838 0.494 0.678 0.804 0.739 0.266 0.603 0.836 ...
+ $ duration_ms     : int  204600 326933 185707 199413 392893 251333 241400 349667 202853 226840 ...
+ $ energy          : num  0.434 0.359 0.412 0.338 0.561 0.56 0.472 0.348 0.944 0.603 ...
+ $ instrumentalness: num  2.19e-02 6.11e-03 2.34e-04 5.10e-01 5.12e-01 0.00 7.27e-06 6.64e-01 0.00 0.00 ...
+ $ key             : int  2 1 2 5 5 8 1 10 11 7 ...
+ $ liveness        : num  0.165 0.137 0.159 0.0922 0.439 0.164 0.207 0.16 0.342 0.571 ...
+ $ loudness        : num  -8.79 -10.4 -7.15 -15.24 -11.65 ...
+ $ mode            : int  1 1 1 1 0 1 1 0 0 1 ...
+ $ speechiness     : num  0.431 0.0794 0.289 0.0261 0.0694 0.185 0.156 0.0371 0.347 0.237 ...
+ $ tempo           : num  150.1 160.1 75 86.5 174 ...
+ $ time_signature  : num  4 4 4 4 4 4 4 4 4 4 ...
+ $ valence         : num  0.286 0.588 0.173 0.23 0.904 0.264 0.308 0.393 0.398 0.386 ...
+ $ target          : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ song_title      : chr  "Mask Off" "Redbone" "Xanny Family" "Master Of None" ...
+ $ artist          : chr  "Future" "Childish Gambino" "Future" "Beach House" ...</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>spotify<span class="sc">$</span>target <span class="ot">&lt;-</span> <span class="fu">factor</span>(spotify<span class="sc">$</span>target)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(spotify<span class="sc">$</span>target)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "0" "1"</code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(spotify<span class="sc">$</span>target)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+   0    1 
+ 997 1020 </code></pre>
+</div>
+</div>
+<section id="data-exploration" class="level3">
+<h3 class="anchored" data-anchor-id="data-exploration">Data Exploration</h3>
+<p>Target variable is of type int, then I converted it to categorical variable (factor).</p>
+<p>The target factor variable has 2 categories: 0 or 1. By counting total number of rows for each category, we get that George has 1020 favorite, and 997 disliked songs. Which is interesting, that number of disliked ones pretty close to liked. The music taste of George can be diverse, and Spotify’s recommendation system might be actively adjusting to his preferences. Actually, when you dislike one song in Spotify, the system tries to not suggest you similar songs, and try other different options. To state this opinion constantly we need to explore more about song preferences of George. Furthermore, there are could be temporal patterns in George’s preferences, for instance he prefer certain types of songs at different times of day, month or year.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colSums</span>(<span class="fu">is.na</span>(spotify))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>               X     acousticness     danceability      duration_ms 
+               0                0                0                0 
+          energy instrumentalness              key         liveness 
+               0                0                0                0 
+        loudness             mode      speechiness            tempo 
+               0                0                0                0 
+  time_signature          valence           target       song_title 
+               0                0                0                0 
+          artist 
+               0 </code></pre>
+</div>
+</div>
+<p>There is no NA values in this dataset.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">skim</span>(spotify_2023)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Data summary</caption>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Name</td>
+<td style="text-align: left;">spotify_2023</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of rows</td>
+<td style="text-align: left;">953</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Number of columns</td>
+<td style="text-align: left;">24</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">_______________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Column type frequency:</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">character</td>
+<td style="text-align: left;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">numeric</td>
+<td style="text-align: left;">17</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">________________________</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Group variables</td>
+<td style="text-align: left;">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 12%">
+<col style="width: 17%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 7%">
+<col style="width: 11%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">max</th>
+<th style="text-align: right;">empty</th>
+<th style="text-align: right;">n_unique</th>
+<th style="text-align: right;">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">track_name</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">123</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">943</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">artist.s._name</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">117</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">645</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">streams</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">102</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">949</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">in_deezer_playlists</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">348</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">in_shazam_charts</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">50</td>
+<td style="text-align: right;">199</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">key</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">95</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">mode</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 10%">
+<col style="width: 15%">
+<col style="width: 8%">
+<col style="width: 8%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 6%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">skim_variable</th>
+<th style="text-align: right;">n_missing</th>
+<th style="text-align: right;">complete_rate</th>
+<th style="text-align: right;">mean</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">p0</th>
+<th style="text-align: right;">p25</th>
+<th style="text-align: right;">p50</th>
+<th style="text-align: right;">p75</th>
+<th style="text-align: right;">p100</th>
+<th style="text-align: left;">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">artist_count</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.56</td>
+<td style="text-align: right;">0.89</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">released_year</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2018.24</td>
+<td style="text-align: right;">11.12</td>
+<td style="text-align: right;">1930</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">2022</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: left;">▁▁▁▁▇</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">released_month</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6.03</td>
+<td style="text-align: right;">3.57</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">▇▆▅▃▆</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">released_day</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.93</td>
+<td style="text-align: right;">9.20</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">▇▅▃▆▃</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">in_spotify_playlists</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">5200.12</td>
+<td style="text-align: right;">7897.61</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">875</td>
+<td style="text-align: right;">2224</td>
+<td style="text-align: right;">5542</td>
+<td style="text-align: right;">52898</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">in_spotify_charts</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">12.01</td>
+<td style="text-align: right;">19.58</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">147</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">in_apple_playlists</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">67.81</td>
+<td style="text-align: right;">86.44</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">34</td>
+<td style="text-align: right;">88</td>
+<td style="text-align: right;">672</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">in_apple_charts</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">51.91</td>
+<td style="text-align: right;">50.63</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">38</td>
+<td style="text-align: right;">87</td>
+<td style="text-align: right;">275</td>
+<td style="text-align: left;">▇▃▂▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">in_deezer_charts</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">2.67</td>
+<td style="text-align: right;">6.04</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">58</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">bpm</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">122.54</td>
+<td style="text-align: right;">28.06</td>
+<td style="text-align: right;">65</td>
+<td style="text-align: right;">100</td>
+<td style="text-align: right;">121</td>
+<td style="text-align: right;">140</td>
+<td style="text-align: right;">206</td>
+<td style="text-align: left;">▃▇▇▃▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">danceability_.</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">66.97</td>
+<td style="text-align: right;">14.63</td>
+<td style="text-align: right;">23</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: right;">69</td>
+<td style="text-align: right;">78</td>
+<td style="text-align: right;">96</td>
+<td style="text-align: left;">▁▃▆▇▃</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">valence_.</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">51.43</td>
+<td style="text-align: right;">23.48</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">70</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: left;">▅▇▇▇▅</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">energy_.</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">64.28</td>
+<td style="text-align: right;">16.55</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">66</td>
+<td style="text-align: right;">77</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: left;">▁▂▅▇▃</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">acousticness_.</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">27.06</td>
+<td style="text-align: right;">26.00</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: right;">43</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: left;">▇▃▂▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">instrumentalness_.</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1.58</td>
+<td style="text-align: right;">8.41</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">91</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">liveness_.</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">18.21</td>
+<td style="text-align: right;">13.71</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: right;">24</td>
+<td style="text-align: right;">97</td>
+<td style="text-align: left;">▇▂▁▁▁</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">speechiness_.</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">10.13</td>
+<td style="text-align: right;">9.91</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">11</td>
+<td style="text-align: right;">64</td>
+<td style="text-align: left;">▇▁▁▁▁</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>danceability_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>danceability_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>energy_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>energy_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>speechiness_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>speechiness_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>valence_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>valence_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>acousticness_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>acousticness_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>spotify_2023<span class="sc">$</span>liveness_. <span class="ot">&lt;-</span> spotify_2023<span class="sc">$</span>liveness_.<span class="sc">/</span><span class="dv">100</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>spotify_2023 <span class="ot">&lt;-</span> spotify_2023 <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">danceability=</span>danceability_., <span class="at">energy=</span>energy_., <span class="at">speechiness=</span>speechiness_., <span class="at">valence=</span>valence_., <span class="at">acousticness=</span>acousticness_., <span class="at">liveness=</span>liveness_., <span class="at">tempo=</span>bpm)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>my_song <span class="ot">&lt;-</span> spotify_2023 <span class="sc">%&gt;%</span> <span class="fu">filter</span>(track_name <span class="sc">==</span> <span class="st">'Money Trees'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>I converted the values in spotify_23 to decimal format. Also, applied the same changes to my_song by recreating it.</p>
+</section>
+<section id="data-partition" class="level3">
+<h3 class="anchored" data-anchor-id="data-partition">Data Partition</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">79</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>spotify.index <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(spotify)), <span class="fu">nrow</span>(spotify)<span class="sc">*</span><span class="fl">0.6</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>spotify_train.df <span class="ot">&lt;-</span> spotify[spotify.index, ]</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>spotify_valid.df <span class="ot">&lt;-</span> spotify[<span class="sc">-</span>spotify.index, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>liked <span class="ot">&lt;-</span> spotify_train.df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(target<span class="sc">==</span><span class="dv">1</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>disliked <span class="ot">&lt;-</span> spotify_train.df <span class="sc">%&gt;%</span> <span class="fu">filter</span>(target<span class="sc">==</span><span class="dv">0</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>danceability, disliked<span class="sc">$</span>danceability)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$danceability and disliked$danceability
+t = 5.9297, df = 1198.7, p-value = 3.965e-09
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.03618685 0.07197390
+sample estimates:
+mean of x mean of y 
+0.6451020 0.5910216 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>tempo, disliked<span class="sc">$</span>tempo)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$tempo and disliked$tempo
+t = 0.32976, df = 1188, p-value = 0.7416
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -2.495354  3.503627
+sample estimates:
+mean of x mean of y 
+ 121.3866  120.8825 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>energy, disliked<span class="sc">$</span>energy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$energy and disliked$energy
+t = 0.90709, df = 1116.6, p-value = 0.3646
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.01228227  0.03340286
+sample estimates:
+mean of x mean of y 
+0.6986168 0.6880565 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>speechiness, disliked<span class="sc">$</span>speechiness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$speechiness and disliked$speechiness
+t = 5.9565, df = 1102.5, p-value = 3.461e-09
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.01988822 0.03942699
+sample estimates:
+ mean of x  mean of y 
+0.10598684 0.07632924 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>valence, disliked<span class="sc">$</span>valence)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$valence and disliked$valence
+t = 3.4455, df = 1207.9, p-value = 0.0005895
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.02065933 0.07529932
+sample estimates:
+mean of x mean of y 
+0.5254077 0.4774284 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>acousticness, disliked<span class="sc">$</span>acousticness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$acousticness and disliked$acousticness
+t = -4.0701, df = 1122.3, p-value = 5.028e-05
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.08721203 -0.03047773
+sample estimates:
+mean of x mean of y 
+0.1508101 0.2096550 </code></pre>
+</div>
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">t.test</span>(liked<span class="sc">$</span>liveness, disliked<span class="sc">$</span>liveness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Welch Two Sample t-test
+
+data:  liked$liveness and disliked$liveness
+t = 1.5056, df = 1192.1, p-value = 0.1324
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -0.004181182  0.031773731
+sample estimates:
+mean of x mean of y 
+0.1991905 0.1853942 </code></pre>
+</div>
+</div>
+<p>Based on the results above, here is the list of variables that show significant difference: Danceability(p_value = 3.965e-09), speechiness(p-value = 3.461e-09), valence(p-value = 0.0005895), acousticness(p-value = 5.028e-05). Very low p-value suggests that, there is significant difference on this values between liked and disliked songs, making them main parameters to identify George’s preferences in music. Other remaining variables have p-value more than typical threshold 0.05: tempo(p-value = 0.7416), energy(p-value = 0.3646), liveness(p-value = 0.1324).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>spotify_train.df <span class="ot">&lt;-</span> spotify_train.df <span class="sc">%&gt;%</span> <span class="fu">select</span>(<span class="sc">-</span>tempo, <span class="sc">-</span>energy, <span class="sc">-</span>liveness)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>k-NN method draws information from similarities between the variables by measuring distance between records. Variables with similar values across different outcome classes cannot provide useful information for distinguishing between groups. Including such variables can lead to overfitting, where the model performs well on training data but fails to generalize to new data. These insignificant variables affect the distance calculation, making it harder to distinguish between groups.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(spotify_train.df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-b1ca37b422f61f013552" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-b1ca37b422f61f013552">{"x":{"filter":"none","vertical":false,"data":[["1454","703","1155","1048","311","1522"],[1453,702,1154,1047,310,1521],[0.0214,0.32,0.00464,0.0915,0.0498,0.973],[0.587,0.723,0.5649999999999999,0.533,0.403,0.478],[198426,210880,225526,230722,274480,388040],[0.698,0,0,0,0,0.9389999999999999],[4,5,1,0,11,5],[-4.439,-7.11,-5.22,-8.266,-5.889,-20.847],[0,1,1,1,0,1],[0.0375,0.0833,0.212,0.0324,0.338,0.0505],[4,4,4,4,4,4],[0.201,0.261,0.551,0.506,0.734,0.235],["0","1","0","0","1","0"],["Legacy","25 Bucks [feat. Purity Ring]","Good Life (with G-Eazy &amp; Kehlani)","Real Thing","Auditorium","For Wee Folks"],["Dimitri Vangelis &amp; Wyman","Danny Brown","G-Eazy","Zac Brown Band","Mos Def","Joey Alexander"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>X<\/th>\n      <th>acousticness<\/th>\n      <th>danceability<\/th>\n      <th>duration_ms<\/th>\n      <th>instrumentalness<\/th>\n      <th>key<\/th>\n      <th>loudness<\/th>\n      <th>mode<\/th>\n      <th>speechiness<\/th>\n      <th>time_signature<\/th>\n      <th>valence<\/th>\n      <th>target<\/th>\n      <th>song_title<\/th>\n      <th>artist<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9,10,11]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"X","targets":1},{"name":"acousticness","targets":2},{"name":"danceability","targets":3},{"name":"duration_ms","targets":4},{"name":"instrumentalness","targets":5},{"name":"key","targets":6},{"name":"loudness","targets":7},{"name":"mode","targets":8},{"name":"speechiness","targets":9},{"name":"time_signature","targets":10},{"name":"valence","targets":11},{"name":"target","targets":12},{"name":"song_title","targets":13},{"name":"artist","targets":14}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="normalization" class="level3">
+<h3 class="anchored" data-anchor-id="normalization">Normalization</h3>
+<p>In this step we are normalizing only those columns that will be used in k-NN model building.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>spotify_train_norm.df <span class="ot">&lt;-</span> spotify_train.df</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>spotify_valid_norm.df <span class="ot">&lt;-</span> spotify_valid.df</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>spotify_norm.df <span class="ot">&lt;-</span> spotify</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>my_song_norm <span class="ot">&lt;-</span> my_song</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>norm_values <span class="ot">&lt;-</span> <span class="fu">preProcess</span>(</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  spotify_train.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)], </span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">method =</span> <span class="fu">c</span>(<span class="st">"center"</span>, <span class="st">"scale"</span>))</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>spotify_train_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(norm_values, spotify_train.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)])</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="co"># View(spotify_train_norm.df)</span></span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a>spotify_valid_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(norm_values, spotify_valid.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)])</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a><span class="co"># View(spotify_valid_norm.df)</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>spotify_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(norm_values, spotify[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)])</span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a><span class="co"># View(spotify_norm.df)</span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-23"><a href="#cb32-23" aria-hidden="true" tabindex="-1"></a>my_song_norm[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb32-24"><a href="#cb32-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predict</span>(norm_values, my_song[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(my_song_norm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-ef4060a068657e4570a0" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-ef4060a068657e4570a0">{"x":{"filter":"none","vertical":false,"data":[["1"],["Money Trees"],["Kendrick Lamar, Jay Rock"],[2],[2012],[1],[1],[26792],[32],["1093605526"],[69],[113],["695"],[0],["458"],[144],["E"],["Minor"],[0.7569021000024919],[-0.5406409291389145],[0.53],[-0.435579568480026],[0],[0.21],[0.09968928364831868]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>track_name<\/th>\n      <th>artist.s._name<\/th>\n      <th>artist_count<\/th>\n      <th>released_year<\/th>\n      <th>released_month<\/th>\n      <th>released_day<\/th>\n      <th>in_spotify_playlists<\/th>\n      <th>in_spotify_charts<\/th>\n      <th>streams<\/th>\n      <th>in_apple_playlists<\/th>\n      <th>in_apple_charts<\/th>\n      <th>in_deezer_playlists<\/th>\n      <th>in_deezer_charts<\/th>\n      <th>in_shazam_charts<\/th>\n      <th>tempo<\/th>\n      <th>key<\/th>\n      <th>mode<\/th>\n      <th>danceability<\/th>\n      <th>valence<\/th>\n      <th>energy<\/th>\n      <th>acousticness<\/th>\n      <th>instrumentalness_.<\/th>\n      <th>liveness<\/th>\n      <th>speechiness<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[3,4,5,6,7,8,10,11,13,15,18,19,20,21,22,23,24]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"track_name","targets":1},{"name":"artist.s._name","targets":2},{"name":"artist_count","targets":3},{"name":"released_year","targets":4},{"name":"released_month","targets":5},{"name":"released_day","targets":6},{"name":"in_spotify_playlists","targets":7},{"name":"in_spotify_charts","targets":8},{"name":"streams","targets":9},{"name":"in_apple_playlists","targets":10},{"name":"in_apple_charts","targets":11},{"name":"in_deezer_playlists","targets":12},{"name":"in_deezer_charts","targets":13},{"name":"in_shazam_charts","targets":14},{"name":"tempo","targets":15},{"name":"key","targets":16},{"name":"mode","targets":17},{"name":"danceability","targets":18},{"name":"valence","targets":19},{"name":"energy","targets":20},{"name":"acousticness","targets":21},{"name":"instrumentalness_.","targets":22},{"name":"liveness","targets":23},{"name":"speechiness","targets":24}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="clustering" class="level3">
+<h3 class="anchored" data-anchor-id="clustering">Clustering</h3>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># knn is all about numeric data, classification using numeric values</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>nn <span class="ot">&lt;-</span> <span class="fu">knn</span>( <span class="at">train =</span> spotify_train_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)],</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">test =</span> my_song_norm[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)],</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">cl =</span> spotify_train_norm.df[,<span class="fu">c</span>(<span class="st">"target"</span>)],<span class="do">##what we are classifying: like or dislike</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">k=</span><span class="dv">7</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(nn)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+attr(,"nn.index")
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7]
+[1,]  823  966  277  929  653  984  436
+attr(,"nn.dist")
+          [,1]      [,2]      [,3]      [,4]      [,5]     [,6]      [,7]
+[1,] 0.0233238 0.3074891 0.3136877 0.3537573 0.4308537 0.471654 0.4811864
+Levels: 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>nn_indexes <span class="ot">&lt;-</span> <span class="fu">row.names</span>(spotify_train.df)[<span class="fu">attr</span>(nn, <span class="st">"nn.index"</span>)]</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>spotify_train.df[nn_indexes, ] <span class="sc">%&gt;%</span> <span class="fu">select</span>(song_title, artist, target, acousticness, danceability, speechiness, valence)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-e8fee1031d764595b20d" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-e8fee1031d764595b20d">{"x":{"filter":"none","vertical":false,"data":[["527","1429","633","348","728","800","189"],["Money Trees","My Friend","Kids","Pacifier","Falling","18 With A Bullet","N.O. Bounce"],["Kendrick Lamar","EDX","Iamsu!","Young Thug","HAIM","Pete Wingfield","Big Freedia"],["1","0","1","1","1","1","1"],[0.0726,0.033,0.121,0.0469,0.076,0.0625,0.019],[0.739,0.707,0.719,0.766,0.741,0.758,0.695],[0.101,0.0901,0.0829,0.124,0.06900000000000001,0.106,0.127],[0.374,0.403,0.357,0.401,0.31,0.26,0.337]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>song_title<\/th>\n      <th>artist<\/th>\n      <th>target<\/th>\n      <th>acousticness<\/th>\n      <th>danceability<\/th>\n      <th>speechiness<\/th>\n      <th>valence<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[4,5,6,7]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"song_title","targets":1},{"name":"artist","targets":2},{"name":"target","targets":3},{"name":"acousticness","targets":4},{"name":"danceability","targets":5},{"name":"speechiness","targets":6},{"name":"valence","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>By running k-NN model as a result get “1”, which indicates that George will like my song. And by listing 7 nearest neighbors, I see that my song is also in this list and George already marked it as favorite. Within this songs, George marked only one song as disliked, which highlights not all similar songs are guaranteed to be liked. This disliked song has high valence value compared to others, but there is no difference in other variables. By running knn classification we get 7 nearest records with low distance value from our selected song. So if we just use numbers these songs look very similar to each other. But they are not. And the diversity of artists suggests George’s musical preferences are varied.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>accuracy.df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">k =</span> <span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">14</span>,<span class="dv">1</span>), <span class="at">accuracy =</span> <span class="fu">rep</span>(<span class="dv">0</span>,<span class="dv">14</span>))</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">14</span>) {</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  knn.pred <span class="ot">&lt;-</span> <span class="fu">knn</span>( <span class="at">train =</span> spotify_train_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)],</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>           <span class="at">test =</span> spotify_valid_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)],</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>           <span class="at">cl =</span> spotify_train_norm.df[,<span class="fu">c</span>(<span class="st">"target"</span>)],</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>           <span class="at">k=</span>i)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  accuracy.df[i, <span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">confusionMatrix</span>(knn.pred, spotify_valid_norm.df[ ,<span class="fu">c</span>(<span class="st">"target"</span>)])<span class="sc">$</span>overall[<span class="st">'Accuracy'</span>]</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>accuracy.df[<span class="fu">order</span>(<span class="sc">-</span>accuracy.df<span class="sc">$</span>accuracy), ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>    k  accuracy
+14 14 0.6183395
+12 12 0.6096654
+13 13 0.6096654
+10 10 0.6084263
+11 11 0.6034696
+5   5 0.6022305
+9   9 0.5997522
+4   4 0.5972739
+6   6 0.5960347
+8   8 0.5947955
+3   3 0.5885998
+7   7 0.5861214
+1   1 0.5774473
+2   2 0.5662949</code></pre>
+</div>
+</div>
+<p>From the list above we can see accuracy for different k values between 1 and 14. We can see that the difference in accuracy between values is very small. k=14 has highest accuracy value 0.6183395, also k=5 provides very similar number 0.6022305.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(accuracy.df, <span class="fu">aes</span>(<span class="at">x=</span>k, <span class="at">y=</span>accuracy)) <span class="sc">+</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Scatterplot of k values vs Accuracy"</span>,</span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">"k values"</span>,</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Accuracy"</span>) <span class="sc">+</span></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="fu">min</span>(accuracy.df<span class="sc">$</span>k), <span class="fu">max</span>(accuracy.df<span class="sc">$</span>k), <span class="at">by =</span> <span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="analysis_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The graph clearly illustrates the differences in accuracy across various k-values. k = 10 has about 61% accuracy, similar to k = 12 and k = 13. Since they give the same result, k = 10 is a better choice to reduce noise. Additionally, the previously used k = 7 had one of the lowest accuracy scores at 59%. While k = 14 had the highest accuracy at 62%, k = 10 appears to be a more balanced choice. Selecting 10 nearest neighbors should provide a more reliable classification of my song.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>nn_10 <span class="ot">&lt;-</span> <span class="fu">knn</span>( <span class="at">train =</span> spotify_train_norm.df[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)],</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>           <span class="at">test =</span> my_song_norm[, <span class="fu">c</span>(<span class="st">"acousticness"</span>, <span class="st">"danceability"</span>, <span class="st">"speechiness"</span>, <span class="st">"valence"</span>)],</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>           <span class="at">cl =</span> spotify_train_norm.df[,<span class="fu">c</span>(<span class="st">"target"</span>)],<span class="do">##what we are classifying: like or dislike</span></span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>           <span class="at">k=</span><span class="dv">10</span>)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(nn_10)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1
+attr(,"nn.index")
+     [,1] [,2] [,3] [,4] [,5] [,6] [,7] [,8] [,9] [,10]
+[1,]  823  966  277  929  653  984  436  476  136   127
+attr(,"nn.dist")
+          [,1]      [,2]      [,3]      [,4]      [,5]     [,6]      [,7]
+[1,] 0.0233238 0.3074891 0.3136877 0.3537573 0.4308537 0.471654 0.4811864
+         [,8]      [,9]     [,10]
+[1,] 0.501667 0.5050047 0.5092467
+Levels: 1</code></pre>
+</div>
+</div>
+<div class="cell">
+<details class="code-fold">
+<summary>Code</summary>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>nn_indexes_10 <span class="ot">&lt;-</span> <span class="fu">row.names</span>(spotify_train.df)[<span class="fu">attr</span>(nn_10, <span class="st">"nn.index"</span>)]</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>spotify_train.df[nn_indexes_10, ] <span class="sc">%&gt;%</span> <span class="fu">select</span>(song_title, artist, target, acousticness, danceability, speechiness, valence)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="datatables html-widget html-fill-item" id="htmlwidget-1aac6e80ed19fd084ae7" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-1aac6e80ed19fd084ae7">{"x":{"filter":"none","vertical":false,"data":[["527","1429","633","348","728","800","189","661","1191","1094"],["Money Trees","My Friend","Kids","Pacifier","Falling","18 With A Bullet","N.O. Bounce","Next Order","Glad You Came","Hey DJ"],["Kendrick Lamar","EDX","Iamsu!","Young Thug","HAIM","Pete Wingfield","Big Freedia","Dog Blood","The Wanted","CNCO"],["1","0","1","1","1","1","1","1","0","0"],[0.0726,0.033,0.121,0.0469,0.076,0.0625,0.019,0.0155,0.0643,0.0309],[0.739,0.707,0.719,0.766,0.741,0.758,0.695,0.76,0.755,0.792],[0.101,0.0901,0.0829,0.124,0.06900000000000001,0.106,0.127,0.0733,0.0687,0.0867],[0.374,0.403,0.357,0.401,0.31,0.26,0.337,0.294,0.454,0.45]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>song_title<\/th>\n      <th>artist<\/th>\n      <th>target<\/th>\n      <th>acousticness<\/th>\n      <th>danceability<\/th>\n      <th>speechiness<\/th>\n      <th>valence<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[4,5,6,7]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"song_title","targets":1},{"name":"artist","targets":2},{"name":"target","targets":3},{"name":"acousticness","targets":4},{"name":"danceability","targets":5},{"name":"speechiness","targets":6},{"name":"valence","targets":7}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+<p>I chose k=10 as optimal with moderate accuracy value. The output of model didn’t change, it indicates George will like my song. But for now I got 10 nearest neighbors, and from this new list George disliked 3 songs. All these songs have high value of danceability around 70%, low speechiness and acousticness. All 3 disliked songs as for k=7, have higher value of valence compared to others. Higher valence indicates more positive, cheerful, or euphoric songs. It seems that George might prefer songs with lower valence, which are less positive, more neutral in mood or moodier over cheerful ones. Disliked songs have relatively low acousticness, this suggest that George prefer songs with slightly more acoustic elements. The danceability is quite similar for both groups, which implies this factor is not strong in determining preferences. The disliked songs have relatively low speechiness, and some liked songs have higher speechiness (‘Pacifier’ has 0.1240) indicating George prefer songs with more spoken lyrics or rap.</p>
+</section>
+<section id="limitations-of-model" class="level3">
+<h3 class="anchored" data-anchor-id="limitations-of-model">Limitations of model</h3>
+<p>I think main limitation here is that we are relying on numerical variables to predict whether someone will like this song or not. There are can be other factors such as good memories or associations with a song which can make them favorite. Also lyrics play main role in connecting with listeners on an emotional level. For instance, I tend to prefer songs with meaningful lyrics, while rap elements often give me an energy boost. Additionally, music preferences can vary based on context—what I listen to at the gym or while walking differs from what I play in the evening when I can’t sleep.</p>
+
+
+</section>
+
+</div></div></main> <!-- /main -->
+<div class="gh-right">
+  <!-- <div class="gh-card"> -->
+    <div id="gh-toc-slot"></div>
+  <!-- </div> -->
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Move gh-right INTO the gh-layout grid (as the 3rd column)
+  const layout = document.querySelector(".gh-layout");
+  const right = document.querySelector(".gh-right");
+  if (layout && right) layout.appendChild(right);
+
+  // Move Quarto TOC into our slot
+  const quartoToc = document.querySelector("#quarto-margin-sidebar nav#TOC");
+  const slot = document.querySelector("#gh-toc-slot");
+  if (quartoToc && slot) slot.appendChild(quartoToc);
+
+  // Hide Quarto margin sidebar container
+  const margin = document.querySelector("#quarto-margin-sidebar");
+  if (margin) margin.style.display = "none";
+});
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

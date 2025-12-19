@@ -1,11 +1,6 @@
 ---
 title: ""
-format:
-  html:
-    toc: true
-    toc-location: body
-    toc-depth: 2
-    page-layout: full
+format: html-home
 ---
 
 <div class="gh-layout">
@@ -24,7 +19,7 @@ format:
 
 <div class="gh-mini">
 MS Applied Business Analytics · Boston University<br>
-Python · R · SQL · Plotly · Tableau · Power BI
+Python · Scikit-Learn · R · SQL · Plotly · Streamlit · Tableau · Power BI
 </div>
 </div>
 
@@ -49,7 +44,7 @@ I’m skilled in Python, R, SQL, Tableau and Power BI, and I am deeply committed
 
 
 <!-- Airbnb -->
-<div class="gh-project-card" data-tags="python plotly eda geospatial">
+<div class="gh-project-card" data-tags="r ggplot2 visuo leaflet nlp text-mining classification clustering ml">
 <div class="gh-project-top">
 <div class="gh-project-icon" aria-hidden="true"><span>🗺️</span></div>
 <div class="gh-project-body">
@@ -60,17 +55,65 @@ I’m skilled in Python, R, SQL, Tableau and Power BI, and I am deeply committed
 Airbnb analysis in Copenhagen exploring neighborhood patterns, listing language, and pricing signals with interactive visuals.
 </div>
 <div class="gh-project-tags">
-<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
-<button class="gh-tag tag-plotly" data-filter="plotly"><span class="gh-tag-dot"></span>Plotly</button>
-<button class="gh-tag tag-eda" data-filter="eda"><span class="gh-tag-dot"></span>EDA</button>
-<button class="gh-tag tag-geospatial" data-filter="geospatial"><span class="gh-tag-dot"></span>Geospatial</button>
+<button class="gh-tag tag-r" data-filter="r"><span class="gh-tag-dot"></span>R</button>
+<button class="gh-tag tag-ggplot2" data-filter="ggplot2"><span class="gh-tag-dot"></span>ggplot2</button>
+<button class="gh-tag tag-visuo" data-filter="visuo"><span class="gh-tag-dot"></span>Data Visualization</button>
+<button class="gh-tag tag-leaflet" data-filter="leaflet"><span class="gh-tag-dot"></span>leaflet</button>
+<button class="gh-tag tag-nlp" data-filter="nlp"><span class="gh-tag-dot"></span>NLP</button>
+<button class="gh-tag tag-text-mining" data-filter="text-mining"><span class="gh-tag-dot"></span>Text Mining</button>
+<button class="gh-tag tag-classification" data-filter="classification"><span class="gh-tag-dot"></span>Classification</button>
+<button class="gh-tag tag-clustering" data-filter="clustering"><span class="gh-tag-dot"></span>Clustering</button>
+<button class="gh-tag tag-ml" data-filter="ml"><span class="gh-tag-dot"></span>ML</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Spotify -->
+<div class="gh-project-card" data-tags="r ml ggplot2 visuo classification">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>🎧</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/spotify/analysis.html">You Like This Song…But Will George Like It?</a>
+</h3>
+<div class="gh-project-desc">
+User behavior classification with Spotify streaming data to predict preference patterns and key drivers.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-r" data-filter="r"><span class="gh-tag-dot"></span>R</button>
+<button class="gh-tag tag-ml" data-filter="ml"><span class="gh-tag-dot"></span>ML</button>
+<button class="gh-tag tag-ggplot2" data-filter="ggplot2"><span class="gh-tag-dot"></span>ggplot2</button>
+<button class="gh-tag tag-visuo" data-filter="visuo"><span class="gh-tag-dot"></span>Data Visualization</button>
+<button class="gh-tag tag-classification" data-filter="classification"><span class="gh-tag-dot"></span>Classification</button>
+</div>
+</div>
+</div>
+</div>
+
+<!-- Pokémon -->
+<div class="gh-project-card" data-tags="r ggplot2 visuo clustering">
+<div class="gh-project-top">
+<div class="gh-project-icon" aria-hidden="true"><span>🧩</span></div>
+<div class="gh-project-body">
+<h3 class="gh-project-title">
+<a href="./projects/pokemon/pokemon.html">Clustering Pokémon</a>
+</h3>
+<div class="gh-project-desc">
+A hierarchical approach to character grouping using clustering methods and similarity analysis.
+</div>
+<div class="gh-project-tags">
+<button class="gh-tag tag-r" data-filter="r"><span class="gh-tag-dot"></span>R</button>
+<button class="gh-tag tag-ggplot2" data-filter="ggplot2"><span class="gh-tag-dot"></span>ggplot2</button>
+<button class="gh-tag tag-visuo" data-filter="visuo"><span class="gh-tag-dot"></span>Data Visualization</button>
+<button class="gh-tag tag-clustering" data-filter="clustering"><span class="gh-tag-dot"></span>Clustering</button>
 </div>
 </div>
 </div>
 </div>
 
 <!-- Vortex -->
-<div class="gh-project-card" data-tags="python hackathon time-series finance">
+<div class="gh-project-card" data-tags="python hackathon api plotly visuo streamlit time-series finance">
 <div class="gh-project-top">
 <div class="gh-project-icon" aria-hidden="true"><span>⚡</span></div>
 <div class="gh-project-body">
@@ -83,6 +126,10 @@ Hackathon project building a sentiment-aware volatility strategy with backtests 
 <div class="gh-project-tags">
 <button class="gh-tag tag-hackathon" data-filter="hackathon"><span class="gh-tag-dot"></span>Hackathon</button>
 <button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-api" data-filter="api"><span class="gh-tag-dot"></span>API</button>
+<button class="gh-tag tag-plotly" data-filter="plotly"><span class="gh-tag-dot"></span>Plotly</button>
+<button class="gh-tag tag-visuo" data-filter="visuo"><span class="gh-tag-dot"></span>Data Visualization</button>
+<button class="gh-tag tag-streamlit" data-filter="streamlit"><span class="gh-tag-dot"></span>Streamlit</button>
 <button class="gh-tag tag-time-series" data-filter="time-series"><span class="gh-tag-dot"></span>Time Series</button>
 <button class="gh-tag tag-finance" data-filter="finance"><span class="gh-tag-dot"></span>Finance</button>
 </div>
@@ -90,47 +137,8 @@ Hackathon project building a sentiment-aware volatility strategy with backtests 
 </div>
 </div>
 
-<!-- Spotify -->
-<div class="gh-project-card" data-tags="python ml classification">
-<div class="gh-project-top">
-<div class="gh-project-icon" aria-hidden="true"><span>🎧</span></div>
-<div class="gh-project-body">
-<h3 class="gh-project-title">
-<a href="./projects/spotify/analysis.html">You Like This Song…But Will George Like It?</a>
-</h3>
-<div class="gh-project-desc">
-User behavior classification with Spotify streaming data to predict preference patterns and key drivers.
-</div>
-<div class="gh-project-tags">
-<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
-<button class="gh-tag tag-ml" data-filter="ml"><span class="gh-tag-dot"></span>ML</button>
-<button class="gh-tag tag-classification" data-filter="classification"><span class="gh-tag-dot"></span>Classification</button>
-</div>
-</div>
-</div>
-</div>
-
-<!-- Pokémon -->
-<div class="gh-project-card" data-tags="python clustering">
-<div class="gh-project-top">
-<div class="gh-project-icon" aria-hidden="true"><span>🧩</span></div>
-<div class="gh-project-body">
-<h3 class="gh-project-title">
-<a href="./projects/pokemon/pokemon.html">Clustering Pokémon</a>
-</h3>
-<div class="gh-project-desc">
-A hierarchical approach to character grouping using clustering methods and similarity analysis.
-</div>
-<div class="gh-project-tags">
-<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
-<button class="gh-tag tag-clustering" data-filter="clustering"><span class="gh-tag-dot"></span>Clustering</button>
-</div>
-</div>
-</div>
-</div>
-
 <!-- Breaking Bad -->
-<div class="gh-project-card" data-tags="r nlp text-mining">
+<div class="gh-project-card" data-tags="r nlp text-mining ggplot2 visuo">
 <div class="gh-project-top">
 <div class="gh-project-icon" aria-hidden="true"><span>🗣️</span></div>
 <div class="gh-project-body">
@@ -144,13 +152,16 @@ Unpacking emotion and language in Breaking Bad using R text mining and sentiment
 <button class="gh-tag tag-r" data-filter="r"><span class="gh-tag-dot"></span>R</button>
 <button class="gh-tag tag-nlp" data-filter="nlp"><span class="gh-tag-dot"></span>NLP</button>
 <button class="gh-tag tag-text-mining" data-filter="text-mining"><span class="gh-tag-dot"></span>Text Mining</button>
+<button class="gh-tag tag-ggplot2" data-filter="ggplot2"><span class="gh-tag-dot"></span>ggplot2</button>
+<button class="gh-tag tag-visuo" data-filter="visuo"><span class="gh-tag-dot"></span>Data Visualization</button>
+
 </div>
 </div>
 </div>
 </div>
 
 <!-- Complaint Classifier -->
-<div class="gh-project-card" data-tags="python ml classification nlp">
+<div class="gh-project-card" data-tags="r ml classification">
 <div class="gh-project-top">
 <div class="gh-project-icon" aria-hidden="true"><span>📨</span></div>
 <div class="gh-project-body">
@@ -161,10 +172,9 @@ Unpacking emotion and language in Breaking Bad using R text mining and sentiment
 Naïve Bayes model to classify consumer complaints and predict dispute outcomes.
 </div>
 <div class="gh-project-tags">
-<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-r" data-filter="r"><span class="gh-tag-dot"></span>R</button>
 <button class="gh-tag tag-ml" data-filter="ml"><span class="gh-tag-dot"></span>ML</button>
 <button class="gh-tag tag-classification" data-filter="classification"><span class="gh-tag-dot"></span>Classification</button>
-<button class="gh-tag tag-nlp" data-filter="nlp"><span class="gh-tag-dot"></span>NLP</button>
 </div>
 </div>
 </div>
@@ -190,7 +200,7 @@ Association rule mining to discover product co-purchase patterns and actionable 
 </div>
 
 <!-- NHL -->
-<div class="gh-project-card" data-tags="python ml regression">
+<div class="gh-project-card" data-tags="r ml regression">
 <div class="gh-project-top">
 <div class="gh-project-icon" aria-hidden="true"><span>🏒</span></div>
 <div class="gh-project-body">
@@ -201,7 +211,7 @@ Association rule mining to discover product co-purchase patterns and actionable 
 Forecasting hockey player salaries using statistical analysis and machine learning methods.
 </div>
 <div class="gh-project-tags">
-<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-r" data-filter="r"><span class="gh-tag-dot"></span>R</button>
 <button class="gh-tag tag-ml" data-filter="ml"><span class="gh-tag-dot"></span>ML</button>
 <button class="gh-tag tag-regression" data-filter="regression"><span class="gh-tag-dot"></span>Regression</button>
 </div>
@@ -210,7 +220,7 @@ Forecasting hockey player salaries using statistical analysis and machine learni
 </div>
 
 <!-- Video Games -->
-<div class="gh-project-card" data-tags="python ml classification">
+<div class="gh-project-card" data-tags="r ml classification tree">
 <div class="gh-project-top">
 <div class="gh-project-icon" aria-hidden="true"><span>🎮</span></div>
 <div class="gh-project-body">
@@ -221,16 +231,17 @@ Forecasting hockey player salaries using statistical analysis and machine learni
 Predicting video game sales outcomes using classification trees and model comparison.
 </div>
 <div class="gh-project-tags">
-<button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
+<button class="gh-tag tag-r" data-filter="r"><span class="gh-tag-dot"></span>R</button>
 <button class="gh-tag tag-ml" data-filter="ml"><span class="gh-tag-dot"></span>ML</button>
 <button class="gh-tag tag-classification" data-filter="classification"><span class="gh-tag-dot"></span>Classification</button>
+<button class="gh-tag tag-tree" data-filter="tree"><span class="gh-tag-dot"></span>Trees</button>
 </div>
 </div>
 </div>
 </div>
 
 <!-- Vancouver 311 -->
-<div class="gh-project-card" data-tags="python plotly eda">
+<div class="gh-project-card" data-tags="python plotly">
 <div class="gh-project-top">
 <div class="gh-project-icon" aria-hidden="true"><span>🏙️</span></div>
 <div class="gh-project-body">
@@ -243,7 +254,6 @@ Analyzing Vancouver’s 311 service requests to uncover trends, hotspots, and op
 <div class="gh-project-tags">
 <button class="gh-tag tag-python" data-filter="python"><span class="gh-tag-dot"></span>Python</button>
 <button class="gh-tag tag-plotly" data-filter="plotly"><span class="gh-tag-dot"></span>Plotly</button>
-<button class="gh-tag tag-eda" data-filter="eda"><span class="gh-tag-dot"></span>EDA</button>
 </div>
 </div>
 </div>
@@ -268,16 +278,24 @@ Filters projects as you type.
 <div class="gh-pills" id="tagPills">
 <button class="gh-pill tag-python" data-filter="python">Python</button>
 <button class="gh-pill tag-r" data-filter="r">R</button>
-<button class="gh-pill tag-sql" data-filter="sql">SQL</button>
-<button class="gh-pill tag-plotly" data-filter="plotly">Plotly</button>
+<button class="gh-pill tag-plotly" data-filter="plotly">plotly</button>
+<button class="gh-tag tag-streamlit" data-filter="streamlit">streamlit</button>
+<button class="gh-pill tag-ggplot2" data-filter="ggplot2">ggplot2</button>
+<button class="gh-tag tag-leaflet" data-filter="leaflet">leaflet</button>
 
 <button class="gh-pill tag-ml" data-filter="ml">ML</button>
 <button class="gh-pill tag-nlp" data-filter="nlp">NLP</button>
-<button class="gh-pill tag-eda" data-filter="eda">EDA</button>
 
 <button class="gh-pill tag-regression" data-filter="regression">Regression</button>
 <button class="gh-pill tag-classification" data-filter="classification">Classification</button>
 <button class="gh-pill tag-clustering" data-filter="clustering">Clustering</button>
+<button class="gh-tag tag-tree" data-filter="tree">Trees</button>
+<button class="gh-tag tag-association-rules" data-filter="association-rules">Association Rules</button>
+<button class="gh-tag tag-visuo" data-filter="visuo">Data Visualization</button>
+<button class="gh-tag tag-text-mining" data-filter="text-mining">Text Mining</button>
+<button class="gh-tag tag-time-series" data-filter="time-series">Time Series</button>
+
+<button class="gh-tag tag-finance" data-filter="finance">Finance</button>
 
 <button class="gh-pill tag-hackathon" data-filter="hackathon">Hackathon</button>
 
@@ -291,67 +309,77 @@ Filters projects as you type.
 
 <script>
 (function () {
-const MATCH_MODE = "OR"; // OR / AND
-const active = new Set();
+  const MATCH_MODE = "OR"; // OR / AND
+  const active = new Set();
 
-function getTokens(el) {
-const raw = (el.getAttribute("data-tags") || "").toLowerCase().trim();
-return new Set(raw.split(/\s+/).filter(Boolean));
-}
+  function normalizeTag(t) {
+    return (t || "")
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, "-"); // "text mining" -> "text-mining"
+  }
 
-function applyFilters() {
-const q = (document.getElementById("siteSearch")?.value || "").trim().toLowerCase();
+  function getTokens(cardEl) {
+    const tokens = new Set();
 
-document.querySelectorAll(".gh-project-card").forEach(el => {
-const tokens = getTokens(el);
+    // 1) from data-tags="..."
+    const raw = (cardEl.getAttribute("data-tags") || "").toLowerCase().trim();
+    raw.split(/\s+/).filter(Boolean).forEach(t => tokens.add(normalizeTag(t)));
 
-let showByTags = true;
-if (active.size > 0) {
-showByTags = (MATCH_MODE === "AND")
-? [...active].every(t => tokens.has(t))
-: [...active].some(t => tokens.has(t));
-}
+    // 2) from tag buttons inside the card (data-filter="...")
+    cardEl.querySelectorAll("[data-filter]").forEach(btn => {
+      const t = normalizeTag(btn.dataset.filter);
+      if (t && t !== "all") tokens.add(t);
+    });
 
-let showBySearch = true;
-if (q) {
-showBySearch = el.innerText.toLowerCase().includes(q);
-}
+    return tokens;
+  }
 
-el.style.display = (showByTags && showBySearch) ? "" : "none";
-});
+  function applyFilters() {
+    const q = (document.getElementById("siteSearch")?.value || "").trim().toLowerCase();
 
-highlightActive();
-}
+    document.querySelectorAll(".gh-project-card").forEach(el => {
+      const tokens = getTokens(el);
 
-function highlightActive() {
-document.querySelectorAll(".gh-pill[data-filter], .gh-tag[data-filter]").forEach(btn => {
-const tag = btn.dataset.filter.toLowerCase();
-if (tag === "all") {
-btn.classList.toggle("is-active", active.size === 0);
-} else {
-btn.classList.toggle("is-active", active.has(tag));
-}
-});
-}
+      let showByTags = true;
+      if (active.size > 0) {
+        showByTags = (MATCH_MODE === "AND")
+          ? [...active].every(t => tokens.has(t))
+          : [...active].some(t => tokens.has(t));
+      }
 
-function toggle(tag) {
-tag = tag.toLowerCase();
-if (tag === "all") {
-active.clear();
-} else {
-active.has(tag) ? active.delete(tag) : active.add(tag);
-}
-applyFilters();
-}
+      let showBySearch = true;
+      if (q) showBySearch = el.innerText.toLowerCase().includes(q);
 
-document.addEventListener("click", (e) => {
-const btn = e.target.closest(".gh-pill[data-filter], .gh-tag[data-filter]");
-if (!btn) return;
-toggle(btn.dataset.filter);
-});
+      el.style.display = (showByTags && showBySearch) ? "" : "none";
+    });
 
-document.getElementById("siteSearch")?.addEventListener("input", applyFilters);
+    highlightActive();
+  }
 
-applyFilters();
+  function highlightActive() {
+    document.querySelectorAll(".gh-pill[data-filter], .gh-tag[data-filter]").forEach(btn => {
+      const tag = normalizeTag(btn.dataset.filter);
+      if (tag === "all") btn.classList.toggle("is-active", active.size === 0);
+      else btn.classList.toggle("is-active", active.has(tag));
+    });
+  }
+
+  function toggle(tag) {
+    tag = normalizeTag(tag);
+    if (tag === "all") active.clear();
+    else active.has(tag) ? active.delete(tag) : active.add(tag);
+    applyFilters();
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest(".gh-pill[data-filter], .gh-tag[data-filter]");
+    if (!btn) return;
+    toggle(btn.dataset.filter);
+  });
+
+  document.getElementById("siteSearch")?.addEventListener("input", applyFilters);
+
+  applyFilters();
 })();
 </script>

@@ -15,15 +15,21 @@ website:
 
 format:
   html:
-    # theme:
-    #   - minty
-    #   - brand
-    toc: true
-    toc-location: body
-    toc-depth: 2
-    page-layout: full
     css: styles.css
+    toc: true
+    toc-location: right
+    toc-depth: 4
+    page-layout: full
+    include-before-body: includes/gh-start.html
+    include-after-body: includes/gh-end.html
     code-fold: true
+
+  html-home:
+    css: styles.css
+    toc: false
+    page-layout: full
+    code-fold: true
+
 
 execute: 
   warning: false
