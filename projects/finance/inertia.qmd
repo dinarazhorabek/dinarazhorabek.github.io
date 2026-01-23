@@ -1,0 +1,130 @@
+---
+title: "Inertia Trading – Boeing (BA) & S&P 500 (SPY)"
+format: html
+editor: visual
+---
+**Exploring short-term trading behavior in Boeing using rule-based strategies, machine learning, and clustering, benchmarked against the S&P 500.**  
+
+[📂 View Full Repository on GitHub](https://github.com/dinarazhorabek/ds_projects/tree/main/Inertia%20Trading)
+
+
+## Overview
+This project combines **rule-based trading**, **supervised ML**, and **unsupervised clustering** to analyze short-term stock behavior.  
+
+**Components:**
+
+1. **Day Trading – Inertia Strategy**  
+   Trades daily based on overnight price persistence.
+2. **Weekly ML Strategy**  
+   Classifies weeks as **buy (green)** or **cash (red)** using historical features.
+3. **Clustering Analysis**  
+   Identifies natural behavior regimes in Boeing and compares across Dow Jones stocks.
+
+
+## Day Trading – Inertia Strategy 
+
+**Concept:** Overnight price changes often persist during the next trading day.  
+Trades open at market open and close by day’s end with a fixed $100 per trade.  
+
+### Strategy Logic
+- **Positive Overnight Return → Long Position**  
+  Open > Previous Close → Buy $100 at Open, sell at Close  
+  Profit/Loss per share = `Close – Open`
+
+- **Negative Overnight Return → Short Position**    
+  Open < Previous Close → Short $100 at Open, cover at Close  
+  Profit/Loss per share = `Open – Close`
+
+**Assumptions:**  
+- Trade every day unless Open = Previous Close  
+- Ignore transaction costs
+
+### Key Findings
+- SPY (S&P 500 ETF) long trades most profitable above ~4% overnight return (**$3 per trade**)  
+- Short positions profitable only at >3% thresholds, with modest gains  
+- Overall, strategy works best on SPY **long trades after moderate positive overnight moves**
+
+[📓 View Notebook](https://github.com/dinarazhorabek/ds_projects/blob/main/Inertia%20Trading/inertia.ipynb)
+
+
+## Weekly Machine Learning Strategy
+
+**Concept:** Scale the day trading idea to weekly predictions using ML.
+
+### Features
+- **Mean Return (μ)** – average weekly price change  
+- **Volatility (σ)** – standard deviation of weekly returns  
+
+### Labels
+- **Green → Buy signal (stay invested)**  
+- **Red → Sell signal (move to cash)**  
+
+### Train/Test Split
+- Training: 2023–2024  
+- Testing: 2020–2022  
+
+### Linear Classification Baseline
+- Vertical cutoff at **μ = −100** separated green/red weeks in 2023  
+- Applied to 2024 → **100% accuracy**, **$162.39 profit** from $100 investment  
+
+[📓 View Linear Classification Notebook](https://github.com/dinarazhorabek/ds_projects/blob/main/Inertia%20Trading/linear_class.ipynb)
+
+---
+
+### ML Models Evaluated
+
+| Model           | Accuracy | Trading Profit (2024) |
+|-----------------|----------|----------------------|
+| kNN             | 97.1%    | $252.42              |
+| Logistic Reg    | 95.2%    | $224.78              |
+| Decision Tree   | 100%     | $294.39              |
+| Random Forest   | 100%     | $294.39              |
+| Gaussian SVM    | 97.1%    | $245.92              |
+| Polynomial SVM  | 84.8%    | $91.50               |
+| Naïve Bayes     | 15.2%    | $100.00              |
+
+**Insights:**  
+- **Best performance:** Decision Tree & Random Forest (profit + accuracy)  
+- kNN & Gaussian SVM → high accuracy, slightly lower profit  
+- Naïve Bayes struggled with correlated features  
+- Polynomial SVM overfits with high degree  
+
+**Implementation Links:**  
+- [kNN & Logistic Regression](https://github.com/dinarazhorabek/ds_projects/blob/main/Inertia%20Trading/knn%20and%20logreg.ipynb)  
+- [Naïve Bayes & LDA/QDA](https://github.com/dinarazhorabek/ds_projects/blob/main/Inertia%20Trading/naive_lda_qda.ipynb)  
+- [Decision Tree & Random Forest](https://github.com/dinarazhorabek/ds_projects/blob/main/Inertia%20Trading/tree_rf_adaboost_hamming.ipynb)  
+- [SVM Models](https://github.com/dinarazhorabek/ds_projects/blob/main/Inertia%20Trading/svm.ipynb)
+
+---
+
+## Clustering Analysis
+
+**Goal:** Discover natural regimes in weekly return–volatility patterns.  
+
+### K-Means on Boeing (BA)
+- Features: weekly μ, σ  
+- Optimal clusters: **k = 4**  
+- Clusters show clear separation of green/red weeks → behavioral regimes  
+- **Cluster purity** confirms weekly patterns align with ML predictions  
+
+[📓 View Boeing Clustering Notebook](https://github.com/dinarazhorabek/ds_projects/blob/main/Inertia%20Trading/k_means.ipynb)
+
+### Clustering Across Dow Jones Stocks
+- Stocks: **AMZN, JNJ, MCD, NKE, NVDA**  
+- Tracked cluster trajectories month-to-month  
+- **Hamming Distance Analysis:**
+  - Most different → NVDA vs. JNJ (distance = 50)  
+  - Most similar → MCD vs. NKE (distance = 28)  
+  - Most stable → MCD & NKE  
+  - Least stable → NVDA  
+
+[📓 View Dow Jones Clustering Notebook](https://github.com/dinarazhorabek/ds_projects/blob/main/Inertia%20Trading/clustering_dow_jones.ipynb)
+
+---
+
+## Key Learnings & Impact
+
+- Applied **rule-based, supervised, and unsupervised learning** to real-market stock data  
+- Evaluated multiple ML models for predictive accuracy and trading profit  
+- Discovered stable behavioral regimes across Boeing and Dow Jones components  
+- Learned practical challenges: feature correlation, model overfitting, hyperparameter tuning  
