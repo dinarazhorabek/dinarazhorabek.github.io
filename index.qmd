@@ -10,7 +10,9 @@ format: html-home
 <div class="gh-card gh-profile">
 <img class="gh-avatar" src="./images/main.jpg" alt="Dinara Zhorabek">
 <div class="gh-name">Dinara Zhorabek</div>
-<div class="gh-role">Data Analyst · Data Scientist · Full Stack Software Engineer</div>
+<div class="gh-role">Data Analyst · Business Analyst<br>
+Boston University · MS ABA
+</div>
 
 <div class="gh-links">
 <a href="https://github.com/dinarazhorabek" target="_blank" rel="noopener">GitHub</a>
@@ -18,8 +20,8 @@ format: html-home
 </div>
 
 <div class="gh-mini">
-MS Applied Business Analytics · Boston University<br>
-Python · Scikit-Learn · R · SQL · Plotly · Streamlit · Tableau · Power BI
+<!-- Boston University · MS ABA<br> -->
+Python | SQL | AI | Data Analysis | Business Analytics
 </div>
 </div>
 
@@ -31,11 +33,11 @@ Python · Scikit-Learn · R · SQL · Plotly · Streamlit · Tableau · Power BI
 
 ## Hi, I’m Dinara.
 
-An aspiring data analyst and data scientist, software engineer, avid traveler, passionate about continuous learning, problem-solving, and empowering others through data-driven solutions.
+**Business & Data Analyst** who loves turning data into insights that make a real difference. I enjoy solving problems, learning new skills, and using analytics and AI to help businesses make smarter decisions.
 
-I am pursuing a Master’s degree in Applied Business Analytics at [Boston University](https://www.bu.edu/) and received a B.S. in Information and Communication Technology from [Kazakh-British Technical University](https://kbtu.edu.kz/en/).
+Currently pursuing a Master’s in Applied Business Analytics at [Boston University](https://www.bu.edu/), with a B.S. in Information and Communication Technology from [Kazakh-British Technical University](https://kbtu.edu.kz/en/). I’ve worked on projects involving **Python**, **R**, **SQL**, **Tableau**, **Power BI**, and **AI-driven analytics**, from building **interactive dashboards** to designing **predictive models** and **data pipelines**. I’m passionate about using technology to understand problems, find solutions, and empower others through data.
 
-I’m skilled in Python, R, SQL, Tableau and Power BI, and I am deeply committed to using data and technology to solve business challenges.
+Outside of work, I love traveling, exploring new habits, and running - I’m currently training for a half marathon.
 </div>
 
 <div id="projects"></div>
