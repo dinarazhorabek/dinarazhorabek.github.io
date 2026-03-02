@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Resume — Harvard Format</title>
+
+  <style>
+    /* ====== Page + typography (Harvard-style, clean + print-ready) ====== */
+    :root{
+      --page-width: 8.5in;     /* US Letter */
+      --page-height: 11in;
+      --margin: 0.6in;         /* common Harvard-ish margin */
+      --text: #111;
+      --muted: #444;
+      --rule: #111;
+    }
+
+    html, body { height: 100%; }
+    body{
+      margin: 0;
+      background:#f4f4f4;
+      color: var(--text);
+      font-family: "Times New Roman", Times, serif;
+      line-height: 1.2;
+      -webkit-font-smoothing: antialiased;
+      font-size: 11pt;
+
+      display: flex;
+      flex-direction: column;
+    }
+    .wrap {
+      flex: 1;
+    }
+    /* The “paper” */
+    .page{
+      width: var(--page-width);
+      min-height: var(--page-height);
+      margin: 24px auto;
+      padding: var(--margin);
+    }
+
+    /* ====== Header ====== */
+    .name{
+      text-align: center;
+      font-weight: 700;
+      letter-spacing: .5px;
+      font-size: 18pt;
+      margin: 0;
+      /* text-transform: uppercase; */
+    }
+
+    .contact{
+      text-align: center;
+      margin: 4px 0 10px;
+      color: var(--muted);
+      font-size: 10pt;
+    }
+    a{ 
+      /* color: inherit; */
+      text-decoration: none; }
+    .contact .sep{ padding: 0 6px; }
+
+    /* ====== Sections ====== */
+    .section{
+      margin-top: 14px;
+    }
+
+    .section-title{
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 10.5pt;
+      margin: 10px 0 4px;
+      letter-spacing: .3px;
+    }
+
+    .rule{
+      border: 0;
+      border-top: 1px solid var(--rule);
+      margin: 2px 0 8px;
+      height: 0;
+    }
+
+    /* ====== Entries ====== */
+    .entry{
+      margin: 0 0 8px 0;
+    }
+
+    /* left/right aligned first line like Harvard templates */
+    .entry-head{
+      display: grid;
+      grid-template-columns: 1fr auto;
+      column-gap: 12px;
+      align-items: baseline;
+    }
+
+    .org{
+      font-weight: 700;
+      /* text-transform: uppercase; */
+    }
+
+    .right{
+      text-align: right;
+      white-space: nowrap;
+      color: var(--muted);
+    }
+
+    .subline{
+      display: grid;
+      grid-template-columns: 1fr auto;
+      column-gap: 12px;
+      margin-top: 1px;
+    }
+
+    .role{
+      font-style: italic;
+      color: var(--text);
+    }
+
+    .bullets{
+      margin: 4px 0 0 18px;
+      padding: 0;
+    }
+
+    .bullets li{
+      margin: 0 0 3px 0;
+    }
+
+    /* ====== “Additional” compact lines ====== */
+    .kv{
+      margin: 0;
+    }
+    .kv b{
+      font-weight: 700;
+    }
+    button{
+      border:1px solid #ccc;
+      background:#fff;
+      border-radius:6px;
+      padding:6px 10px;
+      font-size:13px;
+    }
+    .site-footer{
+      max-width: var(--page-width);
+      margin: 30px auto 0;
+      text-align: center;
+      padding: 16px 0 40px;
+      font-size: 0.9rem;
+      color: #777;
+      border-top: 1px solid #e7e7e7;
+    }
+    /* ====== Print / PDF ====== */
+    @media print{
+      body{ background:#fff; }
+      .page{
+        margin: 0;
+        box-shadow: none;
+        width: auto;
+        min-height: auto;
+        padding: var(--margin);
+      }
+      a{ text-decoration: none; color: inherit; }
+    }
+
+    @page{
+      size: letter;
+      margin: 0; /* we control padding with .page */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <main class="page" id="resume">
+      <!-- ===== Header ===== -->
+      <h1 class="name">Dinara Zhorabek</h1>
+      <div class="contact">
+        Boston, MA <span class="sep">|</span>
+        P: (617) 216-8953 <span class="sep">|</span>
+        <a href="mailto:dkalijanovna@gmail.com">dkalijanovna@gmail.com</a>
+        <span class="sep">|</span>
+        <a href="https://linkedin.com/in/dinarazhorabek/">linkedin.com/in/dinarazhorabek</a>
+        <!-- <span class="sep">|</span>
+        <a href="https://dinarazhorabek.github.io/">https://dinarazhorabek.github.io/</a> -->
+      </div>
+
+      <section class="section">
+        <div class="section-title">Summary</div>
+        <hr class="rule" />
+
+        <div class="entry">
+          <div>
+            Business & Data Analyst with a software engineering background, building end-to-end analytics systems that turn complex data into actionable insights. Experienced in Python, SQL, and interactive dashboards, with recent work spanning AI-assisted workflows, ETL pipelines, and decision-support analytics for career advising and labor-market intelligence.
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== EDUCATION ===== -->
+      <section class="section">
+        <div class="section-title">Education</div>
+        <hr class="rule" />
+
+        <div class="entry">
+          <div class="entry-head">
+            <div class="org">Boston University Metropolitan College</div>
+            <div class="right">Boston, MA</div>
+          </div>
+          <div class="subline">
+            <div>Master of Science, Applied Business Analytics</div>
+            <div class="right">May 2026</div>
+          </div>
+          <div class="subline">
+            <div>
+              Cumulative GPA: 3.81/4.0<br/>
+              Relevant Coursework: Data Mining, Data Science, Marketing Analytics, Operations Management, Enterprise Risk Analytics, Cloud Analytics
+            </div>
+            <div></div>
+          </div>
+        </div>
+
+        <div class="entry">
+          <div class="entry-head">
+            <div class="org">Kazakh-British Technical University</div>
+            <div class="right">Almaty, Kazakhstan</div>
+          </div>
+          <div class="subline">
+            <div>Bachelor of Science, Information and Communication Technology</div>
+            <div class="right">June 2023</div>
+          </div>
+          <div class="subline">
+            <div>
+              Major in Information Systems<br/>
+              Cumulative GPA: 3.57/4.0<br/>
+              Relevant Coursework: Calculus, Discrete Structures, Software Engineering, Algorithms, Object-Oriented Programming, Programming Principles, Enterprise Architecture
+            </div>
+            <div></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== WORK EXPERIENCE ===== -->
+      <section class="section">
+        <div class="section-title">Work Experience</div>
+        <hr class="rule" />
+
+        <div class="entry">
+          <div class="entry-head">
+            <div class="org">Boston University</div>
+            <div class="right">Boston, MA</div>
+          </div>
+          <div class="subline">
+            <div class="role">Graduate Research Assistant</div>
+            <div class="right">Oct 2024 - Present</div>
+          </div>
+          <ul class="bullets">
+            <li>Created a Django web platform that includes interactive labor-market dashboards and a user questionnaire, supported by automated ETL pipelines and Plotly analytics.</li>
+            <li>Support development of AI-driven workflows, including prompt engineering, scripting, and test-case design for intelligent agent behaviors. Perform quality assurance testing of AI outputs across varied student profiles and career objectives.</li>
+            <li>Assist with pilot program operations, including creation of onboarding materials, collection of user feedback, and benchmarking against traditional advising methods.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-head">
+            <div class="org">The Build Fellowship</div>
+            <div class="right">New York City, NY</div>
+          </div>
+          <div class="subline">
+            <div class="role">Data Science Build Student Consultant</div>
+            <div class="right">July 2025 - Sep 2025</div>
+          </div>
+          <ul class="bullets">
+            <li>Cleaned and validated extensive healthcare datasets to enhance data quality for modeling.</li>
+            <li>Conducted exploratory data analysis (EDA) to summarize and visualize patient trends using Excel tools.</li>
+            <li>Identified significant patterns supporting evidence-based insights and early-stage recommendations through statistical methods like t-tests, ANOVA, and regression.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-head">
+            <div class="org">VTB Bank Kazakhstan</div>
+            <div class="right">Almaty, Kazakhstan</div>
+          </div>
+          <div class="subline">
+            <div class="role">Full-Stack Software Engineer</div>
+            <div class="right">Feb 2023 - Aug 2024</div>
+          </div>
+          <ul class="bullets">
+            <li>Directed the end-to-end development of enterprise-grade financial software, managing project scoping, system design, data
+  architecture, backend logic, API integrations, and CI/CD deployment. This approach accelerated delivery timelines and
+  enhanced platform reliability across engineering teams.</li>
+            <li>Engineered high-throughput, no-code enterprise applications utilizing Java and PostgreSQL, optimizing modularity and service
+  scalability. This effort resulted in a 30% reduction in feature rollout time and decreased backend load through efficient data flow
+  design.</li>
+            <li>Designed and deployed a credit scoring engine from the ground up, establishing secure RESTful POST integrations with external
+  systems, introducing real-time performance monitoring, and delivering a streamlined user experience through Oracle APEX.</li>
+            <li>Architected core banking UI components using React and Node.js, which improved component rendering and state management,
+  enhanced page responsiveness, and reduced transaction latency by 4%.</li>
+            <li>Optimized large-scale relational queries and PL/SQL procedures with DBMS Profiler and Query Analyzer, restructuring slow
+  execution paths and achieving an average reduction of 50% in critical query runtimes.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== UNIVERSITY PROJECTS ===== -->
+      <section class="section">
+        <div class="section-title">Projects</div>
+        <hr class="rule" />
+
+        <div class="entry">
+          <div class="entry-head">
+            <div class="org"><a href="https://met-employability-services.azurewebsites.net">Career Compass</a></div>
+            <div class="right"></div>
+          </div>
+          <ul class="bullets">
+            <li>Built an end-to-end labor-market analytics web platform (Django) with relational modeling and interactive dashboards.</li>
+            <li>Published a visualization methodology paper formalizing task-aligned design principles for decision support.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-head">
+            <div class="org"><a href="https://dinarazhorabek.github.io/projects/vortex/main.html">Adaptive Volatility (VSAV) Strategy</a></div>
+            <div class="right"></div>
+          </div>
+          <ul class="bullets">
+            <li>Developed a quantitative trading strategy integrating sentiment analysis, volatility signals, and regime detection for TSLA vs. XLY. </li>
+            <li>Built a full research pipeline with feature engineering, model backtesting, rolling-window optimization, and performance evaluation. </li>
+            <li>Implemented in Python with Plotly dashboards to visualize signals, returns, and risk metrics.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-head">
+            <div class="org"><a href="https://dinarazhorabek.github.io/projects/airbnb/airbnb-copenhagen.html">Airbnb Analysis in Copenhagen</a></div>
+            <div class="right"></div>
+          </div>
+          <ul class="bullets">
+            <li>Conducted an exploratory data analysis of Airbnb listings in Copenhagen to uncover pricing drivers, host behavior patterns, and neighborhood trends.</li>
+            <li>Built interactive visualizations to analyze availability, review scores, and room-type impacts on price.</li>
+            <li>Applied clustering and feature analysis to identify distinct market segments and inform data-driven pricing insights.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-head">
+            <div class="org"><a href="https://dinarazhorabek.github.io/ad688-employability-fall25A1-group5/">Job Market Analysis 2024</a></div>
+            <div class="right"></div>
+          </div>
+          <ul class="bullets">
+            <li>Integrated Lightcast job-posting data with FRED macroeconomic indicators to analyze 2024 U.S. labor-market trends.</li>
+            <li>Applied machine learning, NLP, and statistical modeling to evaluate hiring patterns, skill demand, gender disparities, and regional wage dynamics.</li>
+            <li>Published findings in an interactive Quarto website featuring reproducible analytics and dynamic visualizations.</li>
+          </ul>
+        </div>
+
+        <div class="entry">
+          <div class="entry-head">
+            <div class="org"><a href="https://github.com/dinarazhorabek/astronomy_data_analysis/tree/main">Stellar Classification using Hipparcos Catalogue</a></div>
+            <div class="right"></div>
+          </div>
+          <ul class="bullets">
+            <li>Processed and engineered photometric and astrometric features from ~100K Hipparcos stars for multi-class stellar variability classification.</li>
+            <li>Built and compared kNN, Logistic Regression, SVM, and Random Forest models; Gaussian SVM achieved 71% test accuracy.</li>
+            <li>Analyzed class imbalance and feature overlap to assess model limitations in astronomical prediction.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-title">Skills</div>
+        <hr class="rule" />
+
+        <p class="kv"><b>Programming &amp; ML:</b> Python · NumPy · Pandas · Scikit-Learn · PySpark · TensorFlow · Transformers · LangChain </p>
+        <p class="kv"><b>Data Engineering:</b> SQL · PostgreSQL · Snowflake · MongoDB · ETL Pipelines · Data Modeling · API Integration </p>
+        <p class="kv"><b>Cloud &amp; Deployment:</b> AWS EC2 · Azure ML · Docker · Git · REST APIs </p>
+        <p class="kv"><b>Visualization &amp; Analytics:</b> Plotly · Streamlit · Tableau · Power BI · Matplotlib · A/B Testing </p>
+      </section>
+
+      <!-- ===== ARTICLES ===== -->
+      <section class="section">
+        <div class="section-title">Articles</div>
+        <hr class="rule" />
+        <p class="kv"><a href="#">Zhorabek, D. (2026). <i>Compass Labor Analytics: Visualization Architecture for Career Planning.</i></a> 
+          <br>Third International Symposium on Entrepreneurship and Technology (SET-III). </p>
+      </section>
+
+      <!-- ===== ADDITIONAL ===== -->
+      <section class="section">
+        <div class="section-title">Additional</div>
+        <hr class="rule" />
+        <p class="kv"><b>Awards:</b> Presidential <a href="https://bolashak.gov.kz/en">“Bolashak”</a> Scholarship (Kazakhstan) · BU MET Hackathon Winner (2025) </p>
+        <p class="kv"><b>Certifications &amp; Training:</b> <a href="https://www.datacamp.com/certificate/DA0021164042438">Data Analyst</a> (DataCamp) · <a href="https://freecodecamp.org/certification/fccb8c630b9-cf1f-4aa5-af49-467c78bd3e2e/back-end-development-and-apis">Back End Development and APIs</a> (freeCodeCamp) </p>
+      </section>
+    </main>
+
+    <!-- helper button for “Save as PDF” -->
+    <div style="width:8.5in;margin:0 auto 24px; text-align:right;">
+      <button onclick="window.print()"
+        style="font-family:inherit;font-size:10pt;padding:8px 12px;cursor:pointer;">
+        Print / Save as PDF
+      </button>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    © <span id="year"></span>. Developed by Dinara
+  </footer>
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+  
+</body>
+</html>
