@@ -22,7 +22,7 @@ Business &amp; Data Analyst<br>
 <div class="gh-links">
 <a class="gh-link-pill" href="https://github.com/dinarazhorabek" target="_blank" rel="noopener">GitHub</a>
 <a class="gh-link-pill" href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a>
-<a class="gh-link-pill gh-link-pill-strong" href="./resume/resume.html">Resume</a>
+<a class="gh-link-pill gh-link-pill-strong" href="./resume/index.html">Resume</a>
 </div>
 
 <div class="gh-mini">
@@ -46,7 +46,7 @@ I’m particularly interested in applying analytics and AI to real-world busines
 
 Outside of analytics, I enjoy traveling, building disciplined habits, and training for a half marathon.
 
-[View Resume →](./resume/resume.html)
+[View Resume →](./resume/index.html)
 
 </div>
 
