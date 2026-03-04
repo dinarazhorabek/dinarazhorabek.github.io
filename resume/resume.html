@@ -15,7 +15,6 @@
       --muted: #444;
       --rule: #111;
     }
-
     html, body { height: 100%; }
     body{
       margin: 0;
@@ -395,7 +394,7 @@
 
     <!-- helper button for “Save as PDF” -->
     <div style="width:8.5in;margin:0 auto 24px; text-align:right;">
-      <button onclick="window.print()"
+      <button onclick="printResume()"
         style="font-family:inherit;font-size:10pt;padding:8px 12px;cursor:pointer;">
         Print / Save as PDF
       </button>
@@ -408,6 +407,38 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
-  
+  <script>
+  function printResume() {
+    const resumeContent = document.getElementById("resume").outerHTML;
+    const styles = document.querySelector("style").outerHTML;
+
+    const printWindow = window.open("", "_blank");
+
+    printWindow.document.write(`
+      <!doctype html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <title>Resume</title>
+          ${styles}
+          <style>
+            /* Keep links visible and clickable in PDF */
+            a {
+              color: #0645ad;
+              text-decoration: underline;
+            }
+          </style>
+        </head>
+        <body>
+          ${resumeContent}
+        </body>
+      </html>
+    `);
+
+    printWindow.document.close();
+    printWindow.focus();
+    printWindow.print();
+  }
+  </script>
 </body>
 </html>
