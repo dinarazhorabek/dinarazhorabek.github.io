@@ -139,20 +139,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div class="gh-card gh-profile">
       <img class="gh-avatar" src="../../images/main.jpg" alt="Dinara Zhorabek">
       <div class="gh-name">Dinara Zhorabek</div>
-      <div class="gh-role">Data Analyst · Business Analyst</div>
+      <div class="gh-role">
+        Business &amp; Data Analyst<br>
+        <span class="gh-edu">
+        <a href="https://www.bu.edu/" target="_blank" rel="noopener">Boston University</a> — M.S. Applied Business Analytics (’26)
+        </span>
+      </div>
 
       <div class="gh-links">
-        <a href="https://github.com/dinarazhorabek" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="gh-link-pill" href="https://github.com/dinarazhorabek" target="_blank" rel="noopener">GitHub</a>
+        <a class="gh-link-pill" href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="gh-link-pill gh-link-pill-strong" href="../../resume/index.html">Resume</a>
       </div>
 
       <div class="gh-mini">
-        MS Applied Business Analytics · Boston University<br>
-        Data Analysis · Python · Business Analytics · Artificial Intelligence (AI) · SQL
+        Python · SQL · ML · Dashboards · Data Pipelines
       </div>
     </div>
 
-    <div class="gh-card" style="margin-top:12px;">
+    <div class="gh-card gh-only-project" style="margin-top:12px;">
       <div class="gh-side-title">Back</div>
       <a href="../../index.html#projects">← All Projects</a>
     </div>
@@ -220,8 +225,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <div class="cell">
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-dfd5323565f50f6ca898" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-dfd5323565f50f6ca898">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Jesse","Manager","Jesse","Manager","Jesse","Manager"],["Here's my resume. I mean, technically it says \"curriculum vitae,\" which I think is more professional, but, you know, the same thing pretty much.","Great. But this position truly is a no-experience-necessary kind of thing.","Well, and it doesn't really say it here, but I have a solid background in sales. I'm pretty much a self-starter, so.","That's excellent, but…","I really feel I could be a major, major asset to your sales force.","I'm thinking there's a little misunderstanding. This isn't actually a sales job. I mean, I'd be happy to consider you for a sales position, but our agents need to be licensed, have at least two years on-the-job experience, and usually a college degree. What you would be doing is more like advertising."],[1,1,1,1,1,1],[5,5,5,5,5,5],["Grey Matter","Grey Matter","Grey Matter","Grey Matter","Grey Matter","Grey Matter"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>actor<\/th>\n      <th>text<\/th>\n      <th>season<\/th>\n      <th>episode<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"actor","targets":1},{"name":"text","targets":2},{"name":"season","targets":3},{"name":"episode","targets":4},{"name":"title","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-62e81b4041b2f014c933" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-62e81b4041b2f014c933">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6"],["Jesse","Manager","Jesse","Manager","Jesse","Manager"],["Here's my resume. I mean, technically it says \"curriculum vitae,\" which I think is more professional, but, you know, the same thing pretty much.","Great. But this position truly is a no-experience-necessary kind of thing.","Well, and it doesn't really say it here, but I have a solid background in sales. I'm pretty much a self-starter, so.","That's excellent, but…","I really feel I could be a major, major asset to your sales force.","I'm thinking there's a little misunderstanding. This isn't actually a sales job. I mean, I'd be happy to consider you for a sales position, but our agents need to be licensed, have at least two years on-the-job experience, and usually a college degree. What you would be doing is more like advertising."],[1,1,1,1,1,1],[5,5,5,5,5,5],["Grey Matter","Grey Matter","Grey Matter","Grey Matter","Grey Matter","Grey Matter"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>actor<\/th>\n      <th>text<\/th>\n      <th>season<\/th>\n      <th>episode<\/th>\n      <th>title<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"scrollX":true,"searching":false,"paging":false,"info":false,"columnDefs":[{"className":"dt-right","targets":[3,4]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"actor","targets":1},{"name":"text","targets":2},{"name":"season","targets":3},{"name":"episode","targets":4},{"name":"title","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <div class="cell">
@@ -411,10 +416,9 @@ Three best words are “like”, “good”, “thank”.</p>
 </section>
 
 </div></div></main> <!-- /main -->
+<!-- RIGHT SIDEBAR (appended into .gh-layout by JS) -->
 <div class="gh-right">
-  <!-- <div class="gh-card"> -->
-    <div id="gh-toc-slot"></div>
-  <!-- </div> -->
+  <div id="gh-toc-slot"></div>
 </div>
 
 <script>
@@ -433,6 +437,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const margin = document.querySelector("#quarto-margin-sidebar");
   if (margin) margin.style.display = "none";
 });
+</script>
+
+<!-- CLOSE what gh-start.html opened -->
+</div> <!-- /.gh-main -->
+ <!-- /.gh-layout -->
+
+<footer class="site-footer">
+  © <span class="js-year"></span>. Developed by Dinara
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".js-year").forEach(el => {
+      el.textContent = new Date().getFullYear();
+    });
+  });
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -851,7 +871,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+ <!-- /content -->
 
 
 

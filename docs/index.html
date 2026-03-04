@@ -70,7 +70,7 @@ ul.task-list li input[type="checkbox"] {
 <link rel="stylesheet" href="styles.css">
 </head>
 
-<body>
+<body class="is-home">
 
 <div id="quarto-search-results"></div>
 <!-- content -->
@@ -80,32 +80,43 @@ ul.task-list li input[type="checkbox"] {
     
 <!-- main -->
 <main class="content column-page" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
-
-
-
-
 <div class="gh-layout">
-<!-- LEFT SIDEBAR -->
-<div class="gh-left">
-<div class="gh-card gh-profile">
-<p><img class="gh-avatar" src="./images/main.jpg" alt="Dinara Zhorabek"></p>
-<div class="gh-name">
-Dinara Zhorabek
-</div>
-<div class="gh-role">
-<p>Business &amp; Data Analyst<br> <span class="gh-edu"> <a href="https://www.bu.edu/" target="_blank" rel="noopener">Boston University</a> — M.S. Applied Business Analytics (’26) </span></p>
-</div>
-<div class="gh-links">
-<p><a class="gh-link-pill" href="https://github.com/dinarazhorabek" target="_blank" rel="noopener">GitHub</a> <a class="gh-link-pill" href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a> <a class="gh-link-pill gh-link-pill-strong" href="./resume/resume.html">Resume</a></p>
-</div>
-<div class="gh-mini">
-<p>Python · SQL · ML · Dashboards · Data Pipelines</p>
-</div>
-</div>
-</div>
-<!-- LEFT SIDEBAR -->
-<!-- CENTER CONTENT -->
-<div class="gh-main">
+
+  <!-- LEFT -->
+  <div class="gh-left">
+    <div class="gh-card gh-profile">
+      <img class="gh-avatar" src="./images/main.jpg" alt="Dinara Zhorabek">
+      <div class="gh-name">Dinara Zhorabek</div>
+      <div class="gh-role">
+        Business &amp; Data Analyst<br>
+        <span class="gh-edu">
+        <a href="https://www.bu.edu/" target="_blank" rel="noopener">Boston University</a> — M.S. Applied Business Analytics (’26)
+        </span>
+      </div>
+
+      <div class="gh-links">
+        <a class="gh-link-pill" href="https://github.com/dinarazhorabek" target="_blank" rel="noopener">GitHub</a>
+        <a class="gh-link-pill" href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="gh-link-pill gh-link-pill-strong" href="./resume/index.html">Resume</a>
+      </div>
+
+      <div class="gh-mini">
+        Python · SQL · ML · Dashboards · Data Pipelines
+      </div>
+    </div>
+
+    <div class="gh-card gh-only-project" style="margin-top:12px;">
+      <div class="gh-side-title">Back</div>
+      <a href="./index.html#projects">← All Projects</a>
+    </div>
+  </div>
+
+  <!-- CENTER (page content starts after this include) -->
+  <div class="gh-main">
+
+
+
+
 <div id="intro">
 <section id="hi-im-dinara." class="level2">
 <h2 class="anchored" data-anchor-id="hi-im-dinara.">Hi, I’m Dinara.</h2>
@@ -113,7 +124,7 @@ Dinara Zhorabek
 <p>I’m currently pursuing a Master’s in Applied Business Analytics at <a href="https://www.bu.edu/">Boston University</a>, with a B.S. in Information and Communication Technology from <a href="https://kbtu.edu.kz/">Kazakh-British Technical University</a>. My background combines information systems and full-stack engineering, and my work spans AI-assisted workflows, machine learning models, and end-to-end data pipelines using Python, SQL, and modern visualization tools.</p>
 <p>I’m particularly interested in applying analytics and AI to real-world business problems where technical rigor meets measurable impact.</p>
 <p>Outside of analytics, I enjoy traveling, building disciplined habits, and training for a half marathon.</p>
-<p><a href="./resume/resume.html">View Resume →</a></p>
+<p><a href="./resume/index.html">View Resume →</a></p>
 </section>
 </div>
 <div id="projects">
@@ -514,8 +525,7 @@ Dinara Zhorabek
 </div>
 </div>
 </div>
-</section>
-</div>
+</section></div>
 <!-- RIGHT SIDEBAR -->
 <div class="gh-right">
 <div class="gh-card">
@@ -684,7 +694,46 @@ Reset
 
 
 
+
 </main> <!-- /main -->
+<!-- RIGHT SIDEBAR (appended into .gh-layout by JS) -->
+<div class="gh-right">
+  <div id="gh-toc-slot"></div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  // Move gh-right INTO the gh-layout grid (as the 3rd column)
+  const layout = document.querySelector(".gh-layout");
+  const right = document.querySelector(".gh-right");
+  if (layout && right) layout.appendChild(right);
+
+  // Move Quarto TOC into our slot
+  const quartoToc = document.querySelector("#quarto-margin-sidebar nav#TOC");
+  const slot = document.querySelector("#gh-toc-slot");
+  if (quartoToc && slot) slot.appendChild(quartoToc);
+
+  // Hide Quarto margin sidebar container
+  const margin = document.querySelector("#quarto-margin-sidebar");
+  if (margin) margin.style.display = "none";
+});
+</script>
+
+<!-- CLOSE what gh-start.html opened -->
+</div> <!-- /.gh-main -->
+ <!-- /.gh-layout -->
+
+<footer class="site-footer">
+  © <span class="js-year"></span>. Developed by Dinara
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".js-year").forEach(el => {
+      el.textContent = new Date().getFullYear();
+    });
+  });
+</script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -1102,7 +1151,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+ <!-- /content -->
 
 
 

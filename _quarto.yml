@@ -29,7 +29,8 @@ format:
     toc: false
     page-layout: full
     code-fold: true
-
+    include-before-body: includes/gh-start.html
+    include-after-body: includes/gh-end.html
 
 execute: 
   warning: false

@@ -590,3 +590,15 @@ main#quarto-document-content.content{
   background: var(--gh-text);
   color: #fff;
 }
+.site-footer{
+  max-width: var(--page-width);
+  margin: 30px auto 0;
+  text-align: center;
+  padding: 16px 0 40px;
+  font-size: 0.9rem;
+  color: #777;
+  border-top: 1px solid #e7e7e7;
+}
+.is-home .gh-only-project { 
+  display: none !important; 
+}

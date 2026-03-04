@@ -1,39 +1,9 @@
 ---
 title: ""
-format: html-home
+format: 
+  html-home:
+    body-classes: "is-home"
 ---
-
-<div class="gh-layout">
-
-<!-- LEFT SIDEBAR -->
-<div class="gh-left">
-<div class="gh-card gh-profile">
-<img class="gh-avatar" src="./images/main.jpg" alt="Dinara Zhorabek">
-
-<div class="gh-name">Dinara Zhorabek</div>
-
-<div class="gh-role">
-Business &amp; Data Analyst<br>
-<span class="gh-edu">
-<a href="https://www.bu.edu/" target="_blank" rel="noopener">Boston University</a> — M.S. Applied Business Analytics (’26)
-</span>
-</div>
-
-<div class="gh-links">
-<a class="gh-link-pill" href="https://github.com/dinarazhorabek" target="_blank" rel="noopener">GitHub</a>
-<a class="gh-link-pill" href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a>
-<a class="gh-link-pill gh-link-pill-strong" href="./resume/index.html">Resume</a>
-</div>
-
-<div class="gh-mini">
-Python · SQL · ML · Dashboards · Data Pipelines
-</div>
-</div>
-</div>
-<!-- LEFT SIDEBAR -->
-
-<!-- CENTER CONTENT -->
-<div class="gh-main">
 <div id="intro">
 
 ## Hi, I’m Dinara.
@@ -367,7 +337,6 @@ Filters projects as you type.
 </div>
 
 </div>
-
 </div>
 
 <script>

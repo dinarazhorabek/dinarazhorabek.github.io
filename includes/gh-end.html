@@ -1,7 +1,6 @@
+<!-- RIGHT SIDEBAR (appended into .gh-layout by JS) -->
 <div class="gh-right">
-  <!-- <div class="gh-card"> -->
-    <div id="gh-toc-slot"></div>
-  <!-- </div> -->
+  <div id="gh-toc-slot"></div>
 </div>
 
 <script>
@@ -20,4 +19,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const margin = document.querySelector("#quarto-margin-sidebar");
   if (margin) margin.style.display = "none";
 });
+</script>
+
+<!-- CLOSE what gh-start.html opened -->
+</div> <!-- /.gh-main -->
+</div> <!-- /.gh-layout -->
+
+<footer class="site-footer">
+  © <span class="js-year"></span>. Developed by Dinara
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".js-year").forEach(el => {
+      el.textContent = new Date().getFullYear();
+    });
+  });
 </script>

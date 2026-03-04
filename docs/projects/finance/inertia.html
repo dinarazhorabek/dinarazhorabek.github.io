@@ -114,20 +114,25 @@ ul.task-list li input[type="checkbox"] {
     <div class="gh-card gh-profile">
       <img class="gh-avatar" src="../../images/main.jpg" alt="Dinara Zhorabek">
       <div class="gh-name">Dinara Zhorabek</div>
-      <div class="gh-role">Data Analyst · Business Analyst</div>
+      <div class="gh-role">
+        Business &amp; Data Analyst<br>
+        <span class="gh-edu">
+        <a href="https://www.bu.edu/" target="_blank" rel="noopener">Boston University</a> — M.S. Applied Business Analytics (’26)
+        </span>
+      </div>
 
       <div class="gh-links">
-        <a href="https://github.com/dinarazhorabek" target="_blank" rel="noopener">GitHub</a>
-        <a href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="gh-link-pill" href="https://github.com/dinarazhorabek" target="_blank" rel="noopener">GitHub</a>
+        <a class="gh-link-pill" href="https://www.linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="gh-link-pill gh-link-pill-strong" href="../../resume/index.html">Resume</a>
       </div>
 
       <div class="gh-mini">
-        MS Applied Business Analytics · Boston University<br>
-        Data Analysis · Python · Business Analytics · Artificial Intelligence (AI) · SQL
+        Python · SQL · ML · Dashboards · Data Pipelines
       </div>
     </div>
 
-    <div class="gh-card" style="margin-top:12px;">
+    <div class="gh-card gh-only-project" style="margin-top:12px;">
       <div class="gh-side-title">Back</div>
       <a href="../../index.html#projects">← All Projects</a>
     </div>
@@ -352,10 +357,9 @@ Profit/Loss per share = <code>Open – Close</code></p></li>
 </section>
 
 </div></div></main> <!-- /main -->
+<!-- RIGHT SIDEBAR (appended into .gh-layout by JS) -->
 <div class="gh-right">
-  <!-- <div class="gh-card"> -->
-    <div id="gh-toc-slot"></div>
-  <!-- </div> -->
+  <div id="gh-toc-slot"></div>
 </div>
 
 <script>
@@ -374,6 +378,22 @@ document.addEventListener("DOMContentLoaded", () => {
   const margin = document.querySelector("#quarto-margin-sidebar");
   if (margin) margin.style.display = "none";
 });
+</script>
+
+<!-- CLOSE what gh-start.html opened -->
+</div> <!-- /.gh-main -->
+ <!-- /.gh-layout -->
+
+<footer class="site-footer">
+  © <span class="js-year"></span>. Developed by Dinara
+</footer>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".js-year").forEach(el => {
+      el.textContent = new Date().getFullYear();
+    });
+  });
 </script>
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
@@ -792,7 +812,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
-</div> <!-- /content -->
+ <!-- /content -->
 
 
 
