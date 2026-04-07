@@ -8,7 +8,7 @@ format:
 
 ## Hi, I’m Dinara.
 
-Business & Data Analyst focused on building scalable analytics solutions that transform complex data into actionable insights. I specialize in structured data modeling, interactive dashboards, and predictive analytics that support strategic decision-making.
+Data Analyst & Machine Learning Engineer focused on building scalable analytics solutions that transform complex data into actionable insights. I specialize in structured data modeling, interactive dashboards, and predictive analytics that support strategic decision-making.
 
 I’m currently pursuing a Master’s in Applied Business Analytics at [Boston University](https://www.bu.edu/), with a B.S. in Information and Communication Technology from [Kazakh-British Technical University](https://kbtu.edu.kz/). My background combines information systems and full-stack engineering, and my work spans AI-assisted workflows, machine learning models, and end-to-end data pipelines using Python, SQL, and modern visualization tools.
 
