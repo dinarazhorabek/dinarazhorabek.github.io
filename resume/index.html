@@ -3,431 +3,684 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Resume — Harvard Format</title>
+  <title>Resume — Dinara Zhorabek</title>
 
   <style>
-    /* ====== Page + typography (Harvard-style, clean + print-ready) ====== */
-    :root{
-      --page-width: 8.5in;     /* US Letter */
-      --page-height: 11in;
-      --margin: 0.6in;         /* common Harvard-ish margin */
-      --text: #111;
-      --muted: #444;
-      --rule: #111;
+    :root {
+      --gh-bg: #f6f8fa;
+      --gh-card: #ffffff;
+      --gh-text: #1f2328;
+      --gh-muted: #57606a;
+      --gh-border: #d0d7de;
+      --gh-link: #0969da;
+      --gh-link-hover: #0550ae;
     }
-    html, body { height: 100%; }
-    body{
-      margin: 0;
-      background:#f4f4f4;
-      color: var(--text);
-      font-family: "Times New Roman", Times, serif;
-      line-height: 1.2;
-      -webkit-font-smoothing: antialiased;
-      font-size: 11pt;
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      background: var(--gh-bg);
+      color: var(--gh-text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: var(--gh-link); text-decoration: none; }
+    a:hover { text-decoration: underline; color: var(--gh-link-hover); }
+
+    /* ── Toolbar ── */
+    .toolbar {
+      background: var(--gh-card);
+      border-bottom: 1px solid var(--gh-border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 24px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .toolbar-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      color: var(--gh-muted);
+    }
+
+    .toolbar-left a {
+      color: var(--gh-link);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .toolbar-sep { color: var(--gh-border); }
+
+    .btn-pdf {
+      font-family: inherit;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gh-text);
+      background: var(--gh-card);
+      border: 1px solid var(--gh-border);
+      border-radius: 6px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: background 0.1s, border-color 0.1s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-pdf:hover {
+      background: var(--gh-bg);
+      border-color: #adb5bd;
+    }
+
+    /* ── Layout ── */
+    .layout {
+      max-width: 900px;
+      margin: 24px auto 48px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 220px minmax(0, 1fr);
+      column-gap: 24px;
+      align-items: start;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      position: sticky;
+      top: 60px;
+    }
+
+    .profile-card {
+      background: var(--gh-card);
+      border: 1px solid var(--gh-border);
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 1px 0 rgba(27,31,36,0.04);
+      text-align: center;
+    }
+
+    .profile-name {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--gh-text);
+      margin-bottom: 2px;
+    }
+
+    .profile-role {
+      font-size: 12px;
+      color: var(--gh-muted);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    .profile-links {
       display: flex;
       flex-direction: column;
-    }
-    .wrap {
-      flex: 1;
-    }
-    /* The “paper” */
-    .page{
-      width: var(--page-width);
-      min-height: var(--page-height);
-      margin: 24px auto;
-      padding: var(--margin);
+      gap: 6px;
+      margin-bottom: 12px;
     }
 
-    /* ====== Header ====== */
-    .name{
-      text-align: center;
-      font-weight: 700;
-      letter-spacing: .5px;
-      font-size: 18pt;
-      margin: 0;
-      /* text-transform: uppercase; */
+    .profile-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--gh-muted);
+      text-decoration: none;
     }
 
-    .contact{
-      text-align: center;
-      margin: 4px 0 10px;
-      color: var(--muted);
-      font-size: 10pt;
-    }
-    a{ 
-      /* color: inherit; */
-      text-decoration: none; }
-    .contact .sep{ padding: 0 6px; }
+    .profile-link:hover { color: var(--gh-link); text-decoration: none; }
 
-    /* ====== Sections ====== */
-    .section{
-      margin-top: 14px;
+    .profile-link svg { flex-shrink: 0; }
+
+    .divider {
+      border: 0;
+      border-top: 1px solid var(--gh-border);
+      margin: 12px 0;
     }
 
-    .section-title{
+    .sidebar-section-title {
+      font-size: 11px;
       font-weight: 700;
       text-transform: uppercase;
-      font-size: 10.5pt;
-      margin: 10px 0 4px;
-      letter-spacing: .3px;
+      letter-spacing: 0.04em;
+      color: var(--gh-muted);
+      margin-bottom: 8px;
     }
 
-    .rule{
-      border: 0;
-      border-top: 1px solid var(--rule);
-      margin: 2px 0 8px;
-      height: 0;
+    .skill-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
     }
 
-    /* ====== Entries ====== */
-    .entry{
-      margin: 0 0 8px 0;
+    .skill-pill {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gh-text);
+      background: var(--gh-bg);
+      border: 1px solid var(--gh-border);
+      border-radius: 999px;
+      padding: 2px 8px;
+      line-height: 1.6;
     }
 
-    /* left/right aligned first line like Harvard templates */
-    .entry-head{
-      display: grid;
-      grid-template-columns: 1fr auto;
-      column-gap: 12px;
-      align-items: baseline;
+    /* ── Main content ── */
+    .main {}
+
+    /* ── Section ── */
+    .section {
+      background: var(--gh-card);
+      border: 1px solid var(--gh-border);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 1px 0 rgba(27,31,36,0.04);
+      margin-bottom: 16px;
     }
 
-    .org{
+    .section-title {
+      font-size: 13px;
       font-weight: 700;
-      /* text-transform: uppercase; */
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--gh-muted);
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--gh-border);
     }
 
-    .right{
-      text-align: right;
+    /* ── Entry ── */
+    .entry {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gh-border);
+    }
+
+    .entry:first-of-type { padding-top: 0; }
+    .entry:last-of-type { border-bottom: none; padding-bottom: 0; }
+
+    .entry-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 2px;
+    }
+
+    .entry-org {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gh-text);
+    }
+
+    .entry-org a {
+      color: var(--gh-text);
+      font-weight: 700;
+    }
+
+    .entry-org a:hover { color: var(--gh-link); text-decoration: none; }
+
+    .entry-date {
+      font-size: 12px;
+      color: var(--gh-muted);
       white-space: nowrap;
-      color: var(--muted);
+      flex-shrink: 0;
+      margin-top: 2px;
     }
 
-    .subline{
-      display: grid;
-      grid-template-columns: 1fr auto;
-      column-gap: 12px;
-      margin-top: 1px;
+    .entry-role {
+      font-size: 13px;
+      color: var(--gh-muted);
+      margin-bottom: 6px;
     }
 
-    .role{
-      font-style: italic;
-      color: var(--text);
+    .entry-location {
+      font-size: 12px;
+      color: var(--gh-muted);
     }
 
-    .bullets{
-      margin: 4px 0 0 18px;
+    .entry-bullets {
+      margin: 8px 0 0 16px;
       padding: 0;
+      font-size: 13.5px;
+      color: var(--gh-text);
+      line-height: 1.55;
     }
 
-    .bullets li{
-      margin: 0 0 3px 0;
+    .entry-bullets li { margin-bottom: 4px; }
+
+    .entry-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 8px;
     }
 
-    /* ====== “Additional” compact lines ====== */
-    .kv{
-      margin: 0;
+    .tech-tag {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--gh-link);
+      background: #dbeafe;
+      border-radius: 999px;
+      padding: 2px 8px;
+      line-height: 1.6;
     }
-    .kv b{
+
+    /* ── Education detail ── */
+    .edu-detail {
+      font-size: 12px;
+      color: var(--gh-muted);
+      margin-top: 4px;
+      line-height: 1.6;
+    }
+
+    /* ── Project entry ── */
+    .project-entry {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--gh-border);
+    }
+
+    .project-entry:first-of-type { padding-top: 0; }
+    .project-entry:last-of-type { border-bottom: none; padding-bottom: 0; }
+
+    .project-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .project-name {
+      font-size: 14px;
       font-weight: 700;
     }
-    button{
-      border:1px solid #ccc;
-      background:#fff;
-      border-radius:6px;
-      padding:6px 10px;
-      font-size:13px;
+
+    .project-name a { color: var(--gh-text); font-weight: 700; }
+    .project-name a:hover { color: var(--gh-link); text-decoration: none; }
+
+    .project-stack {
+      font-size: 11px;
+      color: var(--gh-muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      margin-top: 2px;
     }
-    .site-footer{
-      max-width: var(--page-width);
-      margin: 30px auto 0;
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--gh-text);
+      line-height: 1.55;
+      margin-bottom: 4px;
+    }
+
+    .project-note {
+      font-size: 12px;
+      color: var(--gh-muted);
+      font-style: italic;
+    }
+
+    /* ── Skills grid ── */
+    .skills-grid {
+      display: grid;
+      gap: 8px;
+    }
+
+    .skill-row {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 12px;
+      align-items: start;
+      font-size: 13px;
+    }
+
+    .skill-label {
+      font-weight: 600;
+      color: var(--gh-muted);
+      font-size: 12px;
+      padding-top: 2px;
+    }
+
+    .skill-values {
+      color: var(--gh-text);
+      line-height: 1.6;
+    }
+
+    /* ── Additional ── */
+    .add-row {
+      font-size: 13.5px;
+      margin-bottom: 6px;
+      line-height: 1.55;
+    }
+
+    .add-row:last-child { margin-bottom: 0; }
+
+    .add-label {
+      font-weight: 700;
+      color: var(--gh-text);
+      margin-right: 4px;
+    }
+
+    /* ── Footer ── */
+    .site-footer {
       text-align: center;
       padding: 16px 0 40px;
-      font-size: 0.9rem;
-      color: #777;
-      border-top: 1px solid #e7e7e7;
-    }
-    /* ====== Print / PDF ====== */
-    @media print{
-      body{ background:#fff; }
-      .page{
-        margin: 0;
-        box-shadow: none;
-        width: auto;
-        min-height: auto;
-        padding: var(--margin);
-      }
-      a{ text-decoration: none; color: inherit; }
+      font-size: 12px;
+      color: var(--gh-muted);
+      border-top: 1px solid var(--gh-border);
+      max-width: 900px;
+      margin: 0 auto;
+      padding-left: 24px;
+      padding-right: 24px;
     }
 
-    @page{
-      size: letter;
-      margin: 0; /* we control padding with .page */
+    /* ── Mobile ── */
+    @media (max-width: 700px) {
+      .layout {
+        grid-template-columns: 1fr;
+        padding: 0 16px;
+        margin-top: 16px;
+      }
+      .sidebar { position: static; }
+      .entry-head, .project-head { flex-direction: column; gap: 2px; }
+      .skill-row { grid-template-columns: 1fr; gap: 2px; }
+    }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; font-size: 11pt; }
+      .toolbar { display: none; }
+      .layout { grid-template-columns: 1fr; max-width: 100%; margin: 0; padding: 0.5in; }
+      .sidebar { position: static; display: none; }
+      .section { border: none; box-shadow: none; padding: 0 0 16px; border-bottom: 1px solid #ccc; border-radius: 0; }
+      .site-footer { display: none; }
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <main class="page" id="resume">
-      <!-- ===== Header ===== -->
-      <h1 class="name">Dinara Zhorabek</h1>
-      <div class="contact">
-        Boston, MA <span class="sep">|</span>
-        <a href="mailto:dkalijanovna@gmail.com">dkalijanovna@gmail.com</a>
-        <span class="sep">|</span>
-        <a href="https://linkedin.com/in/dinarazhorabek/" target="_blank" rel="noopener">linkedin.com/in/dinarazhorabek</a>
-        <!-- <span class="sep">|</span>
-        <a href="https://dinarazhorabek.github.io/">https://dinarazhorabek.github.io/</a> -->
+
+  <!-- Toolbar -->
+  <div class="toolbar">
+    <div class="toolbar-left">
+      <a href="https://dinarazhorabek.github.io/">dinarazhorabek.github.io</a>
+      <span class="toolbar-sep">/</span>
+      <span>resume</span>
+    </div>
+    <button class="btn-pdf" onclick="window.print()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M2.75 14A1.75 1.75 0 0 1 1 12.25v-2.5a.75.75 0 0 1 1.5 0v2.5c0 .138.112.25.25.25h10.5a.25.25 0 0 0 .25-.25v-2.5a.75.75 0 0 1 1.5 0v2.5A1.75 1.75 0 0 1 13.25 14Z"/><path d="M7.25 7.689V2a.75.75 0 0 1 1.5 0v5.689l1.97-1.97a.749.749 0 1 1 1.06 1.06l-3.25 3.25a.749.749 0 0 1-1.06 0L4.22 6.779a.749.749 0 1 1 1.06-1.06z"/></svg>
+      Save as PDF
+    </button>
+  </div>
+
+  <div class="layout">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="profile-card">
+        <div class="profile-name">Dinara Zhorabek</div>
+        <div class="profile-role">Data Engineer &amp; Analyst<br>Boston, MA</div>
+
+        <div class="profile-links">
+          <a class="profile-link" href="mailto:dkalijanovna@gmail.com">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--gh-muted)"><path d="M1.75 2h12.5c.966 0 1.75.784 1.75 1.75v8.5A1.75 1.75 0 0 1 14.25 14H1.75A1.75 1.75 0 0 1 0 12.25v-8.5C0 2.784.784 2 1.75 2ZM1.5 12.251c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V5.809L8.38 9.397a.75.75 0 0 1-.76 0L1.5 5.809v6.442Zm13-8.181v-.32a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25v.32L8 7.88Z"/></svg>
+            dkalijanovna@gmail.com
+          </a>
+          <a class="profile-link" href="https://linkedin.com/in/dinarazhorabek/" target="_blank">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--gh-muted)"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854zm4.943 12.248V6.169H2.542v7.225zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248S2.4 3.226 2.4 3.934c0 .694.521 1.248 1.327 1.248zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016l.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225z"/></svg>
+            linkedin.com/in/dinarazhorabek
+          </a>
+          <a class="profile-link" href="https://github.com/dinarazhorabek" target="_blank">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="var(--gh-muted)"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"/></svg>
+            github.com/dinarazhorabek
+          </a>
+        </div>
+
+        <hr class="divider">
+
+        <div class="sidebar-section-title">Core Stack</div>
+        <div class="skill-pills">
+          <span class="skill-pill">Python</span>
+          <span class="skill-pill">SQL</span>
+          <span class="skill-pill">LangChain</span>
+          <span class="skill-pill">Snowflake</span>
+          <span class="skill-pill">BigQuery</span>
+          <span class="skill-pill">AWS</span>
+          <span class="skill-pill">Azure</span>
+          <!-- <span class="skill-pill">dbt</span> -->
+          <span class="skill-pill">Airflow</span>
+          <span class="skill-pill">Django</span>
+          <span class="skill-pill">React</span>
+          <span class="skill-pill">Git</span>
+        </div>
+
+        <hr class="divider">
+
+        <div class="sidebar-section-title">Awards</div>
+        <div style="font-size:12px; color:var(--gh-muted); line-height:1.6;">
+          <div>🏆 Bolashak Scholarship</div>
+          <div>🥇 BU MET Hackathon 2025</div>
+        </div>
+
+        <hr class="divider">
+
+        <div class="sidebar-section-title">Certifications</div>
+        <div style="font-size:12px; color:var(--gh-muted); line-height:1.7;">
+          <div><a href="https://www.credly.com/badges/46d2a797-da4a-4bb1-876f-7df7f9a51230/" target="_blank">AWS Cloud Foundations</a></div>
+          <div><a href="https://www.datacamp.com/certificate/DA0021164042438" target="_blank">Data Analyst — DataCamp</a></div>
+          <div><a href="https://freecodecamp.org/certification/fccb8c630b9-cf1f-4aa5-af49-467c78bd3e2e/back-end-development-and-apis" target="_blank">Back End Dev — freeCodeCamp</a></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+
+      <!-- Summary -->
+      <div class="section">
+        <div class="section-title">About</div>
+        <p style="font-size:14px; color:var(--gh-text); line-height:1.6;">
+          Data engineer and analyst with 3 years of experience building production pipelines, AI-powered platforms, and data governance systems across finance, healthcare, and labor markets. I work across the full data stack, from ETL and schema design to LLM integration and stakeholder-facing dashboards. Currently finishing my MS in Applied Business Analytics at Boston University, graduating May 2026.
+        </p>
       </div>
 
-      <section class="section">
-        <div class="section-title">Summary</div>
-        <hr class="rule" />
-
-        <div class="entry">
-          <div>
-            Data engineer and analyst with 3 years of experience building production pipelines, AI-powered platforms, and data governance systems across finance, healthcare, and labor markets. I work across the full data stack, from ETL and schema design to LLM integration and stakeholder-facing dashboards. Currently finishing my MS in Applied Business Analytics at Boston University.
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== EDUCATION ===== -->
-      <section class="section">
+      <!-- Education -->
+      <div class="section">
         <div class="section-title">Education</div>
-        <hr class="rule" />
 
         <div class="entry">
           <div class="entry-head">
-            <div class="org">Boston University Metropolitan College</div>
-            <div class="right">Boston, MA</div>
+            <div class="entry-org">Boston University Metropolitan College</div>
+            <div class="entry-date">May 2026</div>
           </div>
-          <div class="subline">
-            <div>Master of Science, Applied Business Analytics</div>
-            <div class="right">May 2026</div>
-          </div>
-          <div class="subline">
-            <div>
-              Cumulative GPA: 3.81/4.0<br/>
-              Relevant Coursework: Data Mining, Data Science, Marketing Analytics, Operations Management, Enterprise Risk Analytics, Cloud Analytics
-            </div>
-            <div></div>
-          </div>
+          <div class="entry-role">M.S. Applied Business Analytics &nbsp;·&nbsp; Boston, MA</div>
+          <div class="edu-detail">GPA 3.81/4.0 &nbsp;·&nbsp; Data Mining · Data Science · Marketing Analytics · Enterprise Risk Analytics · Cloud Analytics</div>
         </div>
 
         <div class="entry">
           <div class="entry-head">
-            <div class="org">Kazakh-British Technical University</div>
-            <div class="right">Almaty, Kazakhstan</div>
+            <div class="entry-org">Kazakh-British Technical University</div>
+            <div class="entry-date">June 2023</div>
           </div>
-          <div class="subline">
-            <div>Bachelor of Science, Information and Communication Technology</div>
-            <div class="right">June 2023</div>
-          </div>
-          <div class="subline">
-            <div>
-              Major in Information Systems<br/>
-              Cumulative GPA: 3.57/4.0<br/>
-              Relevant Coursework: Calculus, Discrete Structures, Software Engineering, Algorithms, Object-Oriented Programming, Programming Principles, Enterprise Architecture
-            </div>
-            <div></div>
-          </div>
+          <div class="entry-role">B.S. Information and Communication Technology &nbsp;·&nbsp; Almaty, Kazakhstan</div>
+          <div class="edu-detail">GPA 3.57/4.0 &nbsp;·&nbsp; Software Engineering · Algorithms · Object-Oriented Programming · Enterprise Architecture</div>
         </div>
-      </section>
+      </div>
 
-      <!-- ===== WORK EXPERIENCE ===== -->
-      <section class="section">
-        <div class="section-title">Work Experience</div>
-        <hr class="rule" />
+      <!-- Experience -->
+      <div class="section">
+        <div class="section-title">Experience</div>
 
         <div class="entry">
           <div class="entry-head">
-            <div class="org">Boston University</div>
-            <div class="right">Boston, MA</div>
+            <div class="entry-org">Boston University</div>
+            <div class="entry-date">Oct 2024 – Present</div>
           </div>
-          <div class="subline">
-            <div class="role">Graduate Research Assistant</div>
-            <div class="right">Oct 2024 - Present</div>
-          </div>
-          <ul class="bullets">
+          <div class="entry-role">Graduate Research Assistant &nbsp;·&nbsp; Boston, MA</div>
+          <ul class="entry-bullets">
             <li>Transformed disconnected labor market data sources into a single scalable pipeline processing 3M+ data points in Python and SQL, delivering warehouse-ready datasets with automated quality monitoring and anomaly detection that enabled reproducible research outputs for cross-functional stakeholders.</li>
             <li>Designed and deployed KPI dashboards translating complex analytical findings into clear, actionable outputs for cross-functional stakeholders.</li>
             <li>Improved advising outcomes by building and deploying a student advising platform, managing stakeholder onboarding, collecting user feedback, and benchmarking performance against traditional methods.</li>
-            <li>Technologies used: Python, SQL, Django, Plotly, Azure, LangChain</li>
           </ul>
+          <div class="entry-tech">
+            <span class="tech-tag">Python</span>
+            <span class="tech-tag">SQL</span>
+            <span class="tech-tag">Django</span>
+            <span class="tech-tag">Plotly</span>
+            <span class="tech-tag">Azure</span>
+            <span class="tech-tag">LangChain</span>
+          </div>
         </div>
 
         <div class="entry">
           <div class="entry-head">
-            <div class="org">The Build Fellowship</div>
-            <div class="right">New York City, NY</div>
+            <div class="entry-org">The Build Fellowship</div>
+            <div class="entry-date">Jul – Sep 2025</div>
           </div>
-          <div class="subline">
-            <div class="role">Data Science Build Student Consultant</div>
-            <div class="right">July 2025 - Sep 2025</div>
-          </div>
-          <ul class="bullets">
+          <div class="entry-role">Data Science Build Student Consultant &nbsp;·&nbsp; New York City, NY</div>
+          <ul class="entry-bullets">
             <li>Identified statistically significant disparities in patient demographics and treatment outcomes across a 65,000+ patient diabetes dataset, producing evidence-based recommendations that informed early-stage clinical program design.</li>
-            <li>Technologies used: Excel, SPSS, Statistical Analysis</li>
           </ul>
+          <div class="entry-tech">
+            <span class="tech-tag">Excel</span>
+            <span class="tech-tag">SPSS</span>
+            <span class="tech-tag">Statistical Analysis</span>
+          </div>
         </div>
 
         <div class="entry">
           <div class="entry-head">
-            <div class="org">VTB Bank Kazakhstan</div>
-            <div class="right">Almaty, Kazakhstan</div>
+            <div class="entry-org">VTB Bank Kazakhstan</div>
+            <div class="entry-date">Feb 2023 – Aug 2024</div>
           </div>
-          <div class="subline">
-            <div class="role">Full-Stack Software Engineer in Financial Systems</div>
-            <div class="right">Feb 2023 - Aug 2024</div>
-          </div>
-          <ul class="bullets">
+          <div class="entry-role">Full-Stack Software Engineer in Financial Systems &nbsp;·&nbsp; Almaty, Kazakhstan</div>
+          <ul class="entry-bullets">
             <li>Closed gaps in financial risk visibility by designing and deploying risk monitoring dashboards in Oracle APEX, enabling real-time identification of suspicious client activity and anomalous transactions, and surfacing risk metrics that directly supported data governance and regulatory reporting requirements for compliance and operations leadership.</li>
             <li>Resolved critical reporting latency issues slowing compliance and investment operations by optimizing large-scale relational queries and PL/SQL logic using DBMS Profiler, achieving roughly 50% performance improvement and significantly improving data accuracy and delivery speed for business stakeholders.</li>
             <li>Designed and maintained data mapping logic and automated workflows in PostgreSQL and Oracle, ensuring integrity and consistency of financial data across engineering and product teams in line with internal governance standards.</li>
             <li>Cut feature rollout time by 30% by developing high-throughput data pipelines, streamlining data delivery and reducing errors in downstream financial reporting.</li>
-            <li>Technologies used: PostgreSQL, Oracle, PL/SQL, Oracle APEX, React, Node.js, JavaScript, Git, CI/CD</li>
           </ul>
+          <div class="entry-tech">
+            <span class="tech-tag">PostgreSQL</span>
+            <span class="tech-tag">Oracle</span>
+            <span class="tech-tag">PL/SQL</span>
+            <span class="tech-tag">Oracle APEX</span>
+            <span class="tech-tag">React</span>
+            <span class="tech-tag">Node.js</span>
+            <span class="tech-tag">JavaScript</span>
+            <span class="tech-tag">Git</span>
+            <span class="tech-tag">CI/CD</span>
+          </div>
         </div>
-      </section>
+      </div>
 
-      <!-- ===== UNIVERSITY PROJECTS ===== -->
-      <section class="section">
+      <!-- Projects -->
+      <div class="section">
         <div class="section-title">Projects</div>
-        <hr class="rule" />
 
-        <div class="entry">
-          <div class="entry-head">
-            <div class="org"><a href="https://met-employability-services.azurewebsites.net" target="_blank" rel="noopener">Career Compass | AI Labor Market Intelligence Platform</a></div>
-            <div class="right">Django, Python, SQL, Plotly, LangChain, LLMs, Azure</div>
+        <div class="project-entry">
+          <div class="project-head">
+            <div class="project-name"><a href="https://met-employability-services.azurewebsites.net" target="_blank">Career Compass — AI Labor Market Intelligence Platform</a></div>
+            <div class="project-stack">Django · Python · LangChain · LLMs · Azure</div>
           </div>
-          <ul class="bullets">
-            <li>Built an AI-driven analytics system over 3M+ labor market records, enabling natural language querying of job trends and automated career insights.</li>
-            <li>Research paper accepted (forthcoming): SET III Symposium on Entrepreneurship & Technology, 2026.</li>
-          </ul>
+          <div class="project-desc">Built an AI-driven analytics system over 3M+ labor market records, enabling natural language querying of job trends and automated career insights.</div>
+          <div class="project-note">Research paper accepted (forthcoming): SET III Symposium on Entrepreneurship &amp; Technology, 2026.</div>
         </div>
 
-        <div class="entry">
-          <div class="entry-head">
-            <div class="org"><a href="https://dinarazhorabek.github.io/projects/vortex/main.html" target="_blank" rel="noopener">VSAV | Sentiment Adaptive Volatility Strategy</a></div>
-            <div class="right">Python, Plotly, Streamlit</div>
+        <div class="project-entry">
+          <div class="project-head">
+            <div class="project-name"><a href="https://dinarazhorabek.github.io/projects/vortex/main.html" target="_blank">VSAV — Sentiment Adaptive Volatility Strategy</a></div>
+            <div class="project-stack">Python · Plotly · Streamlit</div>
           </div>
-          <ul class="bullets">
-            <li>Won 1st place at BU MET Hackathon 2025 by building a sentiment-driven trading strategy with automated backtesting and an interactive portfolio performance dashboard.</li>
-          </ul>
+          <div class="project-desc">Won 1st place at BU MET Hackathon 2025 by building a sentiment-driven trading strategy with automated backtesting and an interactive portfolio performance dashboard.</div>
         </div>
 
-        <div class="entry">
-          <div class="entry-head">
-            <div class="org"><a href="https://dinarazhorabek.github.io/projects/consumer_complaints/naive_bayes.html" target="_blank" rel="noopener">Complaint Classifier | Intent Detection & Dispute Outcome Prediction</a></div>
-            <div class="right">R, Naive Bayes</div>
+        <div class="project-entry">
+          <div class="project-head">
+            <div class="project-name"><a href="https://dinarazhorabek.github.io/projects/consumer_complaints/naive_bayes.html" target="_blank">Complaint Classifier — Intent Detection &amp; Dispute Outcome Prediction</a></div>
+            <div class="project-stack">R · Naive Bayes · NLP</div>
           </div>
-          <ul class="bullets">
-            <li>Predicted dispute outcomes and automated intent detection across thousands of consumer complaints using a Naive Bayes NLP model in R, achieving 74.45% accuracy.</li>
-          </ul>
-        </div>
-        
-        <div class="entry">
-          <div class="entry-head">
-            <div class="org"><a href="https://dinarazhorabek.github.io/projects/finance/inertia.html" target="_blank" rel="noopener">Inertia Trading | Boeing & S&P 500</a></div>
-            <div class="right">Python, Scikit-learn</div>
-          </div>
-          <ul class="bullets">
-            <li>Built ML-based trading strategies on Boeing and S&P 500 data, generating $294 profit from $100 in backtesting.</li>
-          </ul>
+          <div class="project-desc">Predicted dispute outcomes and automated intent detection across thousands of consumer complaints using a Naive Bayes NLP model in R, achieving 74.45% accuracy.</div>
         </div>
 
-        <div class="entry">
-          <div class="entry-head">
-            <div class="org"><a href="https://dinarazhorabek.github.io/ad688-employability-fall25A1-group5/" target="_blank" rel="noopener">Job Market Analysis 2024</a></div>
-            <div class="right">Python, NLP, ML, Quarto</div>
+        <div class="project-entry">
+          <div class="project-head">
+            <div class="project-name"><a href="https://dinarazhorabek.github.io/projects/finance/inertia.html" target="_blank">Inertia Trading — Boeing &amp; S&amp;P 500</a></div>
+            <div class="project-stack">Python · Scikit-learn</div>
           </div>
-          <ul class="bullets">
-            <li>Integrated Lightcast job-posting data with FRED macroeconomic indicators to analyze 2024 U.S. labor market trends, applying NLP and statistical modeling to evaluate hiring patterns, skill demand, and regional wage dynamics.</li>
-          </ul>
+          <div class="project-desc">Built ML-based trading strategies on Boeing and S&amp;P 500 data, generating $294 profit from $100 in backtesting.</div>
         </div>
 
-        <div class="entry">
-          <div class="entry-head">
-            <div class="org"><a href="https://github.com/dinarazhorabek/astronomy_data_analysis" target="_blank" rel="noopener">Stellar Classification | Hipparcos Catalogue</a></div>
-            <div class="right">Python, Scikit-learn</div>
+        <div class="project-entry">
+          <div class="project-head">
+            <div class="project-name"><a href="https://dinarazhorabek.github.io/ad688-employability-fall25A1-group5/" target="_blank">Job Market Analysis 2024</a></div>
+            <div class="project-stack">Python · NLP · ML · Quarto</div>
           </div>
-          <ul class="bullets">
-            <li>Classified stellar variability across 100K+ stars using kNN, Logistic Regression, SVM, and Random Forest models, with Gaussian SVM achieving 71% test accuracy.</li>
-          </ul>
+          <div class="project-desc">Integrated Lightcast job-posting data with FRED macroeconomic indicators to analyze 2024 U.S. labor market trends, applying NLP and statistical modeling to evaluate hiring patterns, skill demand, and regional wage dynamics.</div>
         </div>
-      </section>
 
-      <section class="section">
+        <div class="project-entry">
+          <div class="project-head">
+            <div class="project-name"><a href="https://github.com/dinarazhorabek/astronomy_data_analysis" target="_blank">Stellar Classification — Hipparcos Catalogue</a></div>
+            <div class="project-stack">Python · Scikit-learn</div>
+          </div>
+          <div class="project-desc">Classified stellar variability across 100K+ stars using kNN, Logistic Regression, SVM, and Random Forest models, with Gaussian SVM achieving 71% test accuracy.</div>
+        </div>
+      </div>
+
+      <!-- Skills -->
+      <div class="section">
         <div class="section-title">Skills</div>
-        <hr class="rule" />
+        <div class="skills-grid">
+          <div class="skill-row">
+            <div class="skill-label">Languages</div>
+            <div class="skill-values">Python · R · SQL · Java · JavaScript</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-label">ML &amp; AI</div>
+            <div class="skill-values">LangChain · LLMs · Prompt Engineering · Scikit-learn · PySpark · TensorFlow · Transformers · Naive Bayes · Random Forest · Decision Trees · k-means · NLP</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-label">Data Engineering</div>
+            <div class="skill-values">ETL/ELT Pipelines · Data Modeling · Schema Design · Data Governance · Data Quality · Anomaly Detection · PostgreSQL · Oracle · PL/SQL · Snowflake · BigQuery · MongoDB · API Integration</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-label">Cloud &amp; DevOps</div>
+            <div class="skill-values">AWS · Azure · Docker · CI/CD · Git · REST APIs</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-label">Visualization</div>
+            <div class="skill-values">Plotly · Streamlit · Tableau · Power BI · Matplotlib · Django · SPSS · A/B Testing</div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-label">Web</div>
+            <div class="skill-values">React · Node.js · Oracle APEX</div>
+          </div>
+        </div>
+      </div>
 
-        <p class="kv"><b>Programming Languages:</b> Python · R · SQL · Java · JavaScript</p>
-        <p class="kv"><b>Machine Learning &amp; AI:</b> LangChain · LLMs · Prompt Engineering · Scikit-learn · PySpark · TensorFlow · Transformers · Naive Bayes · Random Forest · Decision Trees · k-means Clustering · NLP</p>
-        <p class="kv"><b>Data Engineering:</b> ETL/ELT Pipelines · Data Modeling · Schema Design · Data Governance · Data Quality · Anomaly Detection · PostgreSQL · Oracle · PL/SQL · Snowflake · BigQuery · MongoDB · API Integration</p>
-        <p class="kv"><b>Cloud &amp; DevOps:</b> AWS · Azure · Docker · CI/CD · Git · REST APIs</p>
-        <p class="kv"><b>Visualization &amp; Analytics:</b> Plotly · Streamlit · Tableau · Power BI · Matplotlib · Django · SPSS · A/B Testing</p>
-        <p class="kv"><b>Web Development:</b> React · Node.js · Oracle APEX</p>
-      </section>
-
-      <!-- ===== ADDITIONAL ===== -->
-      <section class="section">
+      <!-- Additional -->
+      <div class="section">
         <div class="section-title">Additional</div>
-        <hr class="rule" />
-        <p class="kv"><b>Awards:</b> Presidential <a href="https://bolashak.gov.kz/en" target="_blank" rel="noopener">“Bolashak”</a> Scholarship (Kazakhstan) · BU MET Hackathon Winner (2025) </p>
-        <p class="kv"><b>Certifications:</b> <a href="https://www.credly.com/badges/46d2a797-da4a-4bb1-876f-7df7f9a51230/" target="_blank" rel="noopener">AWS Academy Graduate, Cloud Foundations (November 2025)</a> · <a href="https://www.datacamp.com/certificate/DA0021164042438" target="_blank" rel="noopener">Data Analyst</a> (DataCamp) · <a href="https://freecodecamp.org/certification/fccb8c630b9-cf1f-4aa5-af49-467c78bd3e2e/back-end-development-and-apis" target="_blank" rel="noopener">Back End Development and APIs</a> (freeCodeCamp) </p>
-        <p class="kv"><b>Publications:</b> Zhorabek et al. (2026). "Career Compass Labor Analytics: Visualization Architecture for Career Planning." SET III Symposium on Entrepreneurship & Technology (forthcoming). </p>
-      </section>
-    </main>
+        <div class="add-row"><span class="add-label">Publications</span> Zhorabek et al. (2026). "Career Compass Labor Analytics: Visualization Architecture for Career Planning." <em>SET III Symposium on Entrepreneurship &amp; Technology</em> (forthcoming).</div>
+        <div class="add-row"><span class="add-label">Awards</span> Presidential <a href="https://bolashak.gov.kz/en" target="_blank">"Bolashak"</a> Scholarship (Kazakhstan) · BU MET Hackathon Winner (2025)</div>
+        <div class="add-row"><span class="add-label">Certifications</span> <a href="https://www.credly.com/badges/46d2a797-da4a-4bb1-876f-7df7f9a51230/" target="_blank">AWS Academy Graduate, Cloud Foundations</a> (Nov 2025) · <a href="https://www.datacamp.com/certificate/DA0021164042438" target="_blank">Data Analyst</a> (DataCamp) · <a href="https://freecodecamp.org/certification/fccb8c630b9-cf1f-4aa5-af49-467c78pd3e2e/back-end-development-and-apis" target="_blank">Back End Development and APIs</a> (freeCodeCamp)</div>
+      </div>
 
-    <!-- helper button for “Save as PDF” -->
-    <!-- <div style="width:8.5in;margin:0 auto 24px; text-align:right;">
-      <button onclick="printResume()"
-        style="font-family:inherit;font-size:10pt;padding:8px 12px;cursor:pointer;">
-        Print / Save as PDF
-      </button>
-    </div> -->
+    </main>
   </div>
 
   <footer class="site-footer">
-    © <span id="year"></span>. Developed by Dinara
+    © <span id="year"></span> · Developed by Dinara
   </footer>
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
-  <script>
-  function printResume() {
-    const resumeContent = document.getElementById("resume").outerHTML;
-    const styles = document.querySelector("style").outerHTML;
 
-    const printWindow = window.open("", "_blank");
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
 
-    printWindow.document.write(`
-      <!doctype html>
-      <html>
-        <head>
-          <meta charset="utf-8">
-          <title>Resume</title>
-          ${styles}
-          <style>
-            /* Keep links visible and clickable in PDF */
-            a {
-              color: #0645ad;
-              text-decoration: underline;
-            }
-          </style>
-        </head>
-        <body>
-          ${resumeContent}
-        </body>
-      </html>
-    `);
-
-    printWindow.document.close();
-    printWindow.focus();
-    printWindow.print();
-  }
-  </script>
 </body>
 </html>
