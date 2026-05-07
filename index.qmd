@@ -8,13 +8,13 @@ format:
 
 ## Hi, I’m Dinara.
 
-Data Analyst & Machine Learning Engineer focused on building scalable analytics solutions that transform complex data into actionable insights. I specialize in structured data modeling, interactive dashboards, and predictive analytics that support strategic decision-making.
+Data engineer and analyst with 3 years of experience building production pipelines, AI-powered platforms, and data governance systems across finance, healthcare, and labor markets.
 
-I’m currently pursuing a Master’s in Applied Business Analytics at [Boston University](https://www.bu.edu/), with a B.S. in Information and Communication Technology from [Kazakh-British Technical University](https://kbtu.edu.kz/). My background combines information systems and full-stack engineering, and my work spans AI-assisted workflows, machine learning models, and end-to-end data pipelines using Python, SQL, and modern visualization tools.
+I'm finishing my Master's in Applied Business Analytics at [Boston University](https://www.bu.edu/), with a B.S. in Information and Communication Technology from [Kazakh-British Technical University](https://kbtu.edu.kz/). My background spans full-stack engineering and data systems, and my recent work includes building LangChain-powered analytics platforms, end-to-end ETL pipelines over millions of records, and AI-assisted workflows deployed in production.
 
-I’m particularly interested in applying analytics and AI to real-world business problems where technical rigor meets measurable impact.
+I'm particularly interested in roles where data infrastructure and applied AI intersect — where the pipelines I build directly shape decisions people can act on.
 
-Outside of analytics, I enjoy traveling, building disciplined habits, and training for a half marathon.
+Outside of work, I enjoy traveling, building disciplined habits, and baking sweets.
 
 [View Resume →](./resume/index.html)
 
